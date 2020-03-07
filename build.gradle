@@ -33,5 +33,4 @@ ext {
     minSdkVersion = 21
     targetSdkVersion = 29
     junitVersion = '4.12'
-    isModule = false
 }

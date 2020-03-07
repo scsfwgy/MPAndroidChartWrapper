@@ -1,7 +1,8 @@
-package com.wgyscsf.mpandroidchartwrapper
+package com.wgyscsf.mpandroidchartwrapper.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.wgyscsf.mpandroidchartwrapper.R
 
 class MainActivity : AppCompatActivity() {
 
