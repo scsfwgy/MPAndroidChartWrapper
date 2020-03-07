@@ -41,6 +41,9 @@ abstract class BaseKView(
     val mDownColor: Int by lazy {
         if (!mGreenUp) mGreenColor else mRedColor
     }
+    val mBaseEqualColor: Int by lazy {
+        getColor(R.color.mp_basekview_equal)
+    }
     val mBaseBorderColor: Int by lazy {
         getColor(R.color.mp_basekview_border)
     }
@@ -65,6 +68,7 @@ abstract class BaseKView(
     val mBaseHighLightColor: Int by lazy {
         getColor(R.color.mp_basekview_highLightColor)
     }
+
 
     init {
         initChartAttrs()
