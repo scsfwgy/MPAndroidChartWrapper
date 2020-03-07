@@ -2,36 +2,34 @@ apply plugin: 'com.android.application'
 apply from: rootProject.file('lib_common.gradle')
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
-
     defaultConfig {
         applicationId "com.wgyscsf.demo"
-        minSdkVersion 21
-        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
     }
 }
 
 dependencies {
+    //mp包装库
+    implementation project(path: ':mpwrapper')
+
+
     // https://github.com/Blankj/AndroidUtilCode
     implementation 'com.blankj:utilcode:1.25.9'
 
     // https://github.com/ReactiveX/RxJava
-    api 'io.reactivex.rxjava2:rxjava:2.2.17'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
     // https://github.com/ReactiveX/RxAndroid
-    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     //网络请求
     // https://github.com/google/gson
-    api "com.google.code.gson:gson:2.8.6"
+    implementation "com.google.code.gson:gson:2.8.6"
     // https://github.com/square/okhttp
-    api 'com.squareup.okhttp3:okhttp:4.4.0'
-    api 'com.squareup.okhttp3:logging-interceptor:4.4.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
     // https://github.com/square/retrofit
-    api 'com.squareup.retrofit2:retrofit:2.7.1'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
-    api 'com.squareup.retrofit2:converter-gson:2.7.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
 }
