@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#c4c4c7</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!--k线基类相关颜色-->
+    <color name="mp_basekview_red">#ec3627</color>
+    <color name="mp_basekview_green">#5dab52</color>
+    <color name="mp_basekview_requal">#1f28ca</color>
+    <color name="mp_basekview_timesharing">#4c9ff4</color>
+    <color name="mp_basekview_timesharingFill">#e8f1fe</color>
+    <color name="mp_basekview_limit">#ff0000</color>
+    <!--就蜡烛图来说，就是蜡烛中间那条线-->
+    <color name="color_mp_shadow">#1e15c7</color>
+    <color name="mp_basekview_gridBg">#edfcea</color>
+    <color name="mp_basekview_bg">#cfcfcf</color>
+    <color name="mp_basekview_txt">#8a8a8b</color>
+    <color name="mp_basekview_border">#8a8a8b</color>
+    <color name="mp_basekview_xAxisTxtColor">#8a8a8b</color>
+    <color name="mp_basekview_xAxisLineColor">#8a8a8b</color>
+    <color name="mp_basekview_yAxisTxtColor">#8a8a8b</color>
+    <color name="mp_basekview_yAxisLineColor">#8a8a8b</color>
+    <color name="mp_basekview_highLightColor">#8a8a8b</color>
+    <!--非按压情况下图例的文字颜色-->
+    <color name="mp_basekview_noPressLegend">#8a8a8b</color>
+
+    <!--marker-->
+    <color name="mp_marker_txtColor">#ffffff</color>
+    <color name="mp_marker_bgColor">#8a8a8b</color>
+    <color name="mp_marker_bgLimitColor">#ed3820</color>
+    <color name="mp_marker_txtLimitColor">#ffffff</color>
+
+    <!--指标-->
+    <!--主图-->
+    <!--ma-->
+    <color name="mp_masterview_ma5">#f29b3d</color>
+    <color name="mp_masterview_ma10">#f347f9</color>
+    <color name="mp_masterview_ma20">#4dfd9f</color>
+    <!--boll-->
+    <color name="mp_masterview_bollup">#ed978f</color>
+    <color name="mp_masterview_bollmb">#136ad6</color>
+    <color name="mp_masterview_bolldn">#7897b9</color>
+    <!--ma&boll-->
+    <color name="mp_masterview_ma">#f7462e</color>
+    <color name="mp_masterview_boll">#1666fa</color>
+
+
+    <!--副图-->
+    <!--macd-->
+    <color name="mp_minorview_dif">#f29b3d</color>
+    <color name="mp_minorview_dea">#f347f9</color>
+    <color name="mp_minorview_macd">#4dfd9f</color>
+    <!--rsi-->
+    <color name="mp_minorview_rsi6">#ed978f</color>
+    <color name="mp_minorview_rsi12">#136ad6</color>
+    <color name="mp_minorview_rsi24">#7897b9</color>
+    <!--kdj-->
+    <color name="mp_minorview_k">#ed978f</color>
+    <color name="mp_minorview_d">#136ad6</color>
+    <color name="mp_minorview_j">#7897b9</color>
+
+    <!--vol-->
+    <color name="mp_volview_ma5">#f29b3d</color>
+    <color name="mp_volview_ma10">#f347f9</color>
+    <color name="mp_volview_vol">#188808</color>
+
+</resources>
