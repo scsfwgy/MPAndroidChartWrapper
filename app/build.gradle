@@ -6,7 +6,7 @@ android {
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.wgyscsf.mpandroidchartwrapper"
+        applicationId "com.wgyscsf.demo"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

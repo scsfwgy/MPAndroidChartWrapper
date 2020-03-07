@@ -1,4 +1,4 @@
-package com.wgyscsf.mpandroidchartwrapper
+package com.wgyscsf.demo
 
 import android.app.Application
 import com.blankj.utilcode.util.Utils

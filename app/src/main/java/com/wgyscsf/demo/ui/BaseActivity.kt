@@ -1,4 +1,4 @@
-package com.wgyscsf.mpandroidchartwrapper.ui
+package com.wgyscsf.demo.ui
 
 import android.content.Context
 import android.os.Bundle
