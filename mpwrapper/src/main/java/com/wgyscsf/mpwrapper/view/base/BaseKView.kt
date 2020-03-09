@@ -69,6 +69,9 @@ abstract class BaseKView(
         getColor(R.color.mp_basekview_highLightColor)
     }
 
+    val mBaseLimitColor by lazy {
+        getColor(R.color.mp_basekview_limit)
+    }
 
     init {
         initChartAttrs()

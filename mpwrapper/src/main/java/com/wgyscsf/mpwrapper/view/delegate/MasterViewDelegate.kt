@@ -1,10 +1,12 @@
 package com.wgyscsf.mpwrapper.view.delegate
 
 import android.graphics.Paint
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
 import com.wgyscsf.mpwrapper.view.MasterView
 import com.wgyscsf.mpwrapper.view.base.BaseLineDataSet
 import com.wgyscsf.mpwrapper.view.enum.BollType
@@ -21,6 +23,9 @@ import com.wgyscsf.mpwrapper.view.enum.MasterViewType
 class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView) {
     val mMasterView by lazy {
         masterView
+    }
+    val mTimeSharingEntryList by lazy {
+        ArrayList<Entry>()
     }
     val mCandleEntryList by lazy {
         ArrayList<CandleEntry>()
@@ -43,6 +48,43 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mBollDnEntryList by lazy {
         ArrayList<Entry>()
     }
+    val mTimeSharingDataSet by lazy {
+        val timeSharingDataSet =
+            BaseLineDataSet(mTimeSharingEntryList, MasterViewType.TIMESHARING.toString())
+        /**
+         * 设置单个蜡烛图value的值，一般都设置不显示
+         */
+        //设置单个蜡烛文字
+        timeSharingDataSet.valueTextSize = 10.0f
+        timeSharingDataSet.setDrawValues(false)
+
+        /**
+         * 线涨跌相关设置
+         */
+        //模式
+        timeSharingDataSet.mode = LineDataSet.Mode.LINEAR
+        timeSharingDataSet.color = mMasterView.mMasterTimeSharingColor
+        timeSharingDataSet.lineWidth = 1f
+        timeSharingDataSet.fillDrawable = mMasterView.mMasterTimeSharingFillDrawable
+        //是否允许被填充，默认false
+        timeSharingDataSet.setDrawFilled(true)
+        /**
+         * 绘制小圆点
+         */
+        timeSharingDataSet.setDrawCircles(false)
+        timeSharingDataSet.setDrawCircleHole(false)
+        timeSharingDataSet.circleRadius = 3f
+
+        //长按高亮十字线
+        timeSharingDataSet.isHighlightEnabled = true
+        timeSharingDataSet.highLightColor = mBaseKView.mBaseHighLightColor
+        timeSharingDataSet.highlightLineWidth = 0.5f
+        //是否显示指示线
+        timeSharingDataSet.setDrawHighlightIndicators(true)
+        timeSharingDataSet.setDrawHorizontalHighlightIndicator(true)
+        timeSharingDataSet.setDrawVerticalHighlightIndicator(true)
+    }
+
     val mCandleDataSet by lazy {
         val candleDataSet = CandleDataSet(mCandleEntryList, MasterViewType.CANDLE.toString())
         candleDataSet.setDrawIcons(false)
@@ -105,6 +147,35 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         bollDn.color = mMasterView.mMasterViewBollDnColor
 
         arrayOf(bollup, bollmd, bollDn)
+    }
+
+    val mLimitLine by lazy {
+        val limitLine = LimitLine(0.0f, "--")
+        limitLine.lineWidth = 0.5f
+        limitLine.lineColor = mBaseKView.mBaseLimitColor
+        limitLine.enableDashedLine(8f, 8f, 8f)
+        limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+        mMasterView.axisRight.addLimitLine(limitLine)
+        limitLine
+    }
+
+    fun setMaDataSetArrVisible(visible: Boolean) {
+        setDataSetArrVisible(mMaLineDataSetArr, visible)
+    }
+
+    fun setBollDataSetArrVisible(visible: Boolean) {
+        setDataSetArrVisible(mBollLineDataSetArr, visible)
+    }
+
+    private fun setDataSetArrVisible(arr: Array<out LineDataSet>, visible: Boolean) {
+        val lineData = mLineData
+        arr.forEach {
+            if (visible) {
+                if (!lineData.contains(it)) lineData.addDataSet(it)
+            } else {
+                if (lineData.contains(it)) lineData.removeDataSet(it)
+            }
+        }
     }
 
 }

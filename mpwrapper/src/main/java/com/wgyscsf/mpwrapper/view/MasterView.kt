@@ -1,9 +1,11 @@
 package com.wgyscsf.mpwrapper.view
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import com.wgyscsf.mpwrapper.R
 import com.wgyscsf.mpwrapper.ktx.getColor
+import com.wgyscsf.mpwrapper.ktx.getDrawable
 import com.wgyscsf.mpwrapper.view.base.BaseKView
 
 /**
@@ -42,4 +44,12 @@ class MasterView(
         getColor(R.color.mp_masterview_bolldn)
 
     }
+
+    val mMasterTimeSharingColor by lazy {
+        getColor(R.color.mp_basekview_timesharing)
+    }
+    val mMasterTimeSharingFillDrawable: Drawable by lazy {
+        getDrawable(R.drawable.shape_gradient_filled)
+    }
+
 }
