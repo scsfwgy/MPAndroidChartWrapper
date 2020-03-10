@@ -1,17 +1,24 @@
 package com.wgyscsf.mpwrapper.view.delegate
 
 import android.graphics.Paint
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
+import com.wgyscsf.mpwrapper.bean.Boll
+import com.wgyscsf.mpwrapper.bean.Ma
+import com.wgyscsf.mpwrapper.utils.FormatUtil
 import com.wgyscsf.mpwrapper.view.MasterView
 import com.wgyscsf.mpwrapper.view.base.BaseLineDataSet
 import com.wgyscsf.mpwrapper.view.enum.BollType
 import com.wgyscsf.mpwrapper.view.enum.MaType
+import com.wgyscsf.mpwrapper.view.enum.MasterIndicatrixType
 import com.wgyscsf.mpwrapper.view.enum.MasterViewType
+import java.lang.reflect.Field
 
 /**
  * ============================================================
@@ -48,6 +55,31 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mBollDnEntryList by lazy {
         ArrayList<Entry>()
     }
+
+    val mLimitLine by lazy {
+        val limitLine = LimitLine(0.0f, FormatUtil.numFormat(0, mBaseKView.mDigit))
+        limitLine.lineWidth = 0.5f
+        limitLine.lineColor = mBaseKView.mBaseLimitColor
+        limitLine.enableDashedLine(8f, 8f, 8f)
+        limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+        mMasterView.axisRight.addLimitLine(limitLine)
+        limitLine
+    }
+
+    /**
+     * 需要反射
+     */
+    val mField: Field by lazy {
+        val limitLine = mLimitLine
+        val limitLineClass: Class<out LimitLine> = limitLine.javaClass
+        val field = limitLineClass.getDeclaredField("mLimit")
+        field.isAccessible = true
+        field
+    }
+
+    //limit的值
+    var mLimitValue = 0f
+
     val mTimeSharingDataSet by lazy {
         val timeSharingDataSet =
             BaseLineDataSet(mTimeSharingEntryList, MasterViewType.TIMESHARING.toString())
@@ -149,16 +181,6 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         arrayOf(bollup, bollmd, bollDn)
     }
 
-    val mLimitLine by lazy {
-        val limitLine = LimitLine(0.0f, "--")
-        limitLine.lineWidth = 0.5f
-        limitLine.lineColor = mBaseKView.mBaseLimitColor
-        limitLine.enableDashedLine(8f, 8f, 8f)
-        limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
-        mMasterView.axisRight.addLimitLine(limitLine)
-        limitLine
-    }
-
     fun setMaDataSetArrVisible(visible: Boolean) {
         setDataSetArrVisible(mMaLineDataSetArr, visible)
     }
@@ -167,15 +189,126 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         setDataSetArrVisible(mBollLineDataSetArr, visible)
     }
 
-    private fun setDataSetArrVisible(arr: Array<out LineDataSet>, visible: Boolean) {
-        val lineData = mLineData
-        arr.forEach {
-            if (visible) {
-                if (!lineData.contains(it)) lineData.addDataSet(it)
-            } else {
-                if (lineData.contains(it)) lineData.removeDataSet(it)
+    fun getMaLegend(ma: Ma, press: Boolean): Array<LegendEntry> {
+        return if (press) {
+            val ma5 =
+                generateLegendEntry(mMasterView.mMasterViewMa5Color, "MA5 " + numFormat(ma.ma5))
+            val ma10 =
+                generateLegendEntry(mMasterView.mMasterViewMa10Color, "MA10 " + numFormat(ma.ma10))
+            val ma20 =
+                generateLegendEntry(mMasterView.mMasterViewMa20Color, "MA20 " + numFormat(ma.ma20))
+            arrayOf(ma5, ma10, ma20)
+        } else {
+            val legendEntry = LegendEntry()
+            legendEntry.label = "MA(5,10,20)"
+            legendEntry.formColor = mBaseKView.mBaseNoPressColor
+            legendEntry.form = Legend.LegendForm.NONE
+            arrayOf(legendEntry)
+        }
+    }
+
+    fun getBollLegend(boll: Boll, press: Boolean): Array<LegendEntry> {
+        when {
+            press -> {
+                val up =
+                    generateLegendEntry(
+                        mMasterView.mMasterViewBollUpColor,
+                        "UPPER " + numFormat(boll.up)
+                    )
+                val md =
+                    generateLegendEntry(
+                        mMasterView.mMasterViewBollMdColor,
+                        "MID " + numFormat(boll.mb)
+                    )
+                val dn =
+                    generateLegendEntry(
+                        mMasterView.mMasterViewBollDnColor,
+                        "LOWER " + numFormat(boll.dn)
+                    )
+                return arrayOf(up, md, dn)
+            }
+            else -> {
+                val legendEntry = LegendEntry()
+                legendEntry.label = "BOLL(26)"
+                legendEntry.formColor = mBaseKView.mBaseNoPressColor
+                legendEntry.form = Legend.LegendForm.NONE
+                return arrayOf(legendEntry)
             }
         }
+    }
+
+    fun showLegend(ma: Ma?, boll: Boll?, press: Boolean) {
+        val masterView = mMasterView
+        val legend = generateLegend(masterView.legend)
+        val masterIndicatrixType = masterView.mMasterIndicatrixType
+        if (ma == null ||
+            boll == null ||
+            masterView.mMasterViewType != MasterViewType.CANDLE ||
+            masterIndicatrixType == MasterIndicatrixType.NONE
+        ) {
+            legend.isEnabled = false
+            return
+        }
+        legend.isEnabled = true
+        val legendEntryArr = when (masterIndicatrixType) {
+            MasterIndicatrixType.MA -> {
+                getMaLegend(ma, press)
+            }
+            MasterIndicatrixType.BOLL -> {
+                getBollLegend(boll, press)
+            }
+            else -> {
+                null
+            }
+        }
+        if (legendEntryArr != null) {
+            legend.setCustom(legendEntryArr)
+        } else {
+            legend.isEnabled = false
+        }
+        masterView.legendRenderer.computeLegend(mBaseKView.data)
+    }
+
+    fun showIndicatrixType() {
+        val masterView = mMasterView
+        val masterIndicatrixType: MasterIndicatrixType = masterView.mMasterIndicatrixType
+        when {
+            masterIndicatrixType === MasterIndicatrixType.NONE -> {
+                setMaDataSetArrVisible(false)
+                setBollDataSetArrVisible(false)
+            }
+            masterIndicatrixType === MasterIndicatrixType.MA -> {
+                setMaDataSetArrVisible(true)
+                setBollDataSetArrVisible(false)
+            }
+            masterIndicatrixType === MasterIndicatrixType.BOLL -> {
+                setMaDataSetArrVisible(false)
+                setBollDataSetArrVisible(true)
+            }
+            else -> {
+                throw  IllegalArgumentException("MasterIndicatrixType 类型错误")
+            }
+        }
+    }
+
+    /**
+     * 实时修改最新数据的实时线
+     *
+     * @param limitLine
+     * @param c
+     */
+    fun setLimit(limitLine: LimitLine, c: Float) {
+        try {
+            this.mLimitValue = c
+            mField.set(limitLine, c)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun refreshLimit() {
+        setLimit(mLimitLine, mLimitValue)
+        mMasterView.invalidate()
     }
 
 }

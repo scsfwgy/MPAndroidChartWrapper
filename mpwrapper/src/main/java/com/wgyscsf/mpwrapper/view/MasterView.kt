@@ -7,6 +7,8 @@ import com.wgyscsf.mpwrapper.R
 import com.wgyscsf.mpwrapper.ktx.getColor
 import com.wgyscsf.mpwrapper.ktx.getDrawable
 import com.wgyscsf.mpwrapper.view.base.BaseKView
+import com.wgyscsf.mpwrapper.view.enum.MasterIndicatrixType
+import com.wgyscsf.mpwrapper.view.enum.MasterViewType
 
 /**
  * ============================================================
@@ -52,4 +54,6 @@ class MasterView(
         getDrawable(R.drawable.shape_gradient_filled)
     }
 
+    var mMasterViewType: MasterViewType = MasterViewType.CANDLE
+    var mMasterIndicatrixType: MasterIndicatrixType = MasterIndicatrixType.NONE
 }

@@ -1,5 +1,4 @@
-package com.wgyscsf.mpwrapper.bean;
-
+package com.wgyscsf.mpwrapper.bean
 
 /**
  * ============================================================
@@ -8,9 +7,9 @@ package com.wgyscsf.mpwrapper.bean;
  * 描 述 ：
  * ============================================================
  */
-public class Kdj {
-    //KDJ
-    public double k = KViewConstant.VALUE_DEF;
-    public double d = KViewConstant.VALUE_DEF;
-    public double j = KViewConstant.VALUE_DEF;
+class Rsi {
+    //rsi
+    var rsi6: Double? = null
+    var rsi12: Double? = null
+    var rsi24: Double? = null
 }

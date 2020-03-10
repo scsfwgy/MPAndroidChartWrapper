@@ -9,4 +9,5 @@ package com.wgyscsf.mpwrapper.bean;
  */
 public class KViewConstant {
     public static final int VALUE_DEF = Integer.MIN_VALUE;
+    public static final String VALUE_NULL_PLACEHOLDER = "--";
 }

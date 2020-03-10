@@ -72,6 +72,10 @@ abstract class BaseKView(
     val mBaseLimitColor by lazy {
         getColor(R.color.mp_basekview_limit)
     }
+    val mBaseNoPressColor by lazy {
+        getColor(R.color.mp_basekview_noPressLegend)
+    }
+    var mDigit: Int = 4
 
     init {
         initChartAttrs()
@@ -265,5 +269,9 @@ abstract class BaseKView(
         //零线,用处类似于macd的线，分上下两块，以0为分界线
         axisRight.setDrawZeroLine(false)
         axisRight.zeroLineWidth = 3f
+    }
+
+    fun setDigit(digit: Int) {
+        mDigit = digit
     }
 }

@@ -1,4 +1,4 @@
-package com.wgyscsf.mpwrapper.bean;
+package com.wgyscsf.mpwrapper.bean
 
 /**
  * ============================================================
@@ -7,19 +7,17 @@ package com.wgyscsf.mpwrapper.bean;
  * 描 述 ：量图，对于量图有两条ma线，作用和主图的ma基本一致。
  * ============================================================
  */
-public class Vol {
+class Vol {
     //vol 量，可选
-    public double vol = KViewConstant.VALUE_DEF;
+    var vol: Double? = null
     //vol
-    public double volMa5 = KViewConstant.VALUE_DEF;
-    public double volMa10 = KViewConstant.VALUE_DEF;
-
-    @Override
-    public String toString() {
+    var volMa5: Double? = null
+    var volMa10: Double? = null
+    override fun toString(): String {
         return "Vol{" +
                 "vol=" + vol +
                 ", volMa5=" + volMa5 +
                 ", volMa10=" + volMa10 +
-                '}';
+                '}'
     }
 }

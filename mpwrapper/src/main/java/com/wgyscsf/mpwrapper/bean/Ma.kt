@@ -1,4 +1,4 @@
-package com.wgyscsf.mpwrapper.bean;
+package com.wgyscsf.mpwrapper.bean
 
 /**
  * ============================================================
@@ -7,9 +7,9 @@ package com.wgyscsf.mpwrapper.bean;
  * 描 述 ：
  * ============================================================
  */
-public class Ma {
+class Ma {
     //MA
-    public double ma5 = KViewConstant.VALUE_DEF;
-    public double ma10 = KViewConstant.VALUE_DEF;
-    public double ma20 = KViewConstant.VALUE_DEF;
+    var ma5: Double? = null
+    var ma10: Double? = null
+    var ma20: Double? = null
 }
