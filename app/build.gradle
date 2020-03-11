@@ -14,6 +14,11 @@ dependencies {
     implementation project(path: ':mpwrapper')
 
 
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
+
+
     // https://github.com/Blankj/AndroidUtilCode
     implementation 'com.blankj:utilcode:1.25.9'
 

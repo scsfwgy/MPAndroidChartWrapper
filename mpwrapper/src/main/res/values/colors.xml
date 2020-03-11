@@ -7,7 +7,7 @@
     <!--k线基类相关颜色-->
     <color name="mp_basekview_red">#ec3627</color>
     <color name="mp_basekview_green">#5dab52</color>
-    <color name="mp_basekview_equal">#1f28ca</color>
+    <color name="mp_basekview_equal">#959599</color>
     <color name="mp_basekview_timesharing">#4c9ff4</color>
     <color name="mp_basekview_timesharingFill">#e8f1fe</color>
     <color name="mp_basekview_limit">#ff0000</color>

@@ -3,6 +3,9 @@ package com.wgyscsf.demo.ui
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.blankj.utilcode.util.ToastUtils
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 /**
  * ============================================================
@@ -20,12 +23,41 @@ abstract class BaseActivity : AppCompatActivity() {
     val mContext: Context by lazy {
         this
     }
-    val mActivity: Context by lazy {
+    val mActivity: BaseActivity by lazy {
         this
+    }
+
+    val mCompositeDisposable by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        CompositeDisposable()
+    }
+
+    fun add(disposable: Disposable) {
+        mCompositeDisposable.add(disposable)
+    }
+
+    fun show(msg: String?, short: Boolean = true) {
+        if (msg == null) return
+        if (short) {
+            ToastUtils.showShort(msg)
+        } else {
+            ToastUtils.showLong(msg)
+        }
+    }
+
+    open fun isActivityFinish(): Boolean {
+        val activity: BaseActivity = this
+        return activity.isFinishing || activity.isDestroyed
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mCompositeDisposable.size() > 0) {
+            mCompositeDisposable.clear()
+        }
     }
 
 }

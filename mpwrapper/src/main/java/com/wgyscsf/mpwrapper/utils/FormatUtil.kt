@@ -42,10 +42,12 @@ object FormatUtil {
         return String.format(Locale.getDefault(), sb.toString(), converted)
     }
 
+    @JvmStatic
     fun numFormat(num: Any, digit: Int): String {
         return numFormat(false, digit, num)
     }
 
+    @JvmStatic
     fun numFormat(needSign: Boolean, digit: Int, num: Any): String {
         return format(false, needSign, false, digit, num)
     }
@@ -65,6 +67,7 @@ object FormatUtil {
         return percentageFormat(false, digit, num)
     }
 
+    @JvmStatic
     fun percentageFormat(needSign: Boolean, digit: Int, num: Any): String {
         return format(true, needSign, false, digit, num)
     }
