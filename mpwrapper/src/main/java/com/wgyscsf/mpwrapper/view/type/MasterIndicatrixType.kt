@@ -1,4 +1,4 @@
-package com.wgyscsf.mpwrapper.view.enum
+package com.wgyscsf.mpwrapper.view.type
 
 /**
  * ============================================================

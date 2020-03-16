@@ -14,10 +14,10 @@ import com.wgyscsf.mpwrapper.bean.Ma
 import com.wgyscsf.mpwrapper.utils.FormatUtil
 import com.wgyscsf.mpwrapper.view.MasterView
 import com.wgyscsf.mpwrapper.view.base.BaseLineDataSet
-import com.wgyscsf.mpwrapper.view.enum.BollType
-import com.wgyscsf.mpwrapper.view.enum.MaType
-import com.wgyscsf.mpwrapper.view.enum.MasterIndicatrixType
-import com.wgyscsf.mpwrapper.view.enum.MasterViewType
+import com.wgyscsf.mpwrapper.view.type.BollType
+import com.wgyscsf.mpwrapper.view.type.MaType
+import com.wgyscsf.mpwrapper.view.type.MasterIndicatrixType
+import com.wgyscsf.mpwrapper.view.type.MasterViewType
 import java.lang.reflect.Field
 
 /**

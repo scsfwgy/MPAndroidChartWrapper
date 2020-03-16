@@ -7,8 +7,8 @@ import com.wgyscsf.mpwrapper.R
 import com.wgyscsf.mpwrapper.ktx.getColor
 import com.wgyscsf.mpwrapper.ktx.getDrawable
 import com.wgyscsf.mpwrapper.view.base.BaseKView
-import com.wgyscsf.mpwrapper.view.enum.MasterIndicatrixType
-import com.wgyscsf.mpwrapper.view.enum.MasterViewType
+import com.wgyscsf.mpwrapper.view.type.MasterIndicatrixType
+import com.wgyscsf.mpwrapper.view.type.MasterViewType
 
 /**
  * ============================================================

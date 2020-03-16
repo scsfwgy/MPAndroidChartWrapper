@@ -10,6 +10,9 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+
     //mp包装库
     implementation project(path: ':mpwrapper')
 
@@ -18,23 +21,28 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
 
-
-    // https://github.com/Blankj/AndroidUtilCode
+    //https://github.com/Blankj/AndroidUtilCode
     implementation 'com.blankj:utilcode:1.25.9'
 
-    // https://github.com/ReactiveX/RxJava
+    //https://github.com/ReactiveX/RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
-    // https://github.com/ReactiveX/RxAndroid
+    //https://github.com/ReactiveX/RxAndroid
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     //网络请求
-    // https://github.com/google/gson
+    //https://github.com/google/gson
     implementation "com.google.code.gson:gson:2.8.6"
-    // https://github.com/square/okhttp
+    //https://github.com/square/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
-    // https://github.com/square/retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+    //https://github.com/square/retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+
+    //https://github.com/H07000223/FlycoTabLayout/blob/master/README_CN.md
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+
+    // https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.1'
 }

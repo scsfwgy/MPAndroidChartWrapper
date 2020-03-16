@@ -1,13 +1,14 @@
-package com.wgyscsf.mpwrapper.view.enum
+package com.wgyscsf.mpwrapper.view.type
 
 /**
  * ============================================================
  * 作 者 :    wgyscsf
- * 更新时间 ：2020/03/07 15:21
+ * 更新时间 ：2020/03/07 15:50
  * 描 述 ：
  * ============================================================
  */
-enum class MasterViewType {
-    TIMESHARING,
-    CANDLE
+enum class MaType {
+    MA5,
+    MA10,
+    MA20,
 }

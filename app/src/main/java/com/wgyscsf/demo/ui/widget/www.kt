@@ -1,14 +1,9 @@
-package com.wgyscsf.mpwrapper.view.enum
+package com.wgyscsf.demo.ui.widget
 
 /**
  * ============================================================
  * 作 者 :    wgyscsf
- * 更新时间 ：2020/03/07 15:50
+ * 更新时间 ：2020/03/16 12:39
  * 描 述 ：
  * ============================================================
  */
-enum class BollType {
-    UP,
-    MD,
-    DN,
-}

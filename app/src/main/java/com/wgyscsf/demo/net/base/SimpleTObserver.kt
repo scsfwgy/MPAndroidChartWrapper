@@ -1,7 +1,7 @@
 package com.wgyscsf.demo.net.base
 
 import com.wgyscsf.demo.bean.ApiData
-import com.wgyscsf.demo.ui.BaseActivity
+import com.wgyscsf.demo.ui.base.BaseActivity
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 

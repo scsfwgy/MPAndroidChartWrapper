@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/ac_ll_topContainer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#4CAF50"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上部容器,各种业务逻辑UI" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/ac_fl_chartContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="200dp" />
+
+    <LinearLayout
+        android:id="@+id/ac_ll_bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="#03A9F4"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="底部容器,各种业务逻辑UI" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
