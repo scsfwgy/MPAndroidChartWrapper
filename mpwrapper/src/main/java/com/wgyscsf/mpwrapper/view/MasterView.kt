@@ -17,11 +17,13 @@ import com.wgyscsf.mpwrapper.view.type.MasterViewType
  * 描 述 ：
  * ============================================================
  */
-class MasterView(
+
+class MasterView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyle: Int = 0
-) : BaseKView(context, attributeSet, defStyle) {
+) :
+    BaseKView(context, attributeSet, defStyle) {
     //ma
     val mMasterViewMa5Color by lazy {
         getColor(R.color.mp_masterview_ma5)
@@ -56,4 +58,5 @@ class MasterView(
 
     var mMasterViewType: MasterViewType = MasterViewType.CANDLE
     var mMasterIndicatrixType: MasterIndicatrixType = MasterIndicatrixType.NONE
+
 }

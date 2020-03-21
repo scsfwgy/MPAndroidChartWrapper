@@ -11,7 +11,7 @@ import com.wgyscsf.mpwrapper.view.base.BaseKView
  * 描 述 ：
  * ============================================================
  */
-class MinorView(
+class MinorView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyle: Int = 0
