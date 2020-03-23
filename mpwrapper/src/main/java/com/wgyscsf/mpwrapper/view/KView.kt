@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.wgyscsf.mpwrapper.R
+import kotlinx.android.synthetic.main.mp_widget_kview.view.*
 
 /**
  * ============================================================
@@ -26,6 +27,15 @@ class KView @JvmOverloads constructor(
     private fun initAttr() {
         LayoutInflater.from(mContext).inflate(R.layout.mp_widget_kview, this)
     }
+
+    fun getMasterView(): MasterView {
+        return mwk_mv_master
+    }
+
+    fun getMinorView(): MinorView {
+        return mwk_mv_minor
+    }
+
 
 
 }

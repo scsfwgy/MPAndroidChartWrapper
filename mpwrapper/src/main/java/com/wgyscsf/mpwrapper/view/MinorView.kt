@@ -16,5 +16,4 @@ class MinorView @JvmOverloads constructor(
     attributeSet: AttributeSet? = null,
     defStyle: Int = 0
 ) : BaseKView(context, attributeSet, defStyle) {
-
 }

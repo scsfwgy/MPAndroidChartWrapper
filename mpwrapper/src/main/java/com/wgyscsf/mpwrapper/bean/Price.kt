@@ -11,8 +11,7 @@ data class Price(
     /**
      * 原始数据
      */
-    val t //开始时间
-    : Long,
+    val t: Long,//开始时间
     val o: Double,
     val h: Double,
     val l: Double,
