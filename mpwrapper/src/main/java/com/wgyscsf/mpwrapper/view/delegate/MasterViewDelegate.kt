@@ -1,6 +1,7 @@
 package com.wgyscsf.mpwrapper.view.delegate
 
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.LimitLine
@@ -9,8 +10,11 @@ import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
+import com.wgyscsf.mpwrapper.R
 import com.wgyscsf.mpwrapper.bean.Boll
 import com.wgyscsf.mpwrapper.bean.Ma
+import com.wgyscsf.mpwrapper.ktx.getColor
+import com.wgyscsf.mpwrapper.ktx.getDrawable
 import com.wgyscsf.mpwrapper.utils.FormatUtil
 import com.wgyscsf.mpwrapper.view.MasterView
 import com.wgyscsf.mpwrapper.view.base.BaseLineDataSet
@@ -31,6 +35,44 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mMasterView by lazy {
         masterView
     }
+
+    var mMasterViewType: MasterViewType = MasterViewType.CANDLE
+    var mMasterIndicatrixType: MasterIndicatrixType = MasterIndicatrixType.NONE
+
+    //ma
+    val mMasterViewMa5Color by lazy {
+        getColor(R.color.mp_masterview_ma5)
+    }
+    val mMasterViewMa10Color by lazy {
+        getColor(R.color.mp_masterview_ma10)
+    }
+    val mMasterViewMa20Color by lazy {
+        getColor(R.color.mp_masterview_ma20)
+
+    }
+
+    //boll
+    val mMasterViewBollUpColor by lazy {
+        getColor(R.color.mp_masterview_bollup)
+
+    }
+    val mMasterViewBollMdColor by lazy {
+        getColor(R.color.mp_masterview_bollmb)
+
+    }
+    val mMasterViewBollDnColor by lazy {
+        getColor(R.color.mp_masterview_bolldn)
+
+    }
+
+    val mMasterTimeSharingColor by lazy {
+        getColor(R.color.mp_basekview_timesharing)
+    }
+    val mMasterTimeSharingFillDrawable: Drawable by lazy {
+        getDrawable(R.drawable.shape_gradient_filled)
+    }
+
+
     val mTimeSharingEntryList by lazy {
         ArrayList<Entry>()
     }
@@ -95,9 +137,9 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
          */
         //模式
         timeSharingDataSet.mode = LineDataSet.Mode.LINEAR
-        timeSharingDataSet.color = mMasterView.mMasterTimeSharingColor
+        timeSharingDataSet.color = mMasterTimeSharingColor
         timeSharingDataSet.lineWidth = 1f
-        timeSharingDataSet.fillDrawable = mMasterView.mMasterTimeSharingFillDrawable
+        timeSharingDataSet.fillDrawable = mMasterTimeSharingFillDrawable
         //是否允许被填充，默认false
         timeSharingDataSet.setDrawFilled(true)
         /**
@@ -160,23 +202,23 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
 
     val mMaLineDataSetArr by lazy {
         val ma5 = BaseLineDataSet(mMa5EntryList, MaType.MA5.toString())
-        ma5.color = mMasterView.mMasterViewMa5Color
+        ma5.color = mMasterViewMa5Color
         val ma10 = BaseLineDataSet(mMa10EntryList, MaType.MA10.toString())
-        ma10.color = mMasterView.mMasterViewMa10Color
+        ma10.color = mMasterViewMa10Color
         val ma20 = BaseLineDataSet(mMa20EntryList, MaType.MA20.toString())
-        ma20.color = mMasterView.mMasterViewMa20Color
+        ma20.color = mMasterViewMa20Color
         arrayOf(ma5, ma10, ma20)
     }
 
     val mBollLineDataSetArr by lazy {
         val bollup = BaseLineDataSet(mBollUpEntryList, BollType.UP.toString())
-        bollup.color = mMasterView.mMasterViewBollUpColor
+        bollup.color = mMasterViewBollUpColor
 
         val bollmd = BaseLineDataSet(mBollMdEntryList, BollType.MD.toString())
-        bollmd.color = mMasterView.mMasterViewBollMdColor
+        bollmd.color = mMasterViewBollMdColor
 
         val bollDn = BaseLineDataSet(mBollDnEntryList, BollType.DN.toString())
-        bollDn.color = mMasterView.mMasterViewBollDnColor
+        bollDn.color = mMasterViewBollDnColor
 
         arrayOf(bollup, bollmd, bollDn)
     }
@@ -192,11 +234,11 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     fun getMaLegend(ma: Ma, press: Boolean): Array<LegendEntry> {
         return if (press) {
             val ma5 =
-                generateLegendEntry(mMasterView.mMasterViewMa5Color, "MA5 " + numFormat(ma.ma5))
+                generateLegendEntry(mMasterViewMa5Color, "MA5 " + numFormat(ma.ma5))
             val ma10 =
-                generateLegendEntry(mMasterView.mMasterViewMa10Color, "MA10 " + numFormat(ma.ma10))
+                generateLegendEntry(mMasterViewMa10Color, "MA10 " + numFormat(ma.ma10))
             val ma20 =
-                generateLegendEntry(mMasterView.mMasterViewMa20Color, "MA20 " + numFormat(ma.ma20))
+                generateLegendEntry(mMasterViewMa20Color, "MA20 " + numFormat(ma.ma20))
             arrayOf(ma5, ma10, ma20)
         } else {
             val legendEntry = LegendEntry()
@@ -212,17 +254,17 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
             press -> {
                 val up =
                     generateLegendEntry(
-                        mMasterView.mMasterViewBollUpColor,
+                        mMasterViewBollUpColor,
                         "UPPER " + numFormat(boll.up)
                     )
                 val md =
                     generateLegendEntry(
-                        mMasterView.mMasterViewBollMdColor,
+                        mMasterViewBollMdColor,
                         "MID " + numFormat(boll.mb)
                     )
                 val dn =
                     generateLegendEntry(
-                        mMasterView.mMasterViewBollDnColor,
+                        mMasterViewBollDnColor,
                         "LOWER " + numFormat(boll.dn)
                     )
                 return arrayOf(up, md, dn)
@@ -240,10 +282,9 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     fun showLegend(ma: Ma?, boll: Boll?, press: Boolean) {
         val masterView = mMasterView
         val legend = generateLegend(masterView.legend)
-        val masterIndicatrixType = masterView.mMasterIndicatrixType
+        val masterIndicatrixType = mMasterIndicatrixType
         if (ma == null ||
-            boll == null ||
-            masterView.mMasterViewType != MasterViewType.CANDLE ||
+            boll == null || mMasterViewType != MasterViewType.CANDLE ||
             masterIndicatrixType == MasterIndicatrixType.NONE
         ) {
             legend.isEnabled = false
@@ -271,7 +312,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
 
     fun showIndicatrixType() {
         val masterView = mMasterView
-        val masterIndicatrixType: MasterIndicatrixType = masterView.mMasterIndicatrixType
+        val masterIndicatrixType: MasterIndicatrixType = mMasterIndicatrixType
         when {
             masterIndicatrixType === MasterIndicatrixType.NONE -> {
                 setMaDataSetArrVisible(false)
@@ -311,4 +352,11 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         mMasterView.invalidate()
     }
 
+    private fun getColor(colorId: Int): Int {
+        return mMasterView.getColor(colorId)
+    }
+
+    private fun getDrawable(drawableId: Int): Drawable {
+        return mMasterView.getDrawable(drawableId)
+    }
 }

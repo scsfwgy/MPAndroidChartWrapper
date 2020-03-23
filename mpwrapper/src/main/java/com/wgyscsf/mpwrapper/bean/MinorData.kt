@@ -3,12 +3,13 @@ package com.wgyscsf.mpwrapper.bean
 /**
  * ============================================================
  * 作 者 :    wgyscsf
- * 更新时间 ：2020/03/09 14:56
+ * 更新时间 ：2020/03/23 09:52
  * 描 述 ：
  * ============================================================
  */
-class KViewData {
-    var masterData: MasterData? = null
-    var minorData: MinorData? = null
-    var volData: VolData? = null
+class MinorData {
+    //副图
+    var macd: Macd? = null
+    var kdj: Kdj? = null
+    var rsi: Rsi? = null
 }
