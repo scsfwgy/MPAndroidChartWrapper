@@ -12,15 +12,15 @@ import retrofit2.Retrofit
  * 描 述 ：一个Retrofit实例
  * ============================================================
  */
-class AppRetrofitBuilder : AbstractRetrofitBuilder() {
+class TradeRetrofitBuilder : AbstractRetrofitBuilder() {
 
     override fun apiBaseUrl(): String {
-        return GlobalConfig.getBaseAPPUrl()
+        return GlobalConfig.getTradeUrl()
     }
 
     companion object {
         val mRetrofit: Retrofit by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            AppRetrofitBuilder().retrofit
+            TradeRetrofitBuilder().retrofit
         }
     }
 

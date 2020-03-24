@@ -8,7 +8,11 @@ package com.wgyscsf.demo.config
  * ============================================================
  */
 object GlobalConfig {
-    fun getBaseAPPUrl(): String {
+    fun getTradeUrl(): String {
         return "https://api-trade.tradeode.com"
+    }
+
+    fun getMarketUrl(): String {
+        return "https://api-market.tradeode.com"
     }
 }

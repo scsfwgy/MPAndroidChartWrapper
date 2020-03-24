@@ -19,7 +19,7 @@ import retrofit2.http.QueryMap;
  * 描 述 ：
  * ============================================================
  */
-public interface ProductService {
+public interface TradeService {
 
     @GET("/product/details")
     Observable<ApiData<List<ApiProduct>>> getProductList(@QueryMap Map<String, Object> params);

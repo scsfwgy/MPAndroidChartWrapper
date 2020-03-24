@@ -1,6 +1,7 @@
 package com.wgyscsf.demo.net
 
-import com.bitconch.lib_wrapper.net.AppRetrofitBuilder
+import com.bitconch.lib_wrapper.net.MarketRetrofitBuilder
+import com.bitconch.lib_wrapper.net.TradeRetrofitBuilder
 
 
 /**
@@ -11,7 +12,11 @@ import com.bitconch.lib_wrapper.net.AppRetrofitBuilder
  * ============================================================
  */
 object ServiceWrapper {
-    val productService: ProductService by lazy {
-        AppRetrofitBuilder.mRetrofit.create(ProductService::class.java)
+    val TRADE_SERVICE: TradeService by lazy {
+        TradeRetrofitBuilder.mRetrofit.create(TradeService::class.java)
+    }
+
+    val MARKET_SERVICE: MarketService by lazy {
+        MarketRetrofitBuilder.mRetrofit.create(MarketService::class.java)
     }
 }

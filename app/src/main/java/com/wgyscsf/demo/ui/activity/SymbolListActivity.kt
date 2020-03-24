@@ -60,7 +60,7 @@ class SymbolListActivity : HandleExceptionActivity() {
         map["limit"] = 50
         map["offset"] = 0
         map["category"] = 1
-        ServiceWrapper.productService.getProductList(map)
+        ServiceWrapper.TRADE_SERVICE.getProductList(map)
             .compose(RxUtils.rxObSchedulerHelper())
             .subscribe(object : SimpleTObserver<List<ApiProduct>>(mActivity) {
                 override fun onSuccess(it: List<ApiProduct>) {
