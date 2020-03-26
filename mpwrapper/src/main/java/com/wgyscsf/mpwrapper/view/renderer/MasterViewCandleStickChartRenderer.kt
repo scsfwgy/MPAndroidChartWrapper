@@ -15,24 +15,22 @@ import com.github.mikephil.charting.utils.ViewPortHandler
  * ============================================================
  */
 class MasterViewCandleStickChartRenderer(
-    chart: CandleDataProvider?,
-    animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    chart: CandleDataProvider,
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : CandleStickChartRenderer(chart, animator, viewPortHandler) {
-    override fun drawHighlighted(
-        c: Canvas,
-        indices: Array<Highlight>
-    ) {
+
+    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
         val candleData = mChart.candleData
         for (high in indices) {
             val set = candleData.getDataSetByIndex(high.dataSetIndex)
             if (set == null || !set.isHighlightEnabled) continue
             val e = set.getEntryForXValue(high.x, high.y)
             if (!isInBoundsX(e, set)) continue
-            //            float lowValue = e.getLow() * mAnimator.getPhaseY();
-//            float highValue = e.getHigh() * mAnimator.getPhaseY();
-//            float y = (lowValue + highValue) / 2f;
-//重写这个值
+            //float lowValue = e.getLow() * mAnimator.getPhaseY();
+            //float highValue = e.getHigh() * mAnimator.getPhaseY();
+            //float y = (lowValue + highValue) / 2f;
+            //重写这个值
             val closeValue = e.close * mAnimator.phaseY
             val pix =
                 mChart.getTransformer(set.axisDependency).getPixelForValues(e.x, closeValue)

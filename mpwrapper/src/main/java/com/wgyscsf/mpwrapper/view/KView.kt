@@ -65,9 +65,9 @@ class KView @JvmOverloads constructor(
         val masterView = getMasterView()
         val masterDataList = masterView.mMasterDataList
         priceList.forEach {
-            val kViewData = KViewData()
+            //val kViewData = KViewData()
             val masterData = MasterData()
-            kViewData.masterData = masterData
+            //kViewData.masterData = masterData
             masterData.price = it
             masterDataList.add(masterData)
         }

@@ -288,10 +288,10 @@ abstract class BaseKView(
     override fun setData(data: CombinedData) {
         super.setData(data)
 
-        //设置缩放范围
-        setVisibleXRange(mDefMaxCount.toFloat(), mDefMinCount.toFloat()) //初始化设置会失效，必须在数据后设置
-
-        //showDesiredCount(getData().getEntryCount());
-        moveViewToX(getData().entryCount.toFloat())
+//        //设置缩放范围
+//        setVisibleXRange(mDefMaxCount.toFloat(), mDefMinCount.toFloat()) //初始化设置会失效，必须在数据后设置
+//
+//        //showDesiredCount(getData().getEntryCount());
+//        moveViewToX(getData().entryCount.toFloat())
     }
 }

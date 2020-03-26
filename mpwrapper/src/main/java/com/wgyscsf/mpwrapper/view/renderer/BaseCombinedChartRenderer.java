@@ -38,7 +38,6 @@ public class BaseCombinedChartRenderer extends CombinedChartRenderer {
         CombinedChart.DrawOrder[] orders = chart.getDrawOrder();
 
         for (CombinedChart.DrawOrder order : orders) {
-
             switch (order) {
                 case BAR:
                     if (chart.getBarData() != null)

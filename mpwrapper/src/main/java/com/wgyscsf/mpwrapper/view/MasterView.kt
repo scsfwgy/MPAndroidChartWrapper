@@ -9,6 +9,7 @@ import com.wgyscsf.mpwrapper.bean.MasterData
 import com.wgyscsf.mpwrapper.utils.TimeUtils
 import com.wgyscsf.mpwrapper.view.base.BaseKView
 import com.wgyscsf.mpwrapper.view.delegate.MasterViewDelegate
+import com.wgyscsf.mpwrapper.view.marker.MasterViewMarker
 import com.wgyscsf.mpwrapper.view.type.MasterViewType
 
 /**
@@ -39,6 +40,13 @@ class MasterView @JvmOverloads constructor(
     }
 
     private fun initMasterChart() {
+        //marker
+        val masterViewMarker = MasterViewMarker(this, mContext)
+        masterViewMarker.chartView = this
+        marker = masterViewMarker
+        setDrawMarkers(true)
+
+
         val xAxis = xAxis
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase): String {
@@ -57,9 +65,6 @@ class MasterView @JvmOverloads constructor(
             MasterViewType.TIMESHARING -> {
                 val timeSharingDataSet = mMasterViewDelegate.mTimeSharingDataSet
 
-            }
-            else -> {
-                throw IllegalArgumentException("MasterViewType 类型不支持")
             }
         }
     }
