@@ -2,8 +2,11 @@ package com.wgyscsf.mpwrapper.view
 
 import android.content.Context
 import android.util.AttributeSet
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.data.CandleEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.wgyscsf.mpwrapper.bean.MasterData
+import com.wgyscsf.mpwrapper.utils.TimeUtils
 import com.wgyscsf.mpwrapper.view.base.BaseKView
 import com.wgyscsf.mpwrapper.view.delegate.MasterViewDelegate
 import com.wgyscsf.mpwrapper.view.type.MasterViewType
@@ -29,6 +32,20 @@ class MasterView @JvmOverloads constructor(
 
     val mMasterDataList by lazy {
         ArrayList<MasterData>()
+    }
+
+    init {
+        initMasterChart()
+    }
+
+    private fun initMasterChart() {
+        val xAxis = xAxis
+        xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getAxisLabel(value: Float, axis: AxisBase): String {
+                val timestamp = value.toLong()
+                return TimeUtils.millis2String(timestamp, TimeUtils.getFormat("MM-dd HH:mm:ss"))
+            }
+        }
     }
 
     fun renderView() {

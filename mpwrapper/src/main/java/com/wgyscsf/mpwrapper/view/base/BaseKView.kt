@@ -3,6 +3,7 @@ package com.wgyscsf.mpwrapper.view.base
 import android.content.Context
 import android.util.AttributeSet
 import com.github.mikephil.charting.components.*
+import com.github.mikephil.charting.data.CombinedData
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.Utils
 import com.wgyscsf.mpwrapper.R
@@ -24,6 +25,10 @@ abstract class BaseKView(
     attributeSet: AttributeSet? = null,
     defStyle: Int = 0
 ) : BaseCombinedChart(context, attributeSet, defStyle) {
+
+    protected val mDefMinCount = 15
+    protected val mDefMaxCount = 100
+    protected val mShowCount = 7
 
     val mGreenUp by lazy {
         MpWrapperConfig.mConfig.greenUp
@@ -273,5 +278,20 @@ abstract class BaseKView(
 
     fun setDigit(digit: Int) {
         mDigit = digit
+    }
+
+    /**
+     * 重写这个方法，在设置数据后设置最小最大设置大小
+     *
+     * @param data
+     */
+    override fun setData(data: CombinedData) {
+        super.setData(data)
+
+        //设置缩放范围
+        setVisibleXRange(mDefMaxCount.toFloat(), mDefMinCount.toFloat()) //初始化设置会失效，必须在数据后设置
+
+        //showDesiredCount(getData().getEntryCount());
+        moveViewToX(getData().entryCount.toFloat())
     }
 }
