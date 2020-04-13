@@ -29,6 +29,8 @@ abstract class BaseKView(
     protected val mDefMinCount = 15
     protected val mDefMaxCount = 100
     protected val mShowCount = 7
+    protected var mBeginIndex = 0
+    protected var mEndIndex = 0
 
     val mGreenUp by lazy {
         MpWrapperConfig.mConfig.greenUp
@@ -281,6 +283,22 @@ abstract class BaseKView(
     }
 
     /**
+     * 获取最新数据时（包括第一次进来）获取可见数据的开始位置和结束位置。来最新数据或者刚加载的时候，计算开始位置和结束位置。
+     * 特别注意，最新的数据在最后面，所以数据范围应该是[(size-mShownMaxCount)~size)
+     */
+    protected open fun seekBeginAndEndByNewer(list: List<*>) {
+        val quoteList: List<*> = list
+        val size = quoteList.size
+        if (size >= mDefMaxCount) {
+            mBeginIndex = size - mDefMaxCount
+            mEndIndex = mBeginIndex + mDefMaxCount
+        } else {
+            mBeginIndex = 0
+            mEndIndex = mBeginIndex + quoteList.size
+        }
+    }
+
+    /**
      * 重写这个方法，在设置数据后设置最小最大设置大小
      *
      * @param data
@@ -294,4 +312,6 @@ abstract class BaseKView(
 //        //showDesiredCount(getData().getEntryCount());
 //        moveViewToX(getData().entryCount.toFloat())
     }
+
+
 }
