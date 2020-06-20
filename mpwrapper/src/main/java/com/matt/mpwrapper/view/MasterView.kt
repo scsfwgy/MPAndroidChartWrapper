@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.data.CandleEntry
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.utils.TimeUtils
@@ -58,36 +59,35 @@ class MasterView @JvmOverloads constructor(
 
     fun renderView() {
         val masterViewType = mMasterViewDelegate.mMasterViewType
-        when (masterViewType) {
-            MasterViewType.CANDLE -> {
-                renderCandleView()
-            }
-            MasterViewType.TIMESHARING -> {
-                val timeSharingDataSet = mMasterViewDelegate.mTimeSharingDataSet
-
-            }
-        }
-    }
-
-    private fun renderCandleView() {
         val combinedData = mMasterViewDelegate.mCombinedData
+        val lineData = mMasterViewDelegate.mLineData
+        val lineDataSet = mMasterViewDelegate.mTimeSharingDataSet
         val candleData = mMasterViewDelegate.mCandleData
         val candleDataSet = mMasterViewDelegate.mCandleDataSet
         mMasterDataList.forEachIndexed { index, it ->
-            val price = it.price ?: throw IllegalArgumentException("主图中的price字段为null,不允许为null")
-            candleDataSet.addEntry(
-                CandleEntry(
-                    index.toFloat(),
-                    price.h,
-                    price.l,
-                    price.o,
-                    price.c
-                )
-            )
+            val p = it.price ?: throw IllegalArgumentException("主图中的price字段为null,不允许为null")
+            when (masterViewType) {
+                MasterViewType.CANDLE -> {
+                    val candleEntry =
+                        CandleEntry(index.toFloat(), p.h, p.l, p.o, p.c)
+                    candleDataSet.addEntry(candleEntry)
+                }
+                MasterViewType.TIMESHARING -> {
+                    val entry = Entry(index.toFloat(), p.c)
+                    lineDataSet.addEntry(entry)
+                }
+            }
         }
-        candleData.addDataSet(candleDataSet)
-        combinedData.setData(candleData)
+        when (masterViewType) {
+            MasterViewType.CANDLE -> {
+                candleData.addDataSet(candleDataSet)
+                combinedData.setData(candleData)
+            }
+            MasterViewType.TIMESHARING -> {
+                lineData.addDataSet(lineDataSet)
+                combinedData.setData(lineData)
+            }
+        }
         setKViewData(combinedData, mMasterDataList.size)
     }
-
 }

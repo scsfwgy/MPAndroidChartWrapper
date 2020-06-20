@@ -10,7 +10,19 @@ import com.matt.mpwrapper.bean.Price
  * ============================================================
  */
 interface LoadData {
+
+    /**
+     * 重新加载数据，也是第一次加载数据用
+     */
     fun reLoadData(priceList: List<Price>)
+
+    /**
+     * 加载更多数据
+     */
     fun loadMoreData(priceList: List<Price>)
+
+    /**
+     * 实时数据
+     */
     fun pushData(price: Price)
 }

@@ -9,6 +9,8 @@ import com.matt.mpwrapper.bean.KViewData
 import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.base.LoadData
+import com.matt.mpwrapper.view.type.MasterIndicatorType
+import com.matt.mpwrapper.view.type.MasterViewType
 import kotlinx.android.synthetic.main.mp_widget_kview.view.*
 
 /**
@@ -46,6 +48,21 @@ class KView @JvmOverloads constructor(
     val mKViewDataList: MutableList<KViewData> by lazy {
         ArrayList<KViewData>()
     }
+
+    fun initKView(
+        yDataDigit: Int = 4,
+        masterViewType: MasterViewType = MasterViewType.CANDLE,
+        masterIndicatorType: MasterIndicatorType = MasterIndicatorType.MA
+    ) {
+        val masterView = getMasterView()
+        val minorView = getMinorView()
+        masterView.setDigit(yDataDigit)
+        minorView.setDigit(yDataDigit)
+        val masterViewDelegate = masterView.mMasterViewDelegate
+        masterViewDelegate.mMasterViewType = masterViewType
+        masterViewDelegate.mMasterIndicatorType = masterIndicatorType
+    }
+
 
     override fun reLoadData(priceList: List<Price>) {
         mKViewDataList.clear()

@@ -20,7 +20,7 @@ import com.matt.mpwrapper.view.MasterView
 import com.matt.mpwrapper.view.base.BaseLineDataSet
 import com.matt.mpwrapper.view.type.BollType
 import com.matt.mpwrapper.view.type.MaType
-import com.matt.mpwrapper.view.type.MasterIndicatrixType
+import com.matt.mpwrapper.view.type.MasterIndicatorType
 import com.matt.mpwrapper.view.type.MasterViewType
 import java.lang.reflect.Field
 
@@ -37,7 +37,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
 
     var mMasterViewType: MasterViewType = MasterViewType.CANDLE
-    var mMasterIndicatrixType: MasterIndicatrixType = MasterIndicatrixType.NONE
+    var mMasterIndicatorType: MasterIndicatorType = MasterIndicatorType.NONE
 
     //ma
     val mMasterViewMa5Color by lazy {
@@ -157,6 +157,8 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         timeSharingDataSet.setDrawHighlightIndicators(true)
         timeSharingDataSet.setDrawHorizontalHighlightIndicator(true)
         timeSharingDataSet.setDrawVerticalHighlightIndicator(true)
+
+        timeSharingDataSet
     }
 
     val mCandleDataSet by lazy {
@@ -282,20 +284,20 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     fun showLegend(ma: Ma?, boll: Boll?, press: Boolean) {
         val masterView = mMasterView
         val legend = generateLegend(masterView.legend)
-        val masterIndicatrixType = mMasterIndicatrixType
+        val masterIndicatrixType = mMasterIndicatorType
         if (ma == null ||
             boll == null || mMasterViewType != MasterViewType.CANDLE ||
-            masterIndicatrixType == MasterIndicatrixType.NONE
+            masterIndicatrixType == MasterIndicatorType.NONE
         ) {
             legend.isEnabled = false
             return
         }
         legend.isEnabled = true
         val legendEntryArr = when (masterIndicatrixType) {
-            MasterIndicatrixType.MA -> {
+            MasterIndicatorType.MA -> {
                 getMaLegend(ma, press)
             }
-            MasterIndicatrixType.BOLL -> {
+            MasterIndicatorType.BOLL -> {
                 getBollLegend(boll, press)
             }
             else -> {
@@ -312,17 +314,17 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
 
     fun showIndicatrixType() {
         val masterView = mMasterView
-        val masterIndicatrixType: MasterIndicatrixType = mMasterIndicatrixType
+        val masterIndicatorType: MasterIndicatorType = mMasterIndicatorType
         when {
-            masterIndicatrixType === MasterIndicatrixType.NONE -> {
+            masterIndicatorType === MasterIndicatorType.NONE -> {
                 setMaDataSetArrVisible(false)
                 setBollDataSetArrVisible(false)
             }
-            masterIndicatrixType === MasterIndicatrixType.MA -> {
+            masterIndicatorType === MasterIndicatorType.MA -> {
                 setMaDataSetArrVisible(true)
                 setBollDataSetArrVisible(false)
             }
-            masterIndicatrixType === MasterIndicatrixType.BOLL -> {
+            masterIndicatorType === MasterIndicatorType.BOLL -> {
                 setMaDataSetArrVisible(false)
                 setBollDataSetArrVisible(true)
             }

@@ -7,11 +7,13 @@ package com.matt.mpwrapper.view.type
  * 描 述 ：
  * ============================================================
  */
-enum class MasterIndicatrixType {
+enum class MasterIndicatorType {
     //无
     NONE,
+
     //MA5、10、20
     MA,
+
     //BOLL(26)
     BOLL
 }

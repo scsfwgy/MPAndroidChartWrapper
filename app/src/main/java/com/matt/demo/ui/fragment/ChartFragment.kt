@@ -10,6 +10,7 @@ import com.matt.demo.utils.RxUtils
 import com.matt.demo.vm.ChartViewModel
 import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.type.KType
+import com.matt.mpwrapper.view.type.MasterViewType
 import kotlinx.android.synthetic.main.fragment_chart.view.*
 
 /**
@@ -52,7 +53,18 @@ class ChartFragment : LazyLoadBaseFragment() {
 
     override fun safeInitAll(rootView: View) {
         Log.d(TAG, "symbol:${mChartViewMode.mSymbol}")
+        initView()
         loadData()
+    }
+
+    private fun initView() {
+        mRootView.run {
+            fc_kv_kview.initKView(
+                4,
+                if (kType == KType.K_TIMESHARE) MasterViewType.TIMESHARING else
+                    MasterViewType.CANDLE
+            )
+        }
     }
 
     private fun loadData() {
