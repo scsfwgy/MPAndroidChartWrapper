@@ -3,7 +3,7 @@ apply from: rootProject.file('lib_common.gradle')
 
 android {
     defaultConfig {
-        applicationId "com.wgyscsf.demo"
+        applicationId "com.matt.demo"
         versionCode 1
         versionName "1.0"
     }

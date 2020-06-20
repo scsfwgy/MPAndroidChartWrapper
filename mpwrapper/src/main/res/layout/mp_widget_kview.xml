@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.wgyscsf.mpwrapper.view.MasterView
+    <com.matt.mpwrapper.view.MasterView
         android:id="@+id/mwk_mv_master"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5" />
 
-    <com.wgyscsf.mpwrapper.view.MinorView
+    <com.matt.mpwrapper.view.MinorView
         android:id="@+id/mwk_mv_minor"
         android:layout_width="match_parent"
         android:layout_height="0dp"
