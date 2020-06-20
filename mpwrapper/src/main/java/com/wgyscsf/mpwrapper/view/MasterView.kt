@@ -73,7 +73,7 @@ class MasterView @JvmOverloads constructor(
         val combinedData = mMasterViewDelegate.mCombinedData
         val candleData = mMasterViewDelegate.mCandleData
         val candleDataSet = mMasterViewDelegate.mCandleDataSet
-        mMasterDataList.forEach {
+        mMasterDataList.subList(0, 10).forEach {
             val price = it.price ?: throw IllegalArgumentException("主图中的price字段为null,不允许为null")
             candleDataSet.addEntry(
                 CandleEntry(
@@ -85,6 +85,7 @@ class MasterView @JvmOverloads constructor(
                 )
             )
         }
+        //seekBeginAndEndByNewer(candleDataSet.values)
         candleData.addDataSet(candleDataSet)
         combinedData.setData(candleData)
         data = combinedData

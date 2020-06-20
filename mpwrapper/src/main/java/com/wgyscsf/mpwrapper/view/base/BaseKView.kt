@@ -58,7 +58,7 @@ abstract class BaseKView(
         getColor(R.color.mp_basekview_gridBg)
     }
     val mBaseBgColor: Int by lazy {
-        getColor(R.color.mp_basekview_bg)
+        getColor(R.color.colorPrimary)
     }
     val mBaseXAxisTxtColor: Int by lazy {
         getColor(R.color.mp_basekview_xAxisTxtColor)
@@ -173,7 +173,7 @@ abstract class BaseKView(
         lineChartLegend.xOffset = 8f
         lineChartLegend.yOffset = 18f
         //注意重写了图例渲染器
-        mLegendRenderer = BaseLegendRenderer(mViewPortHandler, mLegend)
+        //mLegendRenderer = BaseLegendRenderer(mViewPortHandler, mLegend)
 
         //描述
         val description =
@@ -191,7 +191,7 @@ abstract class BaseKView(
         /**
          * 渲染器
          */
-        renderer = BaseCombinedChartRenderer(this, mAnimator, mViewPortHandler)
+        //renderer = BaseCombinedChartRenderer(this, mAnimator, mViewPortHandler)
 
 
         /**
