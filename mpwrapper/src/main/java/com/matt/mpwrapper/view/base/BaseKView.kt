@@ -2,6 +2,7 @@ package com.matt.mpwrapper.view.base
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.CombinedData
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -24,11 +25,10 @@ abstract class BaseKView(
     defStyle: Int = 0
 ) : BaseCombinedChart(context, attributeSet, defStyle) {
 
-    protected val mDefMinCount = 15
+    protected val mDefMinCount = 40
     protected val mDefMaxCount = 100
-    protected val mShowCount = 7
-    protected var mBeginIndex = 0
-    protected var mEndIndex = 0
+    protected val mDefShowCount = 70
+
 
     val mGreenUp by lazy {
         MpWrapperConfig.mConfig.greenUp
@@ -280,35 +280,35 @@ abstract class BaseKView(
         mDigit = digit
     }
 
+
     /**
-     * 获取最新数据时（包括第一次进来）获取可见数据的开始位置和结束位置。来最新数据或者刚加载的时候，计算开始位置和结束位置。
-     * 特别注意，最新的数据在最后面，所以数据范围应该是[(size-mShownMaxCount)~size)
+     * 设置X轴放大系数
      */
-    protected open fun seekBeginAndEndByNewer(list: List<*>) {
-        val quoteList: List<*> = list
-        val size = quoteList.size
-        if (size >= mDefMaxCount) {
-            mBeginIndex = size - mDefMaxCount
-            mEndIndex = mBeginIndex + mDefMaxCount
-        } else {
-            mBeginIndex = 0
-            mEndIndex = mBeginIndex + quoteList.size
+    open fun showDefCount(size: Int) {
+        var scale: Float = size / mDefShowCount.toFloat()
+        if (scale < 1) {
+            scale = 1f
         }
+        //设置右边距离
+        mXAxis.spaceMax = size * 0.15f / scale
+        Log.d("BaseChart", "postScaleX: $size  scale= $scale")
+        mViewPortHandler.zoom(scale, 1f, mViewPortHandler.matrixTouch)
     }
 
-    /**
-     * 重写这个方法，在设置数据后设置最小最大设置大小
-     *
-     * @param data
-     */
-    override fun setData(data: CombinedData) {
-        super.setData(data)
 
-//        //设置缩放范围
-//        setVisibleXRange(mDefMaxCount.toFloat(), mDefMinCount.toFloat()) //初始化设置会失效，必须在数据后设置
-//
-//        //showDesiredCount(getData().getEntryCount());
-//        moveViewToX(getData().entryCount.toFloat())
+    /**
+     * 设置最终数据
+     */
+    fun setKViewData(data: CombinedData, allDataSize: Int, reload: Boolean = true) {
+        showDefCount(allDataSize)
+        //调用系统方法
+        setData(data)
+        //设置最大和最小值
+        setVisibleXRange(mDefMaxCount.toFloat(), mDefMinCount.toFloat())
+        if (reload) {
+            //移动到尾部
+            moveViewToX(getData().entryCount.toFloat())
+        }
     }
 
 
