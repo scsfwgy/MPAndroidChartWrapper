@@ -101,7 +101,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mLimitLine by lazy {
         val limitLine = LimitLine(0.0f, XFormatUtil.globalFormat(0.0, mBaseKView.mBaseInit.digit()))
         limitLine.lineWidth = 0.5f
-        limitLine.lineColor = mBaseKView.mBaseLimitColor
+        limitLine.lineColor = mBaseLimitColor
         limitLine.enableDashedLine(8f, 8f, 8f)
         limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
         mMasterView.axisRight.addLimitLine(limitLine)
@@ -151,7 +151,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
 
         //长按高亮十字线
         timeSharingDataSet.isHighlightEnabled = true
-        timeSharingDataSet.highLightColor = mBaseKView.mBaseHighLightColor
+        timeSharingDataSet.highLightColor = mBaseHighLightColor
         timeSharingDataSet.highlightLineWidth = 0.5f
         //是否显示指示线
         timeSharingDataSet.setDrawHighlightIndicators(true)
@@ -182,17 +182,17 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
          * 蜡烛图涨跌相关设置
          */
         //设置跌颜色
-        candleDataSet.decreasingColor = mBaseKView.mDownColor
+        candleDataSet.decreasingColor = mDownColor
         candleDataSet.decreasingPaintStyle = Paint.Style.FILL
         //设置涨颜色
-        candleDataSet.increasingColor = mBaseKView.mUpColor
+        candleDataSet.increasingColor = mUpColor
         candleDataSet.increasingPaintStyle = Paint.Style.FILL
         //设置当收盘价和开盘价一样
-        candleDataSet.neutralColor = mBaseKView.mBaseEqualColor
+        candleDataSet.neutralColor = mBaseEqualColor
 
         //长按高亮十字线
         candleDataSet.isHighlightEnabled = true
-        candleDataSet.highLightColor = mBaseKView.mBaseHighLightColor
+        candleDataSet.highLightColor = mBaseHighLightColor
         candleDataSet.highlightLineWidth = 0.5f
         //是否显示指示线
         candleDataSet.setDrawHighlightIndicators(true)
@@ -245,7 +245,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         } else {
             val legendEntry = LegendEntry()
             legendEntry.label = "MA(5,10,20)"
-            legendEntry.formColor = mBaseKView.mBaseNoPressColor
+            legendEntry.formColor = mBaseNoPressColor
             legendEntry.form = Legend.LegendForm.NONE
             arrayOf(legendEntry)
         }
@@ -274,7 +274,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
             else -> {
                 val legendEntry = LegendEntry()
                 legendEntry.label = "BOLL(26)"
-                legendEntry.formColor = mBaseKView.mBaseNoPressColor
+                legendEntry.formColor = mBaseNoPressColor
                 legendEntry.form = Legend.LegendForm.NONE
                 return arrayOf(legendEntry)
             }
