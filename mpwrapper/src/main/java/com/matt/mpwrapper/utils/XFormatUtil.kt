@@ -3,9 +3,7 @@ package com.matt.mpwrapper.utils
 import java.math.BigDecimal
 import kotlin.math.abs
 
-/**
- * 测试用例：[XFormatUtilTest],修改这里的方法注意跑一下测试用例，因为修改会影响整个应用
- */
+
 object XFormatUtil {
     val TAG = XFormatUtil::class.java.simpleName
     private const val DEF_GLOBAL_FORMAT = "0.00"
