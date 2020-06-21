@@ -110,7 +110,7 @@ public class BaseLineChartRenderer extends LineChartRenderer {
         return mDrawLastCircles;
     }
 
-    public BaseLineChartRenderer setmDrawLastCircles(boolean mDrawLastCircles) {
+    public BaseLineChartRenderer setDrawLastCircles(boolean mDrawLastCircles) {
         this.mDrawLastCircles = mDrawLastCircles;
         return this;
     }
