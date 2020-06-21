@@ -8,6 +8,7 @@ package com.matt.mpwrapper.bean
  * ============================================================
  */
 class KViewData {
+    var price: Price? = null
     var masterData: MasterData? = null
     var minorData: MinorData? = null
     var volData: VolData? = null

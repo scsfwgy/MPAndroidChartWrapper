@@ -10,7 +10,10 @@ import com.github.mikephil.charting.utils.Utils
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.ktx.dip2px
 import com.matt.mpwrapper.ktx.getColor
+import com.matt.mpwrapper.utils.TimeUtils
+import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
+import com.matt.mpwrapper.view.renderer.BaseCombinedChartRenderer
 
 /**
  * ============================================================
@@ -29,6 +32,7 @@ abstract class BaseKView(
     protected val mDefMaxCount = 100
     protected val mDefShowCount = 70
 
+    lateinit var mBaseInit: BaseInit
 
     val mGreenUp by lazy {
         MpWrapperConfig.mConfig.greenUp
@@ -80,10 +84,13 @@ abstract class BaseKView(
     val mBaseNoPressColor by lazy {
         getColor(R.color.mp_basekview_noPressLegend)
     }
-    var mDigit: Int = 4
 
     init {
         initChartAttrs()
+    }
+
+    fun initBaseK(baseInit: BaseInit) {
+        this.mBaseInit = baseInit
     }
 
     private fun initChartAttrs() {
@@ -189,7 +196,7 @@ abstract class BaseKView(
         /**
          * 渲染器
          */
-        //renderer = BaseCombinedChartRenderer(this, mAnimator, mViewPortHandler)
+        renderer = BaseCombinedChartRenderer(this, mAnimator, mViewPortHandler)
 
 
         /**
@@ -227,7 +234,13 @@ abstract class BaseKView(
         //设置x轴上的值
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase): String {
-                return value.toString()
+                val kViewData = mBaseInit.kViewData()
+                val valueInt = value.toInt()
+                val size = kViewData.size
+                val index = if (valueInt < size) valueInt else size - 1
+                val price = kViewData[index].price
+                    ?: throw IllegalArgumentException("price字段为null,不允许为null")
+                return TimeUtils.millis2String(price.t, TimeUtils.getFormat("HH:mm:ss"))
             }
         }
 
@@ -268,18 +281,13 @@ abstract class BaseKView(
         axisRight.valueFormatter = object :
             ValueFormatter() {
             override fun getAxisLabel(value: Float, axis: AxisBase): String {
-                return value.toString()
+                return XFormatUtil.globalFormat(value.toDouble(), mBaseInit.digit())
             }
         }
         //零线,用处类似于macd的线，分上下两块，以0为分界线
         axisRight.setDrawZeroLine(false)
         axisRight.zeroLineWidth = 3f
     }
-
-    fun setDigit(digit: Int) {
-        mDigit = digit
-    }
-
 
     /**
      * 设置X轴放大系数

@@ -15,7 +15,7 @@ import com.matt.mpwrapper.bean.Boll
 import com.matt.mpwrapper.bean.Ma
 import com.matt.mpwrapper.ktx.getColor
 import com.matt.mpwrapper.ktx.getDrawable
-import com.matt.mpwrapper.utils.FormatUtil
+import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
 import com.matt.mpwrapper.view.base.BaseLineDataSet
 import com.matt.mpwrapper.view.type.BollType
@@ -99,7 +99,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
 
     val mLimitLine by lazy {
-        val limitLine = LimitLine(0.0f, FormatUtil.numFormat(0, mBaseKView.mDigit))
+        val limitLine = LimitLine(0.0f, XFormatUtil.globalFormat(0.0, mBaseKView.mBaseInit.digit()))
         limitLine.lineWidth = 0.5f
         limitLine.lineColor = mBaseKView.mBaseLimitColor
         limitLine.enableDashedLine(8f, 8f, 8f)
@@ -191,7 +191,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         candleDataSet.neutralColor = mBaseKView.mBaseEqualColor
 
         //长按高亮十字线
-        candleDataSet.isHighlightEnabled = false
+        candleDataSet.isHighlightEnabled = true
         candleDataSet.highLightColor = mBaseKView.mBaseHighLightColor
         candleDataSet.highlightLineWidth = 0.5f
         //是否显示指示线
@@ -312,7 +312,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         masterView.legendRenderer.computeLegend(mBaseKView.data)
     }
 
-    fun showIndicatrixType() {
+    fun showIndicatorType() {
         val masterView = mMasterView
         val masterIndicatorType: MasterIndicatorType = mMasterIndicatorType
         when {

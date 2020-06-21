@@ -7,7 +7,7 @@ package com.matt.mpwrapper.bean
  * 描 述 ：
  * ============================================================
  */
-class MasterData : KViewBaseData() {
+class MasterData {
     //主图
     var ma: Ma? = null
     var boll: Boll? = null

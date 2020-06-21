@@ -2,12 +2,8 @@ package com.matt.mpwrapper.view
 
 import android.content.Context
 import android.util.AttributeSet
-import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.formatter.ValueFormatter
-import com.matt.mpwrapper.bean.MasterData
-import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.view.base.BaseKView
 import com.matt.mpwrapper.view.delegate.MasterViewDelegate
 import com.matt.mpwrapper.view.marker.MasterViewMarker
@@ -32,10 +28,6 @@ class MasterView @JvmOverloads constructor(
         MasterViewDelegate(this)
     }
 
-    val mMasterDataList by lazy {
-        ArrayList<MasterData>()
-    }
-
     init {
         initMasterChart()
     }
@@ -46,15 +38,6 @@ class MasterView @JvmOverloads constructor(
         masterViewMarker.chartView = this
         marker = masterViewMarker
         setDrawMarkers(true)
-
-
-        val xAxis = xAxis
-        xAxis.valueFormatter = object : ValueFormatter() {
-            override fun getAxisLabel(value: Float, axis: AxisBase): String {
-                val timestamp = value.toLong()
-                return TimeUtils.millis2String(timestamp, TimeUtils.getFormat("MM-dd HH:mm:ss"))
-            }
-        }
     }
 
     fun renderView() {
@@ -64,8 +47,9 @@ class MasterView @JvmOverloads constructor(
         val lineDataSet = mMasterViewDelegate.mTimeSharingDataSet
         val candleData = mMasterViewDelegate.mCandleData
         val candleDataSet = mMasterViewDelegate.mCandleDataSet
-        mMasterDataList.forEachIndexed { index, it ->
-            val p = it.price ?: throw IllegalArgumentException("主图中的price字段为null,不允许为null")
+        val kViewDataList = mBaseInit.kViewData()
+        kViewDataList.forEachIndexed { index, kViewData ->
+            val p = kViewData.price ?: throw IllegalArgumentException("price字段为null,不允许为null")
             when (masterViewType) {
                 MasterViewType.CANDLE -> {
                     val candleEntry =
@@ -78,16 +62,13 @@ class MasterView @JvmOverloads constructor(
                 }
             }
         }
-        when (masterViewType) {
-            MasterViewType.CANDLE -> {
-                candleData.addDataSet(candleDataSet)
-                combinedData.setData(candleData)
-            }
-            MasterViewType.TIMESHARING -> {
-                lineData.addDataSet(lineDataSet)
-                combinedData.setData(lineData)
-            }
+        if (masterViewType == MasterViewType.CANDLE) {
+            candleData.addDataSet(candleDataSet)
+            combinedData.setData(candleData)
+        } else if (masterViewType == MasterViewType.TIMESHARING) {
+            lineData.addDataSet(lineDataSet)
+            combinedData.setData(lineData)
         }
-        setKViewData(combinedData, mMasterDataList.size)
+        setKViewData(combinedData, kViewDataList.size)
     }
 }

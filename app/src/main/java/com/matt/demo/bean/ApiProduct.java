@@ -1,8 +1,8 @@
 package com.matt.demo.bean;
 
 import com.blankj.utilcode.util.TimeUtils;
-import com.matt.mpwrapper.utils.FormatUtil;
 import com.matt.mpwrapper.utils.MathUtil;
+import com.matt.mpwrapper.utils.XFormatUtil;
 
 import java.io.Serializable;
 
@@ -72,11 +72,11 @@ public class ApiProduct implements Serializable {
     }
 
     public String getFormatAskPrice() {
-        return FormatUtil.numFormat(askPrice, pc);
+        return XFormatUtil.globalFormat(askPrice, pc);
     }
 
     public String getFormatBidPrice() {
-        return FormatUtil.numFormat(bidPrice, pc);
+        return XFormatUtil.globalFormat(bidPrice, pc);
     }
 
     public String getFormatSpread() {
@@ -94,7 +94,7 @@ public class ApiProduct implements Serializable {
 
     public String getCurrentPriceFormat() {
         double currentPrice = getCurrentPrice();
-        return FormatUtil.numFormat(currentPrice, pc);
+        return XFormatUtil.globalFormat(currentPrice, pc);
     }
 
     public double getRate() {
@@ -102,11 +102,11 @@ public class ApiProduct implements Serializable {
     }
 
     public String getFormatRate() {
-        return FormatUtil.percentageFormat(true, 2, getRate());
+        return XFormatUtil.globalFormat(getRate(), 2);
     }
 
     public String getFormatDis() {
-        return FormatUtil.numFormat(true, pc, getCurrentPrice() - previousClose);
+        return XFormatUtil.globalFormat(getCurrentPrice() - previousClose, pc);
     }
 
     public boolean up() {

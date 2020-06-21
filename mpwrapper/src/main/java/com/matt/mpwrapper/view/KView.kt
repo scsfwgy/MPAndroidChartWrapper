@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.KViewData
-import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.bean.Price
+import com.matt.mpwrapper.view.base.BaseInit
 import com.matt.mpwrapper.view.base.LoadData
 import com.matt.mpwrapper.view.type.MasterIndicatorType
 import com.matt.mpwrapper.view.type.MasterViewType
@@ -24,7 +24,7 @@ class KView @JvmOverloads constructor(
     private val mContext: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(mContext, attrs, defStyleAttr), LoadData {
+) : LinearLayout(mContext, attrs, defStyleAttr), LoadData, BaseInit {
 
     init {
         initAttr()
@@ -49,15 +49,18 @@ class KView @JvmOverloads constructor(
         ArrayList<KViewData>()
     }
 
+    var mYDataDigit: Int = 0
+
     fun initKView(
         yDataDigit: Int = 4,
         masterViewType: MasterViewType = MasterViewType.CANDLE,
         masterIndicatorType: MasterIndicatorType = MasterIndicatorType.MA
     ) {
+        mYDataDigit = yDataDigit
         val masterView = getMasterView()
         val minorView = getMinorView()
-        masterView.setDigit(yDataDigit)
-        minorView.setDigit(yDataDigit)
+        masterView.initBaseK(this)
+        minorView.initBaseK(this)
         val masterViewDelegate = masterView.mMasterViewDelegate
         masterViewDelegate.mMasterViewType = masterViewType
         masterViewDelegate.mMasterIndicatorType = masterIndicatorType
@@ -79,15 +82,21 @@ class KView @JvmOverloads constructor(
     }
 
     private fun collectData(priceList: List<Price>) {
-        val masterView = getMasterView()
-        val masterDataList = masterView.mMasterDataList
+        val kViewDataList = mKViewDataList
         priceList.forEach {
-            //val kViewData = KViewData()
-            val masterData = MasterData()
-            //kViewData.masterData = masterData
-            masterData.price = it
-            masterDataList.add(masterData)
+            val kViewData = KViewData()
+            kViewData.price = it
+            kViewDataList.add(kViewData)
         }
+        val masterView = getMasterView()
         masterView.renderView()
+    }
+
+    override fun kViewData(): MutableList<KViewData> {
+        return mKViewDataList
+    }
+
+    override fun digit(): Int {
+        return mYDataDigit
     }
 }

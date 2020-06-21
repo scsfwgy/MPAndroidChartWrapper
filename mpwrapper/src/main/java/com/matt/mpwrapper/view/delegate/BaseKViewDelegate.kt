@@ -4,7 +4,7 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.data.*
 import com.matt.mpwrapper.bean.KViewConstant
-import com.matt.mpwrapper.utils.FormatUtil
+import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.base.BaseKView
 
 /**
@@ -51,9 +51,9 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
         return legend
     }
 
-    fun numFormat(data: Any?, digits: Int = mBaseKView.mDigit): String {
+    fun numFormat(data: Double?, digits: Int = mBaseKView.mBaseInit.digit()): String {
         if (data == null) return KViewConstant.VALUE_NULL_PLACEHOLDER
-        return FormatUtil.numFormat(data, digits)
+        return XFormatUtil.globalFormat(data, digits)
     }
 
 
