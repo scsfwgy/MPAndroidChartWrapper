@@ -13,6 +13,7 @@ import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
 import com.matt.mpwrapper.view.base.BaseKView
+import com.matt.mpwrapper.view.listener.BaseBarLineChartTouchListener
 import com.matt.mpwrapper.view.renderer.BaseCombinedChartRenderer
 
 /**
@@ -155,14 +156,17 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             isDragDecelerationEnabled = true
             //惯性滑动的大小[0,1)。越大惯性越大。
             dragDecelerationFrictionCoef = 0.9f
-            // TODO: 23/09/2018
+            //设置在图表方向改变后是否仍然保持原来状态。
+            isKeepPositionOnRotation = true
+            //拖动时是否允许高亮线
             isHighlightPerDragEnabled = false
             //敲击显示高亮线
             isHighlightPerTapEnabled = false
-            //设置在图表方向改变后是否仍然保持原来状态。
-            isKeepPositionOnRotation = true
-            //
-            isHighlightPerDragEnabled = false
+
+
+            //监听所有事件
+            onTouchListener =
+                BaseBarLineChartTouchListener(this, getViewPortHandler().matrixTouch, 3f)
 
 
             /**
