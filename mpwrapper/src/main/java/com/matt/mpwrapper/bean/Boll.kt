@@ -7,4 +7,4 @@ package com.matt.mpwrapper.bean
  * 描 述 ：
  * ============================================================
  */
-data class Boll(var up: Float, var mb: Float, var dn: Float)
+data class Boll(val up: Float, val mb: Float, val dn: Float)

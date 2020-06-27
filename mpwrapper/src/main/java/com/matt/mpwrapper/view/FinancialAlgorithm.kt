@@ -2,6 +2,7 @@ package com.matt.mpwrapper.view
 
 import android.util.Log
 import com.matt.mpwrapper.bean.Boll
+import com.matt.mpwrapper.bean.Macd
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -37,7 +38,7 @@ object FinancialAlgorithm {
         period: Int,
         calculateSize: Int = dataList.size
     ): List<Float> {
-        if (period <= 0) throw IllegalArgumentException("period不允许小于等于0")
+        if (period <= 0 || calculateSize <= 0) throw IllegalArgumentException("参数不合法：period <= 0 || calculateSize <= 0")
         val list = ArrayList<Float>(calculateSize)
         var sum = 0f
         dataList.forEachIndexed { index, it ->
@@ -78,7 +79,7 @@ object FinancialAlgorithm {
         k: Int = 2,
         calculateSize: Int = dataList.size
     ): List<Boll> {
-        if (period <= 0) throw IllegalArgumentException("period不允许小于等于0")
+        if (period <= 0 || calculateSize <= 0) throw IllegalArgumentException("参数不合法：period <= 0 || calculateSize <= 0")
         val list = ArrayList<Boll>(calculateSize)
         var sum1 = 0f
         var sum2 = 0f
@@ -113,6 +114,49 @@ object FinancialAlgorithm {
             }
         }
         debug("boll:$list")
+        return list
+    }
+
+    /**
+     * MACD(x,y,z)，一般取MACD(12,26,9)。
+     * MACD(x,y,z)，x、y为平滑指数。z暂时不知道用处（不影响算法）。
+     * `EMAx=((x-1)/(x+1.0)*前一日EMA)+2.0/(x+1)*今日收盘价`;其中第一日的EMA是当日的收盘价。
+     * `EMA12=(11/13.0)*前一日EMA12+2.0/13*今日收盘价`
+     * `EMA26=(25/27.0)*前一日EMA26+2.0/27*今日收盘价`
+     * DIF:`DIF=EMA12-EMA26`
+     * DEA:`DEA=8/10.0*(前一日的DEA)+2/10.0*今日DIF`
+     * MACD:`2*(DIF-DEA)`
+     *
+     * @param dataList 数据集合
+     * @param d1         平滑指数，一般为12
+     * @param d2         平滑指数，一般为26
+     * @param z          暂时未知
+     */
+    fun calculateMACD(
+        dataList: List<Float>,
+        d1: Int = 12, d2: Int = 26, z: Int = 2,
+        calculateSize: Int = dataList.size
+    ): List<Macd> {
+        if (d1 <= 0 || d2 <= 0 || calculateSize <= 0) throw IllegalArgumentException("d1 <= 0 || d2 <= 0 || calculateSize <= 0")
+        val list = ArrayList<Macd>(calculateSize)
+        //eam12、ema26、dea
+        var triple: Triple<Float, Float, Float> = Triple(0f, 0f, 0f)
+        dataList.forEachIndexed { index, it ->
+            triple = if (index == 0) {
+                Triple(it, it, 0f)
+            } else {
+                val ema12 = (d1 - 1f) / (d1 + 1f) * triple.first + 2f / (d1 + 1) * it
+                val ema26 = (d2 - 1f) / (d2 + 1f) * triple.second + 2f / (d2 + 1) * it
+                val dif = ema12 - ema26
+                val dea = triple.third * 8f / 10f + dif * 2 / 10f
+                Triple(ema12, ema26, dea)
+            }
+            val dif = triple.first - triple.second
+            val dea = triple.third
+            val macd = 2 * (dif - dea)
+            val macdModel = Macd(dif, dea, macd)
+            list.add(macdModel)
+        }
         return list
     }
 

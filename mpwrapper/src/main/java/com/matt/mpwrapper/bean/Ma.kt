@@ -7,4 +7,4 @@ package com.matt.mpwrapper.bean
  * 描 述 ：
  * ============================================================
  */
-data class Ma(var ma5: Float, var ma10: Float, var ma20: Float)
+data class Ma(val ma5: Float, val ma10: Float, val ma20: Float)
