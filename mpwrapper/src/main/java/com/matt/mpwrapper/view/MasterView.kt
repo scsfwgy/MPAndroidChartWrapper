@@ -52,20 +52,33 @@ class MasterView @JvmOverloads constructor(
         kViewDataList.forEachIndexed { index, kViewData ->
             val p = kViewData.price ?: throw IllegalArgumentException("price字段为null,不允许为null")
             val xValue = index.toFloat()
+            val invalidData = FinancialAlgorithm.invalidData
             when (masterViewType) {
                 MasterViewType.CANDLE -> {
                     val masterData = kViewData.masterData
                     val ma = masterData?.ma
                     val boll = masterData?.boll
                     if (ma != null) {
-                        masterViewDelegate.mMa5EntryList.add(Entry(xValue, ma.ma5))
-                        masterViewDelegate.mMa10EntryList.add(Entry(xValue, ma.ma10))
-                        masterViewDelegate.mMa20EntryList.add(Entry(xValue, ma.ma20))
+                        if (ma.ma5 != invalidData) {
+                            masterViewDelegate.mMa5EntryList.add(Entry(xValue, ma.ma5))
+                        }
+                        if (ma.ma10 != invalidData) {
+                            masterViewDelegate.mMa10EntryList.add(Entry(xValue, ma.ma10))
+                        }
+                        if (ma.ma20 != invalidData) {
+                            masterViewDelegate.mMa20EntryList.add(Entry(xValue, ma.ma20))
+                        }
                     }
                     if (boll != null) {
-                        masterViewDelegate.mBollUpEntryList.add(Entry(xValue, boll.up))
-                        masterViewDelegate.mBollMbEntryList.add(Entry(xValue, boll.mb))
-                        masterViewDelegate.mBollDnEntryList.add(Entry(xValue, boll.dn))
+                        if (boll.up != invalidData) {
+                            masterViewDelegate.mBollUpEntryList.add(Entry(xValue, boll.up))
+                        }
+                        if (boll.mb != invalidData) {
+                            masterViewDelegate.mBollMbEntryList.add(Entry(xValue, boll.mb))
+                        }
+                        if (boll.dn != invalidData) {
+                            masterViewDelegate.mBollDnEntryList.add(Entry(xValue, boll.dn))
+                        }
                     }
                     val candleEntry =
                         CandleEntry(xValue, p.h, p.l, p.o, p.c)

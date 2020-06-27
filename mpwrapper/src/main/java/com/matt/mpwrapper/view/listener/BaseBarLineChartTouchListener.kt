@@ -8,6 +8,7 @@ import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import com.github.mikephil.charting.listener.BarLineChartTouchListener
+import com.github.mikephil.charting.listener.ChartTouchListener
 import com.matt.mpwrapper.view.MasterView
 
 /**
@@ -95,6 +96,10 @@ open class BaseBarLineChartTouchListener(
     override fun onLongPress(e: MotionEvent) {
         super.onLongPress(e)
         val touchMode = touchMode
+        //拖动时不触发高亮线
+        if (touchMode == ChartTouchListener.DRAG) {
+            return
+        }
         triggerHighlight(e, true)
     }
 
