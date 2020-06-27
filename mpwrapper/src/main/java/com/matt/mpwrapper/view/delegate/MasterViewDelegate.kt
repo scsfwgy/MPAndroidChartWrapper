@@ -37,7 +37,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
 
     var mMasterViewType: MasterViewType = MasterViewType.CANDLE
-    var mMasterIndicatorType: MasterIndicatorType = MasterIndicatorType.NONE
+    var mMasterIndicatorType: MasterIndicatorType = MasterIndicatorType.MA
 
     //ma
     val mMasterViewMa5Color by lazy {
@@ -91,7 +91,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mBollUpEntryList by lazy {
         ArrayList<Entry>()
     }
-    val mBollMdEntryList by lazy {
+    val mBollMbEntryList by lazy {
         ArrayList<Entry>()
     }
     val mBollDnEntryList by lazy {
@@ -209,14 +209,18 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         ma10.color = mMasterViewMa10Color
         val ma20 = BaseLineDataSet(mMa20EntryList, MaType.MA20.toString())
         ma20.color = mMasterViewMa20Color
-        arrayOf(ma5, ma10, ma20)
+        val arrayOf = arrayOf(ma5, ma10, ma20)
+        arrayOf.forEach {
+            it.cubicIntensity = 1f
+        }
+        arrayOf
     }
 
     val mBollLineDataSetArr by lazy {
         val bollup = BaseLineDataSet(mBollUpEntryList, BollType.UP.toString())
         bollup.color = mMasterViewBollUpColor
 
-        val bollmd = BaseLineDataSet(mBollMdEntryList, BollType.MD.toString())
+        val bollmd = BaseLineDataSet(mBollMbEntryList, BollType.MD.toString())
         bollmd.color = mMasterViewBollMdColor
 
         val bollDn = BaseLineDataSet(mBollDnEntryList, BollType.DN.toString())
@@ -312,8 +316,20 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         masterView.legendRenderer.computeLegend(mBaseKView.data)
     }
 
-    fun showIndicatorType() {
-        val masterView = mMasterView
+    fun showIndicatorType(toNext: Boolean = false) {
+        if (toNext) {
+            mMasterIndicatorType = when (mMasterIndicatorType) {
+                MasterIndicatorType.NONE -> {
+                    MasterIndicatorType.MA
+                }
+                MasterIndicatorType.MA -> {
+                    MasterIndicatorType.BOLL
+                }
+                MasterIndicatorType.BOLL -> {
+                    MasterIndicatorType.NONE
+                }
+            }
+        }
         val masterIndicatorType: MasterIndicatorType = mMasterIndicatorType
         when {
             masterIndicatorType === MasterIndicatorType.NONE -> {

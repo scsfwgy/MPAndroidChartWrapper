@@ -41,29 +41,47 @@ class MasterView @JvmOverloads constructor(
     }
 
     fun renderView() {
-        val masterViewType = mMasterViewDelegate.mMasterViewType
-        val combinedData = mMasterViewDelegate.mCombinedData
-        val lineData = mMasterViewDelegate.mLineData
-        val lineDataSet = mMasterViewDelegate.mTimeSharingDataSet
-        val candleData = mMasterViewDelegate.mCandleData
-        val candleDataSet = mMasterViewDelegate.mCandleDataSet
+        val masterViewDelegate = mMasterViewDelegate
+        val masterViewType = masterViewDelegate.mMasterViewType
+        val combinedData = masterViewDelegate.mCombinedData
+        val lineData = masterViewDelegate.mLineData
+        val lineDataSet = masterViewDelegate.mTimeSharingDataSet
+        val candleData = masterViewDelegate.mCandleData
+        val candleDataSet = masterViewDelegate.mCandleDataSet
         val kViewDataList = mBaseInit.kViewData()
         kViewDataList.forEachIndexed { index, kViewData ->
             val p = kViewData.price ?: throw IllegalArgumentException("price字段为null,不允许为null")
+            val xValue = index.toFloat()
             when (masterViewType) {
                 MasterViewType.CANDLE -> {
+                    val masterData = kViewData.masterData
+                    val ma = masterData?.ma
+                    val boll = masterData?.boll
+                    if (ma != null) {
+                        masterViewDelegate.mMa5EntryList.add(Entry(xValue, ma.ma5))
+                        masterViewDelegate.mMa10EntryList.add(Entry(xValue, ma.ma10))
+                        masterViewDelegate.mMa20EntryList.add(Entry(xValue, ma.ma20))
+                    }
+                    if (boll != null) {
+                        masterViewDelegate.mBollUpEntryList.add(Entry(xValue, boll.up))
+                        masterViewDelegate.mBollMbEntryList.add(Entry(xValue, boll.mb))
+                        masterViewDelegate.mBollDnEntryList.add(Entry(xValue, boll.dn))
+                    }
                     val candleEntry =
-                        CandleEntry(index.toFloat(), p.h, p.l, p.o, p.c)
+                        CandleEntry(xValue, p.h, p.l, p.o, p.c)
                     candleDataSet.addEntry(candleEntry)
                 }
                 MasterViewType.TIMESHARING -> {
-                    val entry = Entry(index.toFloat(), p.c)
+                    val entry = Entry(xValue, p.c)
                     lineDataSet.addEntry(entry)
                 }
             }
         }
         if (masterViewType == MasterViewType.CANDLE) {
+            //显示对应指标
+            masterViewDelegate.showIndicatorType(false)
             candleData.addDataSet(candleDataSet)
+            combinedData.setData(lineData)
             combinedData.setData(candleData)
         } else if (masterViewType == MasterViewType.TIMESHARING) {
             lineData.addDataSet(lineDataSet)

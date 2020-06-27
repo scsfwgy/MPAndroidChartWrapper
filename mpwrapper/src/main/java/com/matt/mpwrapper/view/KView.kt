@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.KViewData
+import com.matt.mpwrapper.bean.Ma
+import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.base.BaseInit
 import com.matt.mpwrapper.view.base.LoadData
@@ -82,10 +84,23 @@ class KView @JvmOverloads constructor(
     }
 
     private fun collectData(priceList: List<Price>) {
+        val map = priceList.map { it.c }
+        val calculateMA5 = FinancialAlgorithm.calculateMA(map, 5)
+        val calculateMA10 = FinancialAlgorithm.calculateMA(map, 10)
+        val calculateMA20 = FinancialAlgorithm.calculateMA(map, 20)
+        val calculateBOLL = FinancialAlgorithm.calculateBOLL(map)
         val kViewDataList = mKViewDataList
-        priceList.forEach {
+        priceList.forEachIndexed { index, it ->
+            val ma5 = calculateMA5[index]
+            val ma10 = calculateMA10[index]
+            val ma20 = calculateMA20[index]
+            val boll = calculateBOLL[index]
             val kViewData = KViewData()
             kViewData.price = it
+            val masterData = MasterData()
+            masterData.ma = Ma(ma5, ma10, ma20)
+            masterData.boll = boll
+            kViewData.masterData = masterData
             kViewDataList.add(kViewData)
         }
         val masterView = getMasterView()

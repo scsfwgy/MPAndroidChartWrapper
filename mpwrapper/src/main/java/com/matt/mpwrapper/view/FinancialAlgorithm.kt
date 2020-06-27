@@ -1,5 +1,6 @@
 package com.matt.mpwrapper.view
 
+import android.util.Log
 import com.matt.mpwrapper.bean.Boll
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -117,7 +118,7 @@ object FinancialAlgorithm {
 
     private fun debug(msg: String) {
         if (isDebug) {
-            //Log.d(TAG, msg)
+            Log.d(TAG, msg)
         }
     }
 }
