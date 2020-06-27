@@ -2,6 +2,7 @@ package com.matt.mpwrapper.view
 
 import android.util.Log
 import com.matt.mpwrapper.bean.Boll
+import com.matt.mpwrapper.bean.Kdj
 import com.matt.mpwrapper.bean.Macd
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -157,6 +158,105 @@ object FinancialAlgorithm {
             val macdModel = Macd(dif, dea, macd)
             list.add(macdModel)
         }
+        debug("macd:$list")
+        return list
+    }
+
+    /**
+     * 【该算法已核实】计算RSI。RSI(x,y,z)，一般取RSI(6,12,24)。
+     * RSI(x,y,z)，x、y、z均为周期单位，计算算法一致，只是周期不同。
+     * RSIx,在周期x内，upSum="在周期x内的上涨总点数"，downSum="在周期x内的下跌总点数"；`RSIx=upSum/(upSum+downSum)*100`;
+     * 注意：RSIx对于最开始的x+1周期内，不存在对应RSI,在图像上表示就是不显示对应RSIx即可。
+     *
+     * @param dataList 对应的数据集合
+     * @param period 周期
+     */
+    fun calculateRSI(
+        dataList: List<Float>,
+        period: Int,
+        calculateSize: Int = dataList.size
+    ): ArrayList<Float> {
+        if (period <= 0 || calculateSize <= 0) throw IllegalArgumentException("参数不合法：period <= 0 || calculateSize <= 0")
+        val list = ArrayList<Float>()
+        var upSum = 0f
+        var downSum = 0f
+        dataList.forEachIndexed { index, it ->
+            if (index == 0) {
+                list.add(invalidData)
+            } else {
+                val dis = it - dataList[index - 1]
+                if (dis >= 0) {
+                    upSum += dis
+                } else {
+                    downSum -= dis
+                }
+                val i = index - period
+                if (i + 1 > 0) {
+                    val dis2 = dataList[i + 1] - dataList[i]
+                    if (dis2 >= 0) {
+                        upSum -= dis2
+                    } else {
+                        downSum += dis2
+                    }
+                    val rsi = upSum / (upSum + downSum) * 100f
+                    list.add(rsi)
+                } else {
+                    list.add(invalidData)
+                }
+            }
+        }
+        debug("rsi:$list")
+        return list
+    }
+
+    fun calculateKDJ(
+        dataList: List<Float>,
+        kPeriod: Int = 9,
+        dPeriod: Int = 3,
+        jPeriod: Int = 3,
+        calculateSize: Int = dataList.size
+    ): List<Kdj> {
+        if (kPeriod <= 0 || dPeriod <= 0 || jPeriod <= 0 || calculateSize <= 0) throw IllegalArgumentException(
+            "kPeriod <= 0 || dPeriod <= 0 || jPeriod <= 0 || calculateSize <= 0"
+        )
+        val list = ArrayList<Kdj>(calculateSize)
+        val kP = kPeriod - 1
+        val dP = dPeriod - 1
+        val jP = jPeriod - 1
+        var k = 0f
+        var d = 0f
+        var j = 0f
+        dataList.forEachIndexed { index, _ ->
+            k = if (index < kP) {
+                50f
+            } else {
+                var l = Int.MAX_VALUE * 1f
+                var h = Int.MIN_VALUE * 1f
+                var c = 0f
+                for (i in index - kP..index) {
+                    val item = dataList[i]
+                    if (item < l) {
+                        l = item
+                    }
+                    if (item > h) {
+                        h = item
+                    }
+                    if (i == index) {
+                        c = item
+                    }
+                }
+                val kRsv = (c - l) / (h - l) * 100f
+                2f / 3f * k + 1f / 3f * kRsv
+            }
+            d = if (index < dP) {
+                50f
+            } else {
+                2f / 3f * d + 1f / 3f * k
+            }
+            j = 3f * k - 2 * d
+            list.add(Kdj(k, d, j))
+        }
+        debug("kdj:$list")
         return list
     }
 

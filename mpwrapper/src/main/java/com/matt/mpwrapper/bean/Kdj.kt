@@ -7,9 +7,4 @@ package com.matt.mpwrapper.bean
  * 描 述 ：
  * ============================================================
  */
-class Kdj {
-    //KDJ
-    var k: Double? = null
-    var d: Double? = null
-    var j: Double? = null
-}
+class Kdj(val k: Float, val d: Float, val j: Float)
