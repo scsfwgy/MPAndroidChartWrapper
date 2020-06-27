@@ -8,8 +8,10 @@ import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.*
 import com.matt.mpwrapper.view.base.BaseInit
 import com.matt.mpwrapper.view.base.LoadData
+import com.matt.mpwrapper.view.listener.LinkChartListener
 import com.matt.mpwrapper.view.type.MasterIndicatorType
 import com.matt.mpwrapper.view.type.MasterViewType
+import com.matt.mpwrapper.view.type.MinorIndicatorType
 import kotlinx.android.synthetic.main.mp_widget_kview.view.*
 
 /**
@@ -63,6 +65,12 @@ class KView @JvmOverloads constructor(
         val masterViewDelegate = masterView.mMasterViewDelegate
         masterViewDelegate.mMasterViewType = masterViewType
         masterViewDelegate.mMasterIndicatorType = masterIndicatorType
+
+        val minorViewDelegate = minorView.mMinorViewDelegate
+        minorViewDelegate.mMinorIndicatorType = MinorIndicatorType.MACD
+
+        masterView.onChartGestureListener = LinkChartListener(masterView, minorView)
+        minorView.onChartGestureListener = LinkChartListener(minorView, masterView)
     }
 
 

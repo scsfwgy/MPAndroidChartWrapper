@@ -156,7 +156,7 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             //是否允许惯性滑动。换句话说就是手指松开后是否允许根据惯性继续滑行一段距离。
             isDragDecelerationEnabled = true
             //惯性滑动的大小[0,1)。越大惯性越大。
-            dragDecelerationFrictionCoef = 0.9f
+            dragDecelerationFrictionCoef = 0.5f
             //设置在图表方向改变后是否仍然保持原来状态。
             isKeepPositionOnRotation = true
             //拖动时是否允许高亮线
