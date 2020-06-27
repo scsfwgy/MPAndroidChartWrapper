@@ -13,8 +13,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.Boll
 import com.matt.mpwrapper.bean.Ma
-import com.matt.mpwrapper.ktx.getColor
-import com.matt.mpwrapper.ktx.getDrawable
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
 import com.matt.mpwrapper.view.base.BaseLineDataSet
@@ -368,13 +366,5 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     fun refreshLimit() {
         setLimit(mLimitLine, mLimitValue)
         mMasterView.invalidate()
-    }
-
-    private fun getColor(colorId: Int): Int {
-        return mMasterView.getColor(colorId)
-    }
-
-    private fun getDrawable(drawableId: Int): Drawable {
-        return mMasterView.getDrawable(drawableId)
     }
 }

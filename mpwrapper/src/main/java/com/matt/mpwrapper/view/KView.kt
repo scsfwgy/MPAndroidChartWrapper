@@ -5,10 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.matt.mpwrapper.R
-import com.matt.mpwrapper.bean.KViewData
-import com.matt.mpwrapper.bean.Ma
-import com.matt.mpwrapper.bean.MasterData
-import com.matt.mpwrapper.bean.Price
+import com.matt.mpwrapper.bean.*
 import com.matt.mpwrapper.view.base.BaseInit
 import com.matt.mpwrapper.view.base.LoadData
 import com.matt.mpwrapper.view.type.MasterIndicatorType
@@ -89,6 +86,11 @@ class KView @JvmOverloads constructor(
         val calculateMA10 = FinancialAlgorithm.calculateMA(map, 10)
         val calculateMA20 = FinancialAlgorithm.calculateMA(map, 20)
         val calculateBOLL = FinancialAlgorithm.calculateBOLL(map)
+        val calculateMACD = FinancialAlgorithm.calculateMACD(map)
+        val calculateRSI6 = FinancialAlgorithm.calculateRSI(map, 6)
+        val calculateRSI12 = FinancialAlgorithm.calculateRSI(map, 12)
+        val calculateRSI24 = FinancialAlgorithm.calculateRSI(map, 24)
+        val calculateKDJ = FinancialAlgorithm.calculateKDJ(map)
         val kViewDataList = mKViewDataList
         priceList.forEachIndexed { index, it ->
             val ma5 = calculateMA5[index]
@@ -97,17 +99,32 @@ class KView @JvmOverloads constructor(
             val boll = calculateBOLL[index]
             val kViewData = KViewData()
             kViewData.price = it
+
+            //主图
             val masterData = MasterData()
             masterData.ma = Ma(ma5, ma10, ma20)
             masterData.boll = boll
             kViewData.masterData = masterData
+
+            //副图
+            val minData = MinorData()
+            minData.macd = calculateMACD[index]
+            val rsi6 = calculateRSI6[index]
+            val rsi12 = calculateRSI12[index]
+            val rsi24 = calculateRSI24[index]
+            minData.rsi = Rsi(rsi6, rsi12, rsi24)
+            minData.kdj = calculateKDJ[index]
+            kViewData.minorData = minData
+
             kViewDataList.add(kViewData)
         }
         val masterView = getMasterView()
         masterView.renderView()
+        val minorView = getMinorView()
+        minorView.renderView()
     }
 
-    override fun kViewData(): MutableList<KViewData> {
+    override fun kViewDataList(): MutableList<KViewData> {
         return mKViewDataList
     }
 

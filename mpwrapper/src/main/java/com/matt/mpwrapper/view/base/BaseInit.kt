@@ -11,6 +11,6 @@ import com.matt.mpwrapper.bean.KViewData
  *
  **/
 interface BaseInit {
-    fun kViewData(): MutableList<KViewData>
+    fun kViewDataList(): MutableList<KViewData>
     fun digit(): Int
 }

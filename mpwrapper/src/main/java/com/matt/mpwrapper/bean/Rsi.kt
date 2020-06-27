@@ -7,9 +7,4 @@ package com.matt.mpwrapper.bean
  * 描 述 ：
  * ============================================================
  */
-class Rsi {
-    //rsi
-    var rsi6: Double? = null
-    var rsi12: Double? = null
-    var rsi24: Double? = null
-}
+data class Rsi(val rsi6: Float, val rsi12: Float, val rsi24: Float)

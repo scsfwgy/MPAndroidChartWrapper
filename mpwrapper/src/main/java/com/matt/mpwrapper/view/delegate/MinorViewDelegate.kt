@@ -1,0 +1,107 @@
+package com.matt.mpwrapper.view.delegate
+
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.matt.mpwrapper.R
+import com.matt.mpwrapper.view.MinorView
+import com.matt.mpwrapper.view.base.BaseLineDataSet
+import com.matt.mpwrapper.view.type.MacdType
+import com.matt.mpwrapper.view.type.MinorIndicatorType
+
+/**
+ * ============================================================
+ * 作 者 :    matt
+ * 更新时间 ：2020/03/07 15:14
+ * 描 述 ：
+ * ============================================================
+ */
+class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
+    val mMinorView by lazy {
+        minorView
+    }
+
+    var mMinorIndicatorType: MinorIndicatorType = MinorIndicatorType.MACD
+
+    val mMacdBarColorArr by lazy {
+        arrayOf(
+            mUpColor,
+            mDownColor
+        )
+    }
+
+    val mMacdColorArr by lazy {
+        arrayOf(
+            getColor(R.color.mp_minorview_dif),
+            getColor(R.color.mp_minorview_dea)
+        )
+    }
+
+    val mKdjColorArr by lazy {
+        arrayOf(
+            getColor(R.color.mp_minorview_k),
+            getColor(R.color.mp_minorview_d),
+            getColor(R.color.mp_minorview_j)
+        )
+    }
+
+    val mRsiColorArr by lazy {
+        arrayOf(
+            getColor(R.color.mp_minorview_rsi6),
+            getColor(R.color.mp_minorview_rsi12),
+            getColor(R.color.mp_minorview_rsi24)
+        )
+    }
+
+    val mMacdBarEntryListArr: Array<out MutableList<BarEntry>> by lazy {
+        arrayOf(ArrayList<BarEntry>(), ArrayList<BarEntry>())
+    }
+
+    val mMacdEntryListArr: Array<out MutableList<Entry>> by lazy {
+        arrayOf(ArrayList<Entry>(), ArrayList())
+    }
+
+    val mRsiEntryListArr: Array<out MutableList<Entry>> by lazy {
+        arrayOf(ArrayList<Entry>(), ArrayList(), ArrayList())
+    }
+
+    val mKdjEntryListArr: Array<out MutableList<Entry>> by lazy {
+        arrayOf(ArrayList<Entry>(), ArrayList(), ArrayList())
+    }
+
+    val mMacdBarDataSetArr by lazy {
+        mMacdBarEntryListArr.mapIndexed { index, mutableList ->
+            val barDataSet =
+                BarDataSet(mutableList, MacdType.MACD.toString() + index)
+            barDataSet.setDrawValues(false)
+            barDataSet.setDrawIcons(false)
+            barDataSet.axisDependency = YAxis.AxisDependency.LEFT
+            barDataSet.highLightColor = mBaseHighLightColor
+            barDataSet.color = mMacdBarColorArr[index]
+            barDataSet
+        }
+    }
+
+    val mMacdLineDataSetArr by lazy {
+        mMacdEntryListArr.mapIndexed { index, mutableList ->
+            val baseLineDataSet = BaseLineDataSet(
+                mutableList,
+                when (index) {
+                    0 -> {
+                        MacdType.DIF.toString()
+                    }
+                    1 -> {
+                        MacdType.DEA.toString()
+                    }
+                    else -> {
+                        throw IllegalArgumentException("参数错误")
+                    }
+                }
+            )
+            baseLineDataSet.color = mMacdColorArr[index]
+            baseLineDataSet
+        }.toTypedArray()
+    }
+
+}

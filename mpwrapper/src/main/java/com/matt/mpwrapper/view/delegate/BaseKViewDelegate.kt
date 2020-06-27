@@ -1,5 +1,6 @@
 package com.matt.mpwrapper.view.delegate
 
+import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
@@ -9,6 +10,7 @@ import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.KViewConstant
 import com.matt.mpwrapper.ktx.dip2px
 import com.matt.mpwrapper.ktx.getColor
+import com.matt.mpwrapper.ktx.getDrawable
 import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
@@ -238,7 +240,7 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             //设置x轴上的值
             xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getAxisLabel(value: Float, axis: AxisBase): String {
-                    val kViewData = mBaseInit.kViewData()
+                    val kViewData = mBaseInit.kViewDataList()
                     val valueInt = value.toInt()
                     val size = kViewData.size
                     val index = if (valueInt < size) valueInt else size - 1
@@ -329,7 +331,11 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
         }
     }
 
-    private fun getColor(@ColorRes colorId: Int): Int {
+    fun getColor(@ColorRes colorId: Int): Int {
         return mBaseKView.getColor(colorId)
+    }
+
+    fun getDrawable(drawableId: Int): Drawable {
+        return mBaseKView.getDrawable(drawableId)
     }
 }

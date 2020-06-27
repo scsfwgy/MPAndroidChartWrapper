@@ -48,7 +48,7 @@ class MasterView @JvmOverloads constructor(
         val lineDataSet = masterViewDelegate.mTimeSharingDataSet
         val candleData = masterViewDelegate.mCandleData
         val candleDataSet = masterViewDelegate.mCandleDataSet
-        val kViewDataList = mBaseInit.kViewData()
+        val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->
             val p = kViewData.price ?: throw IllegalArgumentException("price字段为null,不允许为null")
             val xValue = index.toFloat()
