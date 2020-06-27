@@ -7,8 +7,10 @@ import com.github.mikephil.charting.data.Entry
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.view.MinorView
 import com.matt.mpwrapper.view.base.BaseLineDataSet
+import com.matt.mpwrapper.view.type.KdjType
 import com.matt.mpwrapper.view.type.MacdType
 import com.matt.mpwrapper.view.type.MinorIndicatorType
+import com.matt.mpwrapper.view.type.RsiType
 
 /**
  * ============================================================
@@ -104,6 +106,54 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
         }.toTypedArray()
     }
 
+    val mKdjLineDataSetArr by lazy {
+        mKdjEntryListArr.mapIndexed { index, mutableList ->
+            val baseLineDataSet = BaseLineDataSet(
+                mutableList,
+                when (index) {
+                    0 -> {
+                        KdjType.K.toString()
+                    }
+                    1 -> {
+                        KdjType.D.toString()
+                    }
+                    2 -> {
+                        KdjType.J.toString()
+                    }
+                    else -> {
+                        throw IllegalArgumentException("参数错误")
+                    }
+                }
+            )
+            baseLineDataSet.color = mKdjColorArr[index]
+            baseLineDataSet
+        }.toTypedArray()
+    }
+
+    val mRsiLineDataSetArr by lazy {
+        mRsiEntryListArr.mapIndexed { index, mutableList ->
+            val baseLineDataSet = BaseLineDataSet(
+                mutableList,
+                when (index) {
+                    0 -> {
+                        RsiType.RSI6.toString()
+                    }
+                    1 -> {
+                        RsiType.RSI12.toString()
+                    }
+                    2 -> {
+                        RsiType.RSI24.toString()
+                    }
+                    else -> {
+                        throw IllegalArgumentException("参数错误")
+                    }
+                }
+            )
+            baseLineDataSet.color = mRsiColorArr[index]
+            baseLineDataSet
+        }.toTypedArray()
+    }
+
     fun showIndicatorType(toNext: Boolean = false) {
         if (toNext) {
             mMinorIndicatorType = when (mMinorIndicatorType) {
@@ -147,10 +197,11 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
     }
 
     fun setKdjDataSetArrVisible(visible: Boolean) {
+        setLineDataSetArrVisible(mKdjLineDataSetArr, visible)
     }
 
     fun setRsiDataSetArrVisible(visible: Boolean) {
-
+        setLineDataSetArrVisible(mRsiLineDataSetArr, visible)
     }
 
 }

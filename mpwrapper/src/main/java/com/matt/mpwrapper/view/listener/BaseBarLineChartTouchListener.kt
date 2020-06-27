@@ -10,6 +10,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBub
 import com.github.mikephil.charting.listener.BarLineChartTouchListener
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.matt.mpwrapper.view.MasterView
+import com.matt.mpwrapper.view.MinorView
 
 /**
  *
@@ -78,6 +79,9 @@ open class BaseBarLineChartTouchListener(
         val chart = mChart
         if (chart is MasterView) {
             chart.mMasterViewDelegate.showIndicatorType(true)
+        }
+        if (chart is MinorView) {
+            chart.mMinorViewDelegate.showIndicatorType(true)
         }
         return super.onSingleTapConfirmed(e)
     }

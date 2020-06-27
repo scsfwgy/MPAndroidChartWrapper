@@ -9,7 +9,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.view.base.BaseKView
 import com.matt.mpwrapper.view.delegate.MinorViewDelegate
-import com.matt.mpwrapper.view.type.MinorIndicatorType
 
 /**
  * ============================================================
@@ -61,38 +60,60 @@ class MinorView @JvmOverloads constructor(
             val minorData =
                 kViewData.minorData ?: throw IllegalArgumentException("minorData字段为null,不允许为null")
             val xValue = index.toFloat()
-            when (minorIndicatorType) {
-                MinorIndicatorType.MACD -> {
-                    val macd = minorData.macd
-                    if (macd != null) {
-                        val dif = macd.dif
-                        if (dif != invalidData) {
-                            minorViewDelegate.mMacdEntryListArr[0].add(Entry(xValue, dif))
-                        }
-                        val dea = macd.dea
-                        if (dea != invalidData) {
-                            minorViewDelegate.mMacdEntryListArr[1].add(Entry(xValue, dea))
-                        }
-                        val m = macd.macd
-                        if (m != invalidData) {
-                            val macdBarEntryListArr = minorViewDelegate.mMacdBarEntryListArr
-                            if (m >= 0) {
-                                macdBarEntryListArr[0].add(BarEntry(xValue, m))
-                            } else {
-                                macdBarEntryListArr[1].add(BarEntry(xValue, m))
-                            }
-                        }
 
+            val macd = minorData.macd
+            if (macd != null) {
+                val dif = macd.dif
+                if (dif != invalidData) {
+                    minorViewDelegate.mMacdEntryListArr[0].add(Entry(xValue, dif))
+                }
+                val dea = macd.dea
+                if (dea != invalidData) {
+                    minorViewDelegate.mMacdEntryListArr[1].add(Entry(xValue, dea))
+                }
+                val m = macd.macd
+                if (m != invalidData) {
+                    val macdBarEntryListArr = minorViewDelegate.mMacdBarEntryListArr
+                    if (m >= 0) {
+                        macdBarEntryListArr[0].add(BarEntry(xValue, m))
+                    } else {
+                        macdBarEntryListArr[1].add(BarEntry(xValue, m))
                     }
                 }
-                MinorIndicatorType.KDJ -> {
 
+            }
+
+            val kdj = minorData.kdj
+            if (kdj != null) {
+                val k = kdj.k
+                if (k != invalidData) {
+                    minorViewDelegate.mKdjLineDataSetArr[0].addEntry(Entry(xValue, k))
                 }
-                MinorIndicatorType.RSI -> {
-
+                val d = kdj.d
+                if (d != invalidData) {
+                    minorViewDelegate.mKdjLineDataSetArr[1].addEntry(Entry(xValue, d))
+                }
+                val j = kdj.j
+                if (j != invalidData) {
+                    minorViewDelegate.mKdjLineDataSetArr[2].addEntry(Entry(xValue, j))
                 }
             }
 
+            val rsi = minorData.rsi
+            if (rsi != null) {
+                val rsi6 = rsi.rsi6
+                if (rsi6 != invalidData) {
+                    minorViewDelegate.mRsiLineDataSetArr[0].addEntry(Entry(xValue, rsi6))
+                }
+                val rsi12 = rsi.rsi12
+                if (rsi12 != invalidData) {
+                    minorViewDelegate.mRsiLineDataSetArr[1].addEntry(Entry(xValue, rsi12))
+                }
+                val rsi24 = rsi.rsi24
+                if (rsi24 != invalidData) {
+                    minorViewDelegate.mRsiLineDataSetArr[2].addEntry(Entry(xValue, rsi24))
+                }
+            }
         }
 
         minorViewDelegate.showIndicatorType(false)
