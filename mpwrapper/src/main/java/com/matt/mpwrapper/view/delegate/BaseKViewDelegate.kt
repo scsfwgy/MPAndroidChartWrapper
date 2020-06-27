@@ -312,9 +312,9 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
         return legend
     }
 
-    fun numFormat(data: Double?, digits: Int = mBaseKView.mBaseInit.digit()): String {
+    fun numFormat(data: Float?, digits: Int = mBaseKView.mBaseInit.digit()): String {
         if (data == null) return KViewConstant.VALUE_NULL_PLACEHOLDER
-        return XFormatUtil.globalFormat(data, digits)
+        return XFormatUtil.globalFormat(data.toDouble(), digits)
     }
 
 

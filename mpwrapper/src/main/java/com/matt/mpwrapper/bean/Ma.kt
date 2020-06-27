@@ -9,7 +9,7 @@ package com.matt.mpwrapper.bean
  */
 class Ma {
     //MA
-    var ma5: Double? = null
-    var ma10: Double? = null
-    var ma20: Double? = null
+    var ma5: Float? = null
+    var ma10: Float? = null
+    var ma20: Float? = null
 }

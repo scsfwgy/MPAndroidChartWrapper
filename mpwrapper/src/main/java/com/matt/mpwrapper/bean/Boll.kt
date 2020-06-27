@@ -7,9 +7,4 @@ package com.matt.mpwrapper.bean
  * 描 述 ：
  * ============================================================
  */
-class Boll {
-    //BOLL
-    var up: Double? = null
-    var mb: Double? = null
-    var dn: Double? = null
-}
+data class Boll(var up: Float?, var mb: Float?, var dn: Float?)
