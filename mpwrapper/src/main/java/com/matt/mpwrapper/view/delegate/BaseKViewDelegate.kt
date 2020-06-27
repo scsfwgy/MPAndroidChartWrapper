@@ -5,7 +5,6 @@ import androidx.annotation.ColorRes
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.Utils
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.KViewConstant
 import com.matt.mpwrapper.ktx.dip2px
@@ -115,11 +114,11 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             /**
              * 边距相关
              */
-            // TODO: 05/11/2018 具体干嘛的？？？
-            //setViewPortOffsets(dip2px(10.0f), dip2px(5.0f), dip2px(40.0f), dip2px(13.0f));
-            //设置外边距，相当于margin值
+            // 整个chat的外边距，相当于margin值
+            setViewPortOffsets(dip2px(10.0f), dip2px(5.0f), dip2px(40.0f), dip2px(13.0f))
+            //todo：干嘛的？
             setExtraOffsets(
-                Utils.convertDpToPixel(0.0f),
+                dip2px(0.0f),
                 dip2px(0.0f),
                 dip2px(0.0f),
                 dip2px(0.0f)
@@ -237,6 +236,8 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             //设置x轴上的值
             //将间隔限制为1（最小）
             //xAxis.setGranularity(1f);
+            //是否绘制x轴上的值
+            xAxis.setDrawLabels(false)
             //设置x轴上的值
             xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getAxisLabel(value: Float, axis: AxisBase): String {
@@ -320,13 +321,24 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
     }
 
 
-    fun setDataSetArrVisible(arr: Array<out LineDataSet>, visible: Boolean) {
+    fun setLineDataSetArrVisible(arr: Array<out LineDataSet>, visible: Boolean) {
         val lineData = mLineData
         arr.forEach {
             if (visible) {
                 if (!lineData.contains(it)) lineData.addDataSet(it)
             } else {
                 if (lineData.contains(it)) lineData.removeDataSet(it)
+            }
+        }
+    }
+
+    fun setBarDataSetArrVisible(arr: Array<out BarDataSet>, visible: Boolean) {
+        val barData = mBarData
+        arr.forEach {
+            if (visible) {
+                if (!barData.contains(it)) barData.addDataSet(it)
+            } else {
+                if (barData.contains(it)) barData.removeDataSet(it)
             }
         }
     }

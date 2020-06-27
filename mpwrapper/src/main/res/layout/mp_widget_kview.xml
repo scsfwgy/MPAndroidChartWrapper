@@ -9,7 +9,7 @@
         android:id="@+id/mwk_mv_master"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5" />
+        android:layout_weight="3" />
 
     <com.matt.mpwrapper.view.MinorView
         android:id="@+id/mwk_mv_minor"

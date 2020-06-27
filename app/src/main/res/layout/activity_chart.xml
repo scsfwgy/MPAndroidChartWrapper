@@ -30,7 +30,7 @@
     <LinearLayout
         android:id="@+id/ac_ll_bottomContainer"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="100dp"
         android:background="#03A9F4"
         android:gravity="center">
 

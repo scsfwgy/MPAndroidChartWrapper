@@ -228,11 +228,11 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
 
     fun setMaDataSetArrVisible(visible: Boolean) {
-        setDataSetArrVisible(mMaLineDataSetArr, visible)
+        setLineDataSetArrVisible(mMaLineDataSetArr, visible)
     }
 
     fun setBollDataSetArrVisible(visible: Boolean) {
-        setDataSetArrVisible(mBollLineDataSetArr, visible)
+        setLineDataSetArrVisible(mBollLineDataSetArr, visible)
     }
 
     fun getMaLegend(ma: Ma, press: Boolean): Array<LegendEntry> {

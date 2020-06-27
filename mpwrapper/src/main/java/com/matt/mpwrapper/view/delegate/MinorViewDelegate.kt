@@ -80,7 +80,7 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
             barDataSet.highLightColor = mBaseHighLightColor
             barDataSet.color = mMacdBarColorArr[index]
             barDataSet
-        }
+        }.toTypedArray()
     }
 
     val mMacdLineDataSetArr by lazy {
@@ -102,6 +102,55 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
             baseLineDataSet.color = mMacdColorArr[index]
             baseLineDataSet
         }.toTypedArray()
+    }
+
+    fun showIndicatorType(toNext: Boolean = false) {
+        if (toNext) {
+            mMinorIndicatorType = when (mMinorIndicatorType) {
+                MinorIndicatorType.MACD -> {
+                    MinorIndicatorType.KDJ
+                }
+                MinorIndicatorType.KDJ -> {
+                    MinorIndicatorType.RSI
+                }
+                MinorIndicatorType.RSI -> {
+                    MinorIndicatorType.MACD
+                }
+            }
+        }
+        val minorIndicatorType: MinorIndicatorType = mMinorIndicatorType
+        when {
+            minorIndicatorType === MinorIndicatorType.MACD -> {
+                setMacdDataSetArrVisible(true)
+                setKdjDataSetArrVisible(false)
+                setRsiDataSetArrVisible(false)
+            }
+            minorIndicatorType === MinorIndicatorType.KDJ -> {
+                setMacdDataSetArrVisible(false)
+                setKdjDataSetArrVisible(true)
+                setRsiDataSetArrVisible(false)
+            }
+            minorIndicatorType === MinorIndicatorType.RSI -> {
+                setMacdDataSetArrVisible(false)
+                setKdjDataSetArrVisible(false)
+                setRsiDataSetArrVisible(true)
+            }
+            else -> {
+                throw  IllegalArgumentException("MasterIndicatrixType 类型错误")
+            }
+        }
+    }
+
+    fun setMacdDataSetArrVisible(visible: Boolean) {
+        setLineDataSetArrVisible(mMacdLineDataSetArr, visible)
+        setBarDataSetArrVisible(mMacdBarDataSetArr, visible)
+    }
+
+    fun setKdjDataSetArrVisible(visible: Boolean) {
+    }
+
+    fun setRsiDataSetArrVisible(visible: Boolean) {
+
     }
 
 }
