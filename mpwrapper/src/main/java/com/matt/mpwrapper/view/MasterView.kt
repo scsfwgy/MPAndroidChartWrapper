@@ -101,5 +101,12 @@ class MasterView @JvmOverloads constructor(
             combinedData.setData(lineData)
         }
         setKViewData(combinedData, kViewDataList.size)
+
+        //设置高亮线
+        if (kViewDataList.size > 0) {
+            masterViewDelegate.showLegend(
+                kViewDataList[kViewDataList.size - 1].masterData, false
+            )
+        }
     }
 }

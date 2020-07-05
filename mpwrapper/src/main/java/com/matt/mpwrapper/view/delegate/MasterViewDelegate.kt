@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.Boll
 import com.matt.mpwrapper.bean.Ma
+import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
 import com.matt.mpwrapper.view.base.BaseLineDataSet
@@ -283,30 +284,40 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         }
     }
 
-    fun showLegend(ma: Ma?, boll: Boll?, press: Boolean) {
+    fun showLegend(masterData: MasterData?, press: Boolean) {
         val masterView = mMasterView
+        val masterViewType = mMasterViewType
+        val masterIndicatorType = mMasterIndicatorType
         val legend = generateLegend(masterView.legend)
-        val masterIndicatrixType = mMasterIndicatorType
-        if (ma == null ||
-            boll == null || mMasterViewType != MasterViewType.CANDLE ||
-            masterIndicatrixType == MasterIndicatorType.NONE
-        ) {
-            legend.isEnabled = false
-            return
-        }
-        legend.isEnabled = true
-        val legendEntryArr = when (masterIndicatrixType) {
-            MasterIndicatorType.MA -> {
-                getMaLegend(ma, press)
-            }
-            MasterIndicatorType.BOLL -> {
-                getBollLegend(boll, press)
-            }
-            else -> {
-                null
+        val unShowLegend =
+            masterViewType != MasterViewType.CANDLE || masterIndicatorType == MasterIndicatorType.NONE
+        val legendEntryArr = if (unShowLegend) {
+            null
+        } else {
+            when (masterIndicatorType) {
+                MasterIndicatorType.MA -> {
+                    val ma2 = masterData?.ma
+                    if (ma2 != null) {
+                        getMaLegend(ma2, press)
+                    } else {
+                        null
+                    }
+                }
+                MasterIndicatorType.BOLL -> {
+                    val boll2 = masterData?.boll
+                    if (boll2 != null) {
+                        getBollLegend(boll2, press)
+                    } else {
+                        null
+                    }
+                }
+                else -> {
+                    null
+                }
             }
         }
         if (legendEntryArr != null) {
+            legend.isEnabled = true
             legend.setCustom(legendEntryArr)
         } else {
             legend.isEnabled = false

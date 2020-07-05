@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.GsonUtils;
 
-import org.jetbrains.annotations.NotNull;
-
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -33,7 +31,7 @@ public abstract class AbstractRetrofitBuilder {
         return mRetrofit;
     }
 
-    @NotNull
+    @NonNull
     protected Retrofit createRetrofit() {
         return createBuilder().build();
     }

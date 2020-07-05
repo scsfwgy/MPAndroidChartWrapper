@@ -173,15 +173,15 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             /**
              * 图例、描述相关
              */
-            val lineChartLegend = legend
-            lineChartLegend.isEnabled = true
-            lineChartLegend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            lineChartLegend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-            lineChartLegend.orientation = Legend.LegendOrientation.HORIZONTAL
-            lineChartLegend.setDrawInside(true)
-            lineChartLegend.textSize = 8f
-            lineChartLegend.xOffset = 8f
-            lineChartLegend.yOffset = 18f
+            val legend = legend
+            legend.isEnabled = true
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+            legend.orientation = Legend.LegendOrientation.HORIZONTAL
+            legend.setDrawInside(true)
+            legend.textSize = 8f
+            legend.xOffset = 8f
+            legend.yOffset = 8f
             //注意重写了图例渲染器
             //mLegendRenderer = BaseLegendRenderer(mViewPortHandler, mLegend)
 
@@ -189,7 +189,7 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             val description =
                 Description()
             description.text = "hello,world"
-            description.isEnabled = false
+            description.isEnabled = true
             setDescription(description)
 
             /**
@@ -308,10 +308,6 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
     }
 
     fun generateLegend(legend: Legend): Legend {
-        legend.orientation = Legend.LegendOrientation.HORIZONTAL
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        legend.xOffset = 8f
-        legend.yOffset = 18f
         return legend
     }
 
