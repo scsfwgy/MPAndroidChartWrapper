@@ -6,7 +6,6 @@ import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.matt.mpwrapper.view.base.BaseKView
 import com.matt.mpwrapper.view.delegate.MasterViewDelegate
-import com.matt.mpwrapper.view.marker.MasterViewMarker
 import com.matt.mpwrapper.view.type.MasterViewType
 
 /**
@@ -33,11 +32,7 @@ class MasterView @JvmOverloads constructor(
     }
 
     private fun initMasterChart() {
-        //marker
-        val masterViewMarker = MasterViewMarker(this, mContext)
-        masterViewMarker.chartView = this
-        marker = masterViewMarker
-        setDrawMarkers(true)
+        mMasterViewDelegate.initMasterChart()
     }
 
     fun renderView() {
@@ -51,6 +46,7 @@ class MasterView @JvmOverloads constructor(
         val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->
             val p = kViewData.price ?: throw IllegalArgumentException("price字段为null,不允许为null")
+            //x轴采用下标索引
             val xValue = index.toFloat()
             val invalidData = FinancialAlgorithm.invalidData
             when (masterViewType) {
@@ -102,11 +98,7 @@ class MasterView @JvmOverloads constructor(
         }
         setKViewData(combinedData, kViewDataList.size)
 
-        //设置高亮线
-        if (kViewDataList.size > 0) {
-            masterViewDelegate.showLegend(
-                kViewDataList[kViewDataList.size - 1].masterData, false
-            )
-        }
+        //触发值未选择，进而触发未选择值对应的Legend
+        mSelectionListener.onNothingSelected()
     }
 }

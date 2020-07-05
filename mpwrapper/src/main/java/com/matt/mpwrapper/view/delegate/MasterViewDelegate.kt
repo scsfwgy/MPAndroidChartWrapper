@@ -10,6 +10,8 @@ import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.Boll
 import com.matt.mpwrapper.bean.Ma
@@ -17,6 +19,7 @@ import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
 import com.matt.mpwrapper.view.base.BaseLineDataSet
+import com.matt.mpwrapper.view.marker.MasterViewMarker
 import com.matt.mpwrapper.view.type.BollType
 import com.matt.mpwrapper.view.type.MaType
 import com.matt.mpwrapper.view.type.MasterIndicatorType
@@ -228,6 +231,32 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         arrayOf(bollup, bollmd, bollDn)
     }
 
+    fun initMasterChart() {
+        mMasterView.run {
+            //marker
+            val masterViewMarker = MasterViewMarker(this, mContext)
+            masterViewMarker.chartView = this
+            marker = masterViewMarker
+            setDrawMarkers(true)
+
+            setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onNothingSelected() {
+                    showLegend(
+                        getMasterDataByIndex(mBaseKView.mBaseInit.kViewDataList().size - 1),
+                        false
+                    )
+                }
+
+                override fun onValueSelected(e: Entry, h: Highlight) {
+                    //这样使用的前提是设置值的时候x轴是用的list的索引
+                    val index = e.x.toInt()
+                    showLegend(getMasterDataByIndex(index), true)
+                }
+
+            })
+        }
+    }
+
     fun setMaDataSetArrVisible(visible: Boolean) {
         setLineDataSetArrVisible(mMaLineDataSetArr, visible)
     }
@@ -354,7 +383,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
                 setBollDataSetArrVisible(true)
             }
             else -> {
-                throw  IllegalArgumentException("MasterIndicatrixType 类型错误")
+                throw  IllegalArgumentException("MasterIndicatorType 类型错误")
             }
         }
     }

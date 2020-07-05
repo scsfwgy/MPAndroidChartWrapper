@@ -7,6 +7,8 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.KViewConstant
+import com.matt.mpwrapper.bean.KViewData
+import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.ktx.dip2px
 import com.matt.mpwrapper.ktx.getColor
 import com.matt.mpwrapper.ktx.getDrawable
@@ -345,5 +347,15 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
 
     fun getDrawable(drawableId: Int): Drawable {
         return mBaseKView.getDrawable(drawableId)
+    }
+
+    fun getKViewDataListByIndex(index: Int): KViewData? {
+        val kViewDataList = mBaseKView.mBaseInit.kViewDataList()
+        if (index >= kViewDataList.size) return null
+        return kViewDataList[index]
+    }
+
+    fun getMasterDataByIndex(index: Int): MasterData? {
+        return getKViewDataListByIndex(index)?.masterData
     }
 }
