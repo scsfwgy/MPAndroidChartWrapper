@@ -4,6 +4,8 @@ import android.graphics.Matrix
 import android.view.MotionEvent
 import android.view.View
 import com.github.mikephil.charting.charts.BarLineChartBase
+import com.github.mikephil.charting.charts.Chart
+import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
@@ -109,6 +111,12 @@ open class BaseBarLineChartTouchListener(
 
     open fun triggerHighlight(e: MotionEvent, showHighlight: Boolean) {
         val chart = mChart
+        val followChart = getFollowChart()
+        //triggerHighlightByChart(chart, e, showHighlight)
+        triggerHighlightByChart(followChart, e, showHighlight)
+    }
+
+    fun triggerHighlightByChart(chart: CombinedChart, e: MotionEvent, showHighlight: Boolean) {
         if (showHighlight) {
             chart.isDragEnabled = false
             val highlightByTouchPoint = chart.getHighlightByTouchPoint(e.x, e.y)
@@ -116,6 +124,20 @@ open class BaseBarLineChartTouchListener(
         } else {
             chart.isDragEnabled = true
             chart.highlightValue(null, true)
+
+        }
+    }
+
+    private fun getFollowChart(): CombinedChart {
+        val chart = mChart
+        val onChartGestureListener = chart.onChartGestureListener
+        if (onChartGestureListener is LinkChartListener) {
+            return onChartGestureListener.getFollowChart()
+        } else {
+            throw IllegalArgumentException(
+                "onChartGestureListener类型错误，" +
+                        "LinkChartListener没有继承OnChartGestureListener实现联动。"
+            )
         }
     }
 
