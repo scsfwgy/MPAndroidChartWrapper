@@ -14,3 +14,6 @@
 3. 数据加载更多、ws接入
 4. 接入火币或者币安开源数据源
 5. demo样式按照火币或者币安样式绘制，保证一致性。
+
+## 效果图
+![k线竖屏](http://ww1.sinaimg.cn/large/eaf851b6gy1ggna8ia27dj20t41fqgue.jpg)
