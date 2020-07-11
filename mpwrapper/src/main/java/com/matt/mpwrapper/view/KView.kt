@@ -44,7 +44,7 @@ class KView @JvmOverloads constructor(
     }
 
     /**
-     * 全局单例数据集合，不允许重新指向、不允许设置为null。所以数据操作都会基于这个list.
+     * 全局单例数据集合，不允许重新指向、不允许设置为null。所有数据操作都会基于这个list.
      */
     val mKViewDataList: MutableList<KViewData> by lazy {
         ArrayList<KViewData>()

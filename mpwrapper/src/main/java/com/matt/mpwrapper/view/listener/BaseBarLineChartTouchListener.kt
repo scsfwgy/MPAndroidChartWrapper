@@ -4,7 +4,6 @@ import android.graphics.Matrix
 import android.view.MotionEvent
 import android.view.View
 import com.github.mikephil.charting.charts.BarLineChartBase
-import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
 import com.github.mikephil.charting.data.Entry
@@ -111,8 +110,11 @@ open class BaseBarLineChartTouchListener(
 
     open fun triggerHighlight(e: MotionEvent, showHighlight: Boolean) {
         val chart = mChart
+        if (chart !is CombinedChart) {
+            throw IllegalArgumentException("BaseBarLineChartTouchListener只允许用在CombinedChart中，请检查")
+        }
         val followChart = getFollowChart()
-        //triggerHighlightByChart(chart, e, showHighlight)
+        triggerHighlightByChart(chart, e, showHighlight)
         triggerHighlightByChart(followChart, e, showHighlight)
     }
 

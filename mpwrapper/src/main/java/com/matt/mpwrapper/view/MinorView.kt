@@ -2,11 +2,8 @@ package com.matt.mpwrapper.view
 
 import android.content.Context
 import android.util.AttributeSet
-import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.formatter.ValueFormatter
-import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.view.base.BaseKView
 import com.matt.mpwrapper.view.delegate.MinorViewDelegate
 
@@ -28,30 +25,12 @@ class MinorView @JvmOverloads constructor(
     }
 
     init {
-        initMinorChart()
-    }
-
-    fun initMinorChart() {
-        axisRight.setLabelCount(3, true)
-
-        xAxis.setDrawLabels(true)
-        xAxis.valueFormatter = object : ValueFormatter() {
-            override fun getAxisLabel(value: Float, axis: AxisBase): String {
-                val kViewData = mBaseInit.kViewDataList()
-                val valueInt = value.toInt()
-                val size = kViewData.size
-                val index = if (valueInt < size) valueInt else size - 1
-                val price = kViewData[index].price
-                    ?: throw IllegalArgumentException("price字段为null,不允许为null")
-                return TimeUtils.millis2String(price.t, TimeUtils.getFormat("HH:mm:ss"))
-            }
-        }
+        mMinorViewDelegate.initMinorChart()
     }
 
     fun renderView() {
         val invalidData = FinancialAlgorithm.invalidData
         val minorViewDelegate = mMinorViewDelegate
-        val minorIndicatorType = minorViewDelegate.mMinorIndicatorType
         val combinedData = minorViewDelegate.mCombinedData
         val lineData = minorViewDelegate.mLineData
         val barData = minorViewDelegate.mBarData
@@ -120,5 +99,8 @@ class MinorView @JvmOverloads constructor(
         combinedData.setData(lineData)
         combinedData.setData(barData)
         setKViewData(combinedData, kViewDataList.size)
+
+        //触发值未选择，进而触发未选择值对应的Legend
+        mSelectionListener.onNothingSelected()
     }
 }

@@ -2,7 +2,6 @@ package com.matt.mpwrapper.view.delegate
 
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.YAxis
@@ -275,11 +274,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
                 generateLegendEntry(mMasterViewMa20Color, "MA20 " + numFormat(ma.ma20))
             arrayOf(ma5, ma10, ma20)
         } else {
-            val legendEntry = LegendEntry()
-            legendEntry.label = "MA(5,10,20)"
-            legendEntry.formColor = mBaseNoPressColor
-            legendEntry.form = Legend.LegendForm.NONE
-            arrayOf(legendEntry)
+            getUnPressLegend("MA(5,10,20)")
         }
     }
 
@@ -304,11 +299,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
                 return arrayOf(up, md, dn)
             }
             else -> {
-                val legendEntry = LegendEntry()
-                legendEntry.label = "BOLL(26)"
-                legendEntry.formColor = mBaseNoPressColor
-                legendEntry.form = Legend.LegendForm.NONE
-                return arrayOf(legendEntry)
+                return getUnPressLegend("BOLL(26)")
             }
         }
     }

@@ -22,7 +22,7 @@ class BaseCombinedChartRenderer(
     animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
 ) : CombinedChartRenderer(chart, animator, viewPortHandler) {
-    private var mDrawLineRenderLastCircle = true
+    private var mDrawLineRenderLastCircle = false
 
     /**
      * 重写这个方法主要为了重写内部子渲染器

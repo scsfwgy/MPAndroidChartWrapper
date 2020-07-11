@@ -9,6 +9,7 @@ import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.KViewConstant
 import com.matt.mpwrapper.bean.KViewData
 import com.matt.mpwrapper.bean.MasterData
+import com.matt.mpwrapper.bean.MinorData
 import com.matt.mpwrapper.ktx.dip2px
 import com.matt.mpwrapper.ktx.getColor
 import com.matt.mpwrapper.ktx.getDrawable
@@ -166,6 +167,8 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             //敲击显示高亮线
             isHighlightPerTapEnabled = false
 
+            setDrawMarkers(true)
+
 
             //监听所有事件
             onTouchListener =
@@ -191,7 +194,7 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
             val description =
                 Description()
             description.text = "hello,world"
-            description.isEnabled = true
+            description.isEnabled = false
             setDescription(description)
 
             /**
@@ -357,5 +360,17 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
 
     fun getMasterDataByIndex(index: Int): MasterData? {
         return getKViewDataListByIndex(index)?.masterData
+    }
+
+    fun getMinorDataByIndex(index: Int): MinorData? {
+        return getKViewDataListByIndex(index)?.minorData
+    }
+
+    fun getUnPressLegend(label: String): Array<LegendEntry> {
+        val legendEntry = LegendEntry()
+        legendEntry.label = label
+        legendEntry.formColor = mBaseNoPressColor
+        legendEntry.form = Legend.LegendForm.NONE
+        return arrayOf(legendEntry)
     }
 }

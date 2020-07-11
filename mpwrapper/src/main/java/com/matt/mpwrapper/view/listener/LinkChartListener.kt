@@ -36,7 +36,7 @@ class LinkChartListener(
             0f
         }
 
-        //followMatrix.getValues(followValue)
+        followMatrix.getValues(followValue)
 
         masterValue.forEachIndexed { index, fl ->
             followValue[index] = fl

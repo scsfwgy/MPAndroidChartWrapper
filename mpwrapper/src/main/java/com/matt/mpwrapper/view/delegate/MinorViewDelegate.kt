@@ -1,10 +1,20 @@
 package com.matt.mpwrapper.view.delegate
 
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.matt.mpwrapper.R
+import com.matt.mpwrapper.bean.Kdj
+import com.matt.mpwrapper.bean.Macd
+import com.matt.mpwrapper.bean.MinorData
+import com.matt.mpwrapper.bean.Rsi
+import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.view.MinorView
 import com.matt.mpwrapper.view.base.BaseLineDataSet
 import com.matt.mpwrapper.view.type.KdjType
@@ -153,6 +163,118 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
             baseLineDataSet
         }.toTypedArray()
     }
+
+    fun initMinorChart() {
+        mMinorView.run {
+            axisRight.setLabelCount(3, true)
+
+            xAxis.setDrawLabels(true)
+            xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getAxisLabel(value: Float, axis: AxisBase): String {
+                    val kViewData = mBaseInit.kViewDataList()
+                    val valueInt = value.toInt()
+                    val size = kViewData.size
+                    val index = if (valueInt < size) valueInt else size - 1
+                    val price = kViewData[index].price
+                        ?: throw IllegalArgumentException("price字段为null,不允许为null")
+                    return TimeUtils.millis2String(price.t, TimeUtils.getFormat("HH:mm:ss"))
+                }
+            }
+
+            setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onNothingSelected() {
+                    showLegend(
+                        getMinorDataByIndex(mBaseKView.mBaseInit.kViewDataList().size - 1),
+                        false
+                    )
+                }
+
+                override fun onValueSelected(e: Entry, h: Highlight) {
+                    //这样使用的前提是设置值的时候x轴是用的list的索引
+                    val index = e.x.toInt()
+                    showLegend(getMinorDataByIndex(index), true)
+                }
+
+            })
+        }
+    }
+
+    fun showLegend(minorData: MinorData?, press: Boolean) {
+        val minorView = mMinorView
+        val minorIndicatorType = mMinorIndicatorType
+        val legend = generateLegend(minorView.legend)
+        val legendEntryArr = when (minorIndicatorType) {
+            MinorIndicatorType.MACD -> {
+                val macd = minorData?.macd
+                if (macd != null) {
+                    getMacdaLegend(macd, press)
+                } else {
+                    null
+                }
+            }
+            MinorIndicatorType.RSI -> {
+                val rsi = minorData?.rsi
+                if (rsi != null) {
+                    getRsiLegend(rsi, press)
+                } else {
+                    null
+                }
+            }
+            MinorIndicatorType.KDJ -> {
+                val kdj = minorData?.kdj
+                if (kdj != null) {
+                    getKdjLegend(kdj, press)
+                } else {
+                    null
+                }
+            }
+        }
+        legend.isEnabled = true
+        legend.setCustom(legendEntryArr)
+        minorView.legendRenderer.computeLegend(mBaseKView.data)
+    }
+
+    fun getMacdaLegend(macd: Macd, press: Boolean): Array<LegendEntry> {
+        val macd1 = macd.macd
+        return if (press) {
+            val dif =
+                generateLegendEntry(mMacdColorArr[0], "DIF " + numFormat(macd.dif))
+            val dea = generateLegendEntry(mMacdColorArr[1], "DEA " + numFormat(macd.dea))
+            val mixMacd =
+                generateLegendEntry(
+                    if (macd1 > 0) mMacdBarColorArr[0] else mMacdBarColorArr[1],
+                    "MACD " + numFormat(macd1)
+                )
+            arrayOf(dif, dea, mixMacd)
+        } else {
+            getUnPressLegend("MACD(12,26,9)")
+        }
+    }
+
+    private fun getRsiLegend(rsi: Rsi, press: Boolean): Array<LegendEntry> {
+        return if (press) {
+            val k =
+                generateLegendEntry(mRsiColorArr[0], "RSI6 " + numFormat(rsi.rsi6))
+            val d = generateLegendEntry(mRsiColorArr[1], "RSI12 " + numFormat(rsi.rsi12))
+            val j = generateLegendEntry(mRsiColorArr[2], "RSI24 " + numFormat(rsi.rsi24))
+            arrayOf(k, d, j)
+        } else {
+            getUnPressLegend("RSI(6,12,24)")
+        }
+    }
+
+    private fun getKdjLegend(kdj: Kdj, press: Boolean): Array<LegendEntry> {
+        return if (press) {
+            val k =
+                generateLegendEntry(mKdjColorArr[0], "K " + numFormat(kdj.k))
+            val d = generateLegendEntry(mKdjColorArr[1], "D " + numFormat(kdj.d))
+            val j = generateLegendEntry(mKdjColorArr[2], "J " + numFormat(kdj.j))
+            arrayOf(k, d, j)
+        } else {
+            getUnPressLegend("KDJ(9,3,3)")
+        }
+    }
+
 
     fun showIndicatorType(toNext: Boolean = false) {
         if (toNext) {
