@@ -16,5 +16,5 @@
 5. demo样式按照火币或者币安样式绘制，保证一致性。
 
 ## 效果图
-![kview_竖屏_默认.png](https://ws1.sinaimg.cn/mw690/eaf851b6gy1ggocniyfbaj20jm0yi0wi.jpg)
-![kview_竖屏_高亮线.png](https://ws1.sinaimg.cn/mw690/eaf851b6gy1ggocnixmlej20jo0yitdc.jpg)
+![kview_竖屏_高亮线.png](http://ww1.sinaimg.cn/mw690/eaf851b6gy1ggocx3tjfmj20jo0yitdc.jpg)
+![kview_竖屏_默认.png](http://ww1.sinaimg.cn/mw690/eaf851b6gy1ggocx3x24mj20jm0yi0wi.jpg)
