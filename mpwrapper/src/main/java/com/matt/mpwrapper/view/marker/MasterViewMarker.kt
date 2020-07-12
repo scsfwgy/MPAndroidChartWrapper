@@ -1,5 +1,6 @@
 package com.matt.mpwrapper.view.marker
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -8,14 +9,17 @@ import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.components.MarkerView
+import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.utils.ScreenUtils
 import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
+import kotlinx.android.synthetic.main.markerview_k_view_shell.view.*
 
 /**
  * ============================================================
@@ -26,12 +30,19 @@ import com.matt.mpwrapper.view.MasterView
  * 现在自定义其在x轴内侧显示x的数值，在y轴外侧显示y轴数值。
  * ============================================================
  */
-class MasterViewMarker(private val mMasterView: MasterView, val mContext: Context, val digit: Int) :
+@SuppressLint("ViewConstructor")
+open class MasterViewMarker(
+    private val mMasterView: MasterView,
+    val mContext: Context,
+    val digit: Int
+) :
     MarkerView(mContext, R.layout.markerview_k_view_shell) {
 
     companion object {
         const val TAG = "BaseKViewMarker"
     }
+
+    private val mOffset3 = MPPointF()
 
     //绘制背景
     val mMpTxtColor by lazy {
@@ -59,20 +70,71 @@ class MasterViewMarker(private val mMasterView: MasterView, val mContext: Contex
     override fun refreshContent(e: Entry, highlight: Highlight) {
         super.refreshContent(e, highlight)
         mEntry = e
+
+        if (e is CandleEntry) {
+            tch_tv_time.text = TimeUtils.millis2String(e.x.toLong())
+            tch_tv_open.text = XFormatUtil.globalFormat(e.open.toString(), digit)
+            tch_tv_high.text = XFormatUtil.globalFormat(e.high.toString(), digit)
+            tch_tv_low.text = XFormatUtil.globalFormat(e.low.toString(), digit)
+            tch_tv_close.text = XFormatUtil.globalFormat(e.close.toString(), digit)
+            tch_tv_amount.text = XFormatUtil.globalFormat(e.open.toString(), digit)
+            tch_tv_amountRate.text = XFormatUtil.globalFormat(e.open.toString(), digit)
+        }
+
     }
 
     /**
-     * posX、posY就是十字高亮的十字交叉点
+     * 自定义Entry的MarkerView的位置
+     */
+    override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): MPPointF {
+        val masterViewRectF = masterViewRectF()
+        val chartWidth = masterViewRectF.right - masterViewRectF.left
+        val markViewWidth = width
+        val xOffset = ScreenUtils.dip2px(4f)
+        val yOffset = ScreenUtils.dip2px(14f)
+
+        val offset3 = mOffset3
+        offset3.x = offset.x
+        offset3.y = offset.y
+
+        offset3.x = if (posX > chartWidth / 2f) {
+            0f + masterViewRectF.left + xOffset
+        } else {
+            masterViewRectF.right - markViewWidth - xOffset
+        }
+        offset3.y = 0f + masterViewRectF.top + yOffset
+
+        return offset3
+    }
+
+    /**
+     * 自定义x、y轴上高亮线文字
      *
      * @param canvas
      * @param posX
      * @param posY
      */
     override fun draw(canvas: Canvas, posX: Float, posY: Float) {
-        super.draw(canvas, posX, posY)
+        //super.draw(canvas, posX, posY)
         Log.d(TAG, "draw: $posX,$posY")
         drawXMarker(canvas, posX)
         drawYMarker(canvas, posY)
+        //绘制长按点的entry详情
+        drawEntryMarker(posX, posY, canvas)
+    }
+
+    open fun drawEntryMarker(
+        posX: Float,
+        posY: Float,
+        canvas: Canvas
+    ) {
+        val offset = getOffsetForDrawingAtPoint(posX, posY)
+
+        val saveId = canvas.save()
+        // translate to the correct position and draw
+        canvas.translate(offset.x, offset.y)
+        draw(canvas)
+        canvas.restoreToCount(saveId)
     }
 
     /**
@@ -82,7 +144,7 @@ class MasterViewMarker(private val mMasterView: MasterView, val mContext: Contex
      * @param posX
      * @param posY
      */
-    private fun drawYMarker(canvas: Canvas, posY: Float) {
+    open fun drawYMarker(canvas: Canvas, posY: Float) {
         val entry = mEntry ?: return
         val contentRect = masterViewRectF()
         val txt = XFormatUtil.globalFormat(entry.y.toString(), digit)
@@ -110,7 +172,7 @@ class MasterViewMarker(private val mMasterView: MasterView, val mContext: Contex
      * @param canvas
      * @param posX
      */
-    private fun drawXMarker(canvas: Canvas, posX: Float) {
+    open fun drawXMarker(canvas: Canvas, posX: Float) {
         val contentRect = masterViewRectF()
         val txt =
             TimeUtils.millis2String(posX.toLong())

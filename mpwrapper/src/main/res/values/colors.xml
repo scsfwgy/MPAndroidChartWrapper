@@ -27,7 +27,7 @@
 
     <!--marker-->
     <color name="mp_marker_txtColor">#ffffff</color>
-    <color name="mp_marker_bgColor">#8a8a8b</color>
+    <color name="mp_marker_bgColor">#CC000000</color>
     <color name="mp_marker_bgLimitColor">#ed3820</color>
     <color name="mp_marker_txtLimitColor">#ffffff</color>
 
