@@ -1,14 +1,10 @@
 package com.matt.mpwrapper.view.delegate
 
-import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.matt.mpwrapper.R
@@ -17,7 +13,8 @@ import com.matt.mpwrapper.bean.Ma
 import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
-import com.matt.mpwrapper.view.base.BaseLineDataSet
+import com.matt.mpwrapper.view.data.BaseCandleDataSet
+import com.matt.mpwrapper.view.data.BaseLineDataSet
 import com.matt.mpwrapper.view.marker.MasterViewMarker
 import com.matt.mpwrapper.view.type.BollType
 import com.matt.mpwrapper.view.type.MaType
@@ -125,90 +122,65 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
 
     val mTimeSharingDataSet by lazy {
         val timeSharingDataSet =
-            BaseLineDataSet(mTimeSharingEntryList, MasterViewType.TIMESHARING.toString())
-        /**
-         * 设置单个蜡烛图value的值，一般都设置不显示
-         */
-        //设置单个蜡烛文字
-        timeSharingDataSet.valueTextSize = 10.0f
-        timeSharingDataSet.setDrawValues(false)
+            BaseLineDataSet(
+                mTimeSharingEntryList,
+                MasterViewType.TIMESHARING.toString()
+            )
 
         /**
          * 线涨跌相关设置
          */
         //模式
-        timeSharingDataSet.mode = LineDataSet.Mode.LINEAR
         timeSharingDataSet.color = mMasterTimeSharingColor
-        timeSharingDataSet.lineWidth = 1f
         timeSharingDataSet.fillDrawable = mMasterTimeSharingFillDrawable
         //是否允许被填充，默认false
         timeSharingDataSet.setDrawFilled(true)
-        /**
-         * 绘制小圆点
-         */
-        timeSharingDataSet.setDrawCircles(false)
-        timeSharingDataSet.setDrawCircleHole(false)
-        timeSharingDataSet.circleRadius = 3f
 
         //长按高亮十字线
         timeSharingDataSet.isHighlightEnabled = true
         timeSharingDataSet.highLightColor = mBaseHighLightColor
-        timeSharingDataSet.highlightLineWidth = 0.5f
         //是否显示指示线
         timeSharingDataSet.setDrawHighlightIndicators(true)
-        timeSharingDataSet.setDrawHorizontalHighlightIndicator(true)
-        timeSharingDataSet.setDrawVerticalHighlightIndicator(true)
 
         timeSharingDataSet
     }
 
     val mCandleDataSet by lazy {
-        val candleDataSet = CandleDataSet(mCandleEntryList, MasterViewType.CANDLE.toString())
-        candleDataSet.setDrawIcons(false)
-        candleDataSet.axisDependency = YAxis.AxisDependency.LEFT
-
-        //Shadow：就是单个蜡烛图中间的线
-        candleDataSet.shadowWidth = 1f
-        //设置shadow和蜡烛图颜色一致
-        candleDataSet.shadowColorSameAsCandle = true
-
-        /**
-         * 设置单个蜡烛图value的值，一般都设置不显示
-         */
-        //设置单个蜡烛文字
-        candleDataSet.valueTextSize = 10f
-        candleDataSet.setDrawValues(false)
-
+        val candleDataSet = BaseCandleDataSet(mCandleEntryList, MasterViewType.CANDLE.toString())
         /**
          * 蜡烛图涨跌相关设置
          */
         //设置跌颜色
         candleDataSet.decreasingColor = mDownColor
-        candleDataSet.decreasingPaintStyle = Paint.Style.FILL
         //设置涨颜色
         candleDataSet.increasingColor = mUpColor
-        candleDataSet.increasingPaintStyle = Paint.Style.FILL
         //设置当收盘价和开盘价一样
         candleDataSet.neutralColor = mBaseEqualColor
 
         //长按高亮十字线
         candleDataSet.isHighlightEnabled = true
         candleDataSet.highLightColor = mBaseHighLightColor
-        candleDataSet.highlightLineWidth = 0.5f
         //是否显示指示线
         candleDataSet.setDrawHighlightIndicators(true)
-        candleDataSet.setDrawHorizontalHighlightIndicator(true)
-        candleDataSet.setDrawVerticalHighlightIndicator(true)
 
         candleDataSet
     }
 
     val mMaLineDataSetArr by lazy {
-        val ma5 = BaseLineDataSet(mMa5EntryList, MaType.MA5.toString())
+        val ma5 = BaseLineDataSet(
+            mMa5EntryList,
+            MaType.MA5.toString()
+        )
         ma5.color = mMasterViewMa5Color
-        val ma10 = BaseLineDataSet(mMa10EntryList, MaType.MA10.toString())
+        val ma10 = BaseLineDataSet(
+            mMa10EntryList,
+            MaType.MA10.toString()
+        )
         ma10.color = mMasterViewMa10Color
-        val ma20 = BaseLineDataSet(mMa20EntryList, MaType.MA20.toString())
+        val ma20 = BaseLineDataSet(
+            mMa20EntryList,
+            MaType.MA20.toString()
+        )
         ma20.color = mMasterViewMa20Color
         val arrayOf = arrayOf(ma5, ma10, ma20)
         arrayOf.forEach {
@@ -218,13 +190,22 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
 
     val mBollLineDataSetArr by lazy {
-        val bollup = BaseLineDataSet(mBollUpEntryList, BollType.UP.toString())
+        val bollup = BaseLineDataSet(
+            mBollUpEntryList,
+            BollType.UP.toString()
+        )
         bollup.color = mMasterViewBollUpColor
 
-        val bollmd = BaseLineDataSet(mBollMbEntryList, BollType.MD.toString())
+        val bollmd = BaseLineDataSet(
+            mBollMbEntryList,
+            BollType.MD.toString()
+        )
         bollmd.color = mMasterViewBollMdColor
 
-        val bollDn = BaseLineDataSet(mBollDnEntryList, BollType.DN.toString())
+        val bollDn = BaseLineDataSet(
+            mBollDnEntryList,
+            BollType.DN.toString()
+        )
         bollDn.color = mMasterViewBollDnColor
 
         arrayOf(bollup, bollmd, bollDn)

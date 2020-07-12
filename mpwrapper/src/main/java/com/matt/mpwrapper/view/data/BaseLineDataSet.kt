@@ -1,4 +1,4 @@
-package com.matt.mpwrapper.view.base
+package com.matt.mpwrapper.view.data
 
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -21,7 +21,6 @@ class BaseLineDataSet(
     }
 
     private fun initAttrs() {
-        //setDrawIcons(false);
         axisDependency = YAxis.AxisDependency.RIGHT
         /**
          * 设置单个蜡烛图value的值，一般都设置不显示
@@ -29,19 +28,25 @@ class BaseLineDataSet(
         //设置单个蜡烛文字
         valueTextSize = 10f
         setDrawValues(false)
+        setDrawIcons(false)
         /**
          * 线涨跌相关设置
          */
         //模式
         mode = Mode.LINEAR
         setDrawCircles(false)
+        setDrawCircleHole(false)
+        circleRadius = 3f
+        circleHoleRadius = 1f
         lineWidth = 0.75f
         //长按高亮十字线
         isHighlightEnabled = false
         highlightLineWidth = 0.5f
-        //是否显示指示线
+        //设置x、y轴指示器
         setDrawHighlightIndicators(false)
+        //设置x轴指示器
         setDrawHorizontalHighlightIndicator(false)
-        setDrawVerticalHighlightIndicator(false)
+        //设置y轴指示器
+        setDrawVerticalHighlightIndicator(true)
     }
 }

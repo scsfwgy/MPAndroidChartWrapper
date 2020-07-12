@@ -40,6 +40,9 @@ class MinorView @JvmOverloads constructor(
                 kViewData.minorData ?: throw IllegalArgumentException("minorData字段为null,不允许为null")
             val xValue = index.toFloat()
 
+            //展示高亮线的
+            minorViewDelegate.mShowHighlightEntryList.add(Entry(xValue, 0f))
+
             val macd = minorData.macd
             if (macd != null) {
                 val dif = macd.dif

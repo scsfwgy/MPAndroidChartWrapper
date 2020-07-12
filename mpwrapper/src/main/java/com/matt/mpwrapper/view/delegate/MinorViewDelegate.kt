@@ -1,9 +1,8 @@
 package com.matt.mpwrapper.view.delegate
 
+import android.graphics.Color
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LegendEntry
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
@@ -16,7 +15,8 @@ import com.matt.mpwrapper.bean.MinorData
 import com.matt.mpwrapper.bean.Rsi
 import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.view.MinorView
-import com.matt.mpwrapper.view.base.BaseLineDataSet
+import com.matt.mpwrapper.view.data.BaseBarDataSet
+import com.matt.mpwrapper.view.data.BaseLineDataSet
 import com.matt.mpwrapper.view.type.KdjType
 import com.matt.mpwrapper.view.type.MacdType
 import com.matt.mpwrapper.view.type.MinorIndicatorType
@@ -66,6 +66,10 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
         )
     }
 
+    val mShowHighlightEntryList by lazy {
+        ArrayList<Entry>()
+    }
+
     val mMacdBarEntryListArr: Array<out MutableList<BarEntry>> by lazy {
         arrayOf(ArrayList<BarEntry>(), ArrayList<BarEntry>())
     }
@@ -82,14 +86,20 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
         arrayOf(ArrayList<Entry>(), ArrayList(), ArrayList())
     }
 
+    val mShowHighlightLineData by lazy {
+        val baseLineDataSet = BaseLineDataSet(
+            mShowHighlightEntryList,
+            "show line"
+        )
+        baseLineDataSet.isHighlightEnabled = true
+        baseLineDataSet.highLightColor = mBaseHighLightColor
+        baseLineDataSet.color = Color.TRANSPARENT
+        baseLineDataSet
+    }
+
     val mMacdBarDataSetArr by lazy {
         mMacdBarEntryListArr.mapIndexed { index, mutableList ->
-            val barDataSet =
-                BarDataSet(mutableList, MacdType.MACD.toString() + index)
-            barDataSet.setDrawValues(false)
-            barDataSet.setDrawIcons(false)
-            barDataSet.axisDependency = YAxis.AxisDependency.LEFT
-            barDataSet.highLightColor = mBaseHighLightColor
+            val barDataSet = BaseBarDataSet(mutableList, MacdType.MACD.toString() + index)
             barDataSet.color = mMacdBarColorArr[index]
             barDataSet
         }.toTypedArray()
@@ -290,6 +300,9 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
                 }
             }
         }
+        //默认高亮线对应的line一定要显示
+        setLineDataSetArrVisible(arrayOf(mShowHighlightLineData), true)
+
         val minorIndicatorType: MinorIndicatorType = mMinorIndicatorType
         when {
             minorIndicatorType === MinorIndicatorType.MACD -> {
