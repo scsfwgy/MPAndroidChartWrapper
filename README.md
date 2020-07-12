@@ -9,11 +9,12 @@
 4. 主副图联动、点击切换主图、副图指标
 
 ## TODO
-1. 副图长按高亮线有问题
+1. 校验指标算法是否正确；指标算法支持单独算指定个数，而非全部遍历。
 2. 量图相关绘制
 3. 数据加载更多、ws接入
 4. 接入火币或者币安开源数据源
 5. demo样式按照火币或者币安样式绘制，保证一致性。
 
 ## 效果图
-![k线竖屏](http://ww1.sinaimg.cn/large/eaf851b6gy1ggna8ia27dj20t41fqgue.jpg)
+![kview_竖屏_默认.png](https://ws1.sinaimg.cn/mw690/eaf851b6gy1ggocniyfbaj20jm0yi0wi.jpg)
+![kview_竖屏_高亮线.png](https://ws1.sinaimg.cn/mw690/eaf851b6gy1ggocnixmlej20jo0yitdc.jpg)
