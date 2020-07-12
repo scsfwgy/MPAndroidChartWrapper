@@ -1,7 +1,6 @@
 package com.matt.mpwrapper.utils
 
 import java.math.BigDecimal
-import kotlin.math.abs
 
 
 object XFormatUtil {
@@ -58,81 +57,6 @@ object XFormatUtil {
         return num
     }
 
-    fun globalFormatL1(number: String?): String {
-        val toDouble = NumberUtils.toDouble(number)
-        return globalFormatL1(toDouble)
-    }
-
-    /**
-     * 数字格式化：一级标题，列表数据显示用、报表等
-     */
-    fun globalFormatL1(number: Double): String {
-        if (number == 0.0) return DEF_GLOBAL_FORMAT
-        val temp = abs(number)
-        return when {
-            temp >= 1000 * 1000 * 1000 -> { //显示:xxxB
-                double2BigDecimalByScaleToString(
-
-                    number / 1000.0 / 1000.0 / 1000.0, 2
-                ) + "B" //十亿
-            }
-            temp >= 1000 * 1000 -> { //显示:xxxM
-                double2BigDecimalByScaleToString(
-
-                    number / 1000.0 / 1000.0, 2
-                ) + "M" //百万
-            }
-            temp >= 1000 -> { //显示:xxxK
-                double2BigDecimalByScaleToString(
-
-                    number / 1000.0, 2
-                ) + "K" //千
-            }
-            temp > 1 -> { //显示:xxx.xx
-                double2BigDecimalByScaleToString(number, 0)
-            }
-            temp > 0 -> { //显示:xxx.xxxx
-                double2BigDecimalByScaleToString(number, 2)
-            }
-            else -> {
-                double2BigDecimalByScaleToString(number, 2)
-            }
-        }
-    }
-
-    fun globalFormatL2(number: String?): String {
-        val toDouble = NumberUtils.toDouble(number)
-        return globalFormatL2(toDouble)
-    }
-
-    /**
-     * 数字格式化：二级标题。主要用于单个数值的显示的时候用。大部分显示都用这个。
-     */
-    fun globalFormatL2(number: Double): String {
-        if (number == 0.0) return DEF_GLOBAL_FORMAT
-        val temp = abs(number)
-        val result = when {
-            temp >= 1000 * 1000 * 1000 -> { //显示:xxxB
-                double2BigDecimalByScaleToString(number, 0) //十亿
-            }
-            temp >= 1000 * 1000 -> { //显示:xxxM
-                double2BigDecimalByScaleToString(number, 0) //百万
-            }
-            temp >= 1000 -> { //显示:xxxK
-                double2BigDecimalByScaleToString(number, 2) //千
-            }
-            temp > 1 -> { //显示:xxx.xx
-                double2BigDecimalByScaleToString(number, 5)
-            }
-            temp > 0 -> { //显示:xxx.xxxx
-                double2BigDecimalByScaleToString(number, 6)
-            }
-            else -> {
-                double2BigDecimalByScaleToString(number, 6)
-            }
-        }
-        return subNumberLengthByScale(result, 9)
-    }
 
     /**
      * 数字格式化：自定义精度

@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.Utils
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.utils.ScreenUtils
 import com.matt.mpwrapper.utils.TimeUtils
+import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
 
 /**
@@ -25,41 +26,39 @@ import com.matt.mpwrapper.view.MasterView
  * 现在自定义其在x轴内侧显示x的数值，在y轴外侧显示y轴数值。
  * ============================================================
  */
-class MasterViewMarker(private val mMasterView: MasterView, val mContext: Context) :
+class MasterViewMarker(private val mMasterView: MasterView, val mContext: Context, val digit: Int) :
     MarkerView(mContext, R.layout.markerview_k_view_shell) {
 
+    companion object {
+        const val TAG = "BaseKViewMarker"
+    }
+
     //绘制背景
-    private var mMpTxtColor = 0
-    private var mMpTxtPaint: Paint? = null
-    private var mMpBgColor = 0
-    private var mMpBgPaint: Paint? = null
+    val mMpTxtColor by lazy {
+        colorResId(R.color.mp_marker_txtColor)
+    }
+    val mMpTxtPaint: Paint by lazy {
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.textSize = ScreenUtils.dip2px(8f).toFloat()
+        paint.color = mMpTxtColor
+        paint
+    }
+    val mMpBgColor by lazy {
+        colorResId(R.color.mp_marker_bgColor)
+    }
+    val mMpBgPaint: Paint by lazy {
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.color = mMpBgColor
+        paint
+    }
 
     //背景的圆角
     private val mRadius = ScreenUtils.dip2px(2f)
     private var mEntry: Entry? = null
-    private fun initPaint() {
-        mMpTxtPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mMpTxtPaint!!.textSize = ScreenUtils.dip2px(8f).toFloat()
-        mMpTxtPaint!!.color = mMpTxtColor
-        mMpBgPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mMpBgPaint!!.color = mMpBgColor
-    }
 
-    private fun initAttrs() {
-        mMpTxtColor = colorResId(R.color.mp_marker_txtColor)
-        mMpBgColor = colorResId(R.color.mp_marker_bgColor)
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-    }
-
-    override fun refreshContent(
-        e: Entry,
-        highlight: Highlight
-    ) {
-        mEntry = e
+    override fun refreshContent(e: Entry, highlight: Highlight) {
         super.refreshContent(e, highlight)
+        mEntry = e
     }
 
     /**
@@ -69,17 +68,11 @@ class MasterViewMarker(private val mMasterView: MasterView, val mContext: Contex
      * @param posX
      * @param posY
      */
-    override fun draw(
-        canvas: Canvas,
-        posX: Float,
-        posY: Float
-    ) {
+    override fun draw(canvas: Canvas, posX: Float, posY: Float) {
         super.draw(canvas, posX, posY)
         Log.d(TAG, "draw: $posX,$posY")
-        val chartView = chartView ?: return
-        if (mEntry == null) return
-        drawXMarker(canvas, posX, posY)
-        drawYMarker(canvas, posX, posY)
+        drawXMarker(canvas, posX)
+        drawYMarker(canvas, posY)
     }
 
     /**
@@ -89,13 +82,10 @@ class MasterViewMarker(private val mMasterView: MasterView, val mContext: Contex
      * @param posX
      * @param posY
      */
-    private fun drawYMarker(
-        canvas: Canvas,
-        posX: Float,
-        posY: Float
-    ) {
-        val contentRect = masterViewRectF
-        val txt = mEntry!!.y.toString()
+    private fun drawYMarker(canvas: Canvas, posY: Float) {
+        val entry = mEntry ?: return
+        val contentRect = masterViewRectF()
+        val txt = XFormatUtil.globalFormat(entry.y.toString(), digit)
         val txtHeight =
             Utils.calcTextHeight(mMpTxtPaint, txt)
         val txtWidth = Utils.calcTextWidth(mMpTxtPaint, txt)
@@ -109,9 +99,9 @@ class MasterViewMarker(private val mMasterView: MasterView, val mContext: Contex
         val paddingTB = ScreenUtils.dip2px(2f).toFloat()
         //这里看似复杂的加减，主要为文字显示居中，背景加一个padding值和圆角
         val rectF = RectF(xL - paddingLR, yL, xR + paddingLR, yR + paddingTB + paddingTB)
-        canvas.drawRoundRect(rectF, mRadius.toFloat(), mRadius.toFloat(), mMpBgPaint!!)
+        canvas.drawRoundRect(rectF, mRadius.toFloat(), mRadius.toFloat(), mMpBgPaint)
         val txtOffset = ScreenUtils.dip2px(1f).toFloat()
-        canvas.drawText(txt, xL, yL + txtHeight + paddingTB - txtOffset, mMpTxtPaint!!)
+        canvas.drawText(txt, xL, yL + txtHeight + paddingTB - txtOffset, mMpTxtPaint)
     }
 
     /**
@@ -119,15 +109,9 @@ class MasterViewMarker(private val mMasterView: MasterView, val mContext: Contex
      *
      * @param canvas
      * @param posX
-     * @param posY
      */
-    private fun drawXMarker(
-        canvas: Canvas,
-        posX: Float,
-        posY: Float
-    ) {
-        var posX = posX
-        val contentRect = masterViewRectF
+    private fun drawXMarker(canvas: Canvas, posX: Float) {
+        val contentRect = masterViewRectF()
         val txt =
             TimeUtils.millis2String(posX.toLong())
         val txtHeight =
@@ -136,56 +120,48 @@ class MasterViewMarker(private val mMasterView: MasterView, val mContext: Contex
         //左右边距、上下边距
         val paddingLR = ScreenUtils.dip2px(2f).toFloat()
         val paddingTB = ScreenUtils.dip2px(2f).toFloat()
+
         /**
          * 确认x轴左右边界，并且限制在contentRect范围内。y轴不用处理，因为本来y轴的显示范围本来上下就有padding值。
          */
-        when {
+        val finalPostX = when {
             posX - txtWidth / 2.0f <= contentRect.left -> {
-                posX = contentRect.left + txtWidth / 2.0f + paddingLR
+                contentRect.left + txtWidth / 2.0f + paddingLR
             }
             posX + txtWidth / 2.0f >= contentRect.right -> {
-                posX = contentRect.right - txtWidth / 2.0f - paddingLR
+                contentRect.right - txtWidth / 2.0f - paddingLR
             }
             else -> {
                 //正常范围内
+                posX
             }
         }
-        val xL = posX - txtWidth / 2.0f
-        val yL = contentRect.top
-        val xR = posX + txtWidth / 2.0f
-        val yR = contentRect.top + txtHeight
+        val xL = finalPostX - txtWidth / 2.0f
+        val yL = contentRect.bottom
+        val xR = finalPostX + txtWidth / 2.0f
+        val yR = contentRect.bottom + txtHeight
 
 
         //这里看似复杂的加减，主要为文字显示居中，背景加一个padding值和圆角
         val rectF = RectF(xL - paddingLR, yL, xR + paddingLR, yR + paddingTB + paddingTB)
-        canvas.drawRoundRect(rectF, mRadius.toFloat(), mRadius.toFloat(), mMpBgPaint!!)
+        canvas.drawRoundRect(rectF, mRadius.toFloat(), mRadius.toFloat(), mMpBgPaint)
         val txtOffset = ScreenUtils.dip2px(1f).toFloat()
-        canvas.drawText(txt, xL, yL + txtHeight + paddingTB - txtOffset, mMpTxtPaint!!)
-    }//就是这个图表绘制线的区域
+        canvas.drawText(txt, xL, yL + txtHeight + paddingTB - txtOffset, mMpTxtPaint)
+    }
 
     /**
      * 获取主图绘制区域的范围
      *
      * @return
      */
-    private val masterViewRectF: RectF
-        get() {
-            val viewPortHandler = mMasterView.viewPortHandler
-            //就是这个图表绘制线的区域
-            return viewPortHandler.contentRect
-        }
+    fun masterViewRectF(): RectF {
+        val viewPortHandler = mMasterView.viewPortHandler
+        //就是这个图表绘制线的区域
+        return viewPortHandler.contentRect
+    }
 
     @ColorInt
     fun colorResId(id: Int): Int {
         return ContextCompat.getColor(mContext, id)
-    }
-
-    companion object {
-        const val TAG = "BaseKViewMarker"
-    }
-
-    init {
-        initAttrs()
-        initPaint()
     }
 }

@@ -206,13 +206,13 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         arrayOf(bollup, bollmd, bollDn)
     }
 
+
     fun initMasterChart() {
         mMasterView.run {
             //marker
-            val masterViewMarker = MasterViewMarker(this, mContext)
+            val masterViewMarker = MasterViewMarker(this, mContext, 4)
             masterViewMarker.chartView = this
             marker = masterViewMarker
-            setDrawMarkers(true)
 
             setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onNothingSelected() {
