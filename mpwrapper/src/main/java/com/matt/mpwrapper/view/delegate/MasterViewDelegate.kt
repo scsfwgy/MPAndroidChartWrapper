@@ -139,7 +139,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         //长按高亮十字线
         timeSharingDataSet.isHighlightEnabled = true
         timeSharingDataSet.highLightColor = mBaseHighLightColor
-        //是否显示指示线
+        //允许x轴高亮线
         timeSharingDataSet.setDrawHighlightIndicators(true)
 
         timeSharingDataSet
@@ -154,14 +154,9 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         candleDataSet.decreasingColor = mDownColor
         //设置涨颜色
         candleDataSet.increasingColor = mUpColor
-        //设置当收盘价和开盘价一样
-        candleDataSet.neutralColor = mBaseEqualColor
 
         //长按高亮十字线
-        candleDataSet.isHighlightEnabled = true
         candleDataSet.highLightColor = mBaseHighLightColor
-        //是否显示指示线
-        candleDataSet.setDrawHighlightIndicators(true)
 
         candleDataSet
     }

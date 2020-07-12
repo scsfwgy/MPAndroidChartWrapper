@@ -1,9 +1,9 @@
 package com.matt.mpwrapper.view.data
 
 import android.graphics.Paint
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
+import com.matt.mpwrapper.view.delegate.DataSetDelegate
 
 /**
  * ============================================================
@@ -19,23 +19,11 @@ class BaseCandleDataSet(yValue: List<CandleEntry>, label: String) : CandleDataSe
     }
 
     private fun initAttrs() {
-        axisDependency = YAxis.AxisDependency.RIGHT
-        /**
-         * 设置单个蜡烛图value的值，一般都设置不显示
-         */
-        //设置单个蜡烛文字
-        valueTextSize = 10f
-        setDrawValues(false)
-        setDrawIcons(false)
-        //长按高亮十字线
-        isHighlightEnabled = false
-        highlightLineWidth = 0.5f
-        //设置x、y轴指示器
-        setDrawHighlightIndicators(false)
-        //设置x轴指示器
-        setDrawHorizontalHighlightIndicator(false)
-        //设置y轴指示器
-        setDrawVerticalHighlightIndicator(true)
+        DataSetDelegate().init(this)
+        //允许高亮线
+        isHighlightEnabled = true
+        //允许x轴绘制高亮线
+        setDrawHorizontalHighlightIndicator(true)
 
         shadowColorSameAsCandle = true
         shadowWidth = 1f

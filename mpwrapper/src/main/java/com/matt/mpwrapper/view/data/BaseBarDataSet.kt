@@ -1,8 +1,8 @@
 package com.matt.mpwrapper.view.data
 
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.matt.mpwrapper.view.delegate.DataSetDelegate
 
 /**
  * ============================================================
@@ -18,17 +18,7 @@ class BaseBarDataSet(yValue: List<BarEntry>, label: String) : BarDataSet(yValue,
     }
 
     private fun initAttrs() {
-        axisDependency = YAxis.AxisDependency.RIGHT
-        /**
-         * 设置单个蜡烛图value的值，一般都设置不显示
-         */
-        //设置单个蜡烛文字
-        valueTextSize = 10f
-        setDrawValues(false)
-        setDrawIcons(false)
-
-        //长按高亮十字线
-        isHighlightEnabled = false
+        DataSetDelegate().init(this)
     }
 
     override fun getEntryIndex(e: BarEntry): Int {
