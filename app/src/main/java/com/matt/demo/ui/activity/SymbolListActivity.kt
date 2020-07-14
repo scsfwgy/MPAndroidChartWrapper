@@ -10,8 +10,8 @@ import com.matt.demo.R
 import com.matt.demo.bean.ApiProduct
 import com.matt.demo.net.ServiceWrapper
 import com.matt.demo.net.base.SimpleTObserver
-import com.matt.demo.ui.base.HandleExceptionActivity
-import com.matt.demo.utils.RxUtils
+import com.matt.sample_base.ui.base.HandleExceptionActivity
+import com.matt.sample_base.utils.RxUtils
 import kotlinx.android.synthetic.main.activity_symbol_list.*
 import kotlinx.android.synthetic.main.item_activity_symbol_list.view.*
 

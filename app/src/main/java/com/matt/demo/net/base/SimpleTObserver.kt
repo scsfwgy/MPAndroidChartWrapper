@@ -1,7 +1,7 @@
 package com.matt.demo.net.base
 
 import com.matt.demo.bean.ApiData
-import com.matt.demo.ui.base.BaseActivity
+import com.matt.sample_base.ui.base.BaseActivity
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 

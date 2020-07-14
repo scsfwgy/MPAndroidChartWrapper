@@ -2,7 +2,7 @@ package com.matt.demo.ui.activity
 
 import android.os.Bundle
 import com.matt.demo.R
-import com.matt.demo.ui.base.HandleExceptionActivity
+import com.matt.sample_base.ui.base.HandleExceptionActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : HandleExceptionActivity() {

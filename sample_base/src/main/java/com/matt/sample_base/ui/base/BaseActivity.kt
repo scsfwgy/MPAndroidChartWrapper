@@ -1,4 +1,4 @@
-package com.matt.demo.ui.base
+package com.matt.sample_base.ui.base
 
 import android.content.Context
 import android.content.Intent

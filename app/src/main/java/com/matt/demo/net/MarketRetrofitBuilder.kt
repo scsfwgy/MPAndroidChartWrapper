@@ -20,7 +20,7 @@ class MarketRetrofitBuilder : AbstractRetrofitBuilder() {
 
     companion object {
         val mRetrofit: Retrofit by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            MarketRetrofitBuilder().retrofit
+            MarketRetrofitBuilder().mRetrofit
         }
     }
 

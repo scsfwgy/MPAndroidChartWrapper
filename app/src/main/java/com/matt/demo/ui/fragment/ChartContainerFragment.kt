@@ -4,7 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.matt.demo.R
-import com.matt.demo.ui.base.LazyLoadBaseFragment
+import com.matt.sample_base.ui.base.LazyLoadBaseFragment
 import com.matt.demo.vm.ChartViewModel
 import com.matt.mpwrapper.view.type.KType
 import kotlinx.android.synthetic.main.fragment_chart_container.view.*

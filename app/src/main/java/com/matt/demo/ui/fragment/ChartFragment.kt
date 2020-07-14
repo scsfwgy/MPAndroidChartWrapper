@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.View
 import com.matt.demo.R
 import com.matt.demo.net.base.SimpleTObserver
-import com.matt.demo.ui.base.LazyLoadBaseFragment
-import com.matt.demo.utils.RxUtils
+import com.matt.sample_base.ui.base.LazyLoadBaseFragment
+import com.matt.sample_base.utils.RxUtils
 import com.matt.demo.vm.ChartViewModel
 import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.type.KType

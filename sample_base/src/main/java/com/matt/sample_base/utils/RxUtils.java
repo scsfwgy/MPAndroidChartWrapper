@@ -1,4 +1,4 @@
-package com.matt.demo.utils;
+package com.matt.sample_base.utils;
 
 import io.reactivex.FlowableTransformer;
 import io.reactivex.Observable;

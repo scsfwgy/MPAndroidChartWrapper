@@ -1,4 +1,4 @@
-package com.matt.demo.ui.base
+package com.matt.sample_base.ui.base
 
 import android.os.Bundle
 import android.util.Log
