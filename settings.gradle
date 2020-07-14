@@ -1,3 +1,4 @@
+include ':sample_binance'
 include ':sample_base'
 rootProject.name='MPAndroidChartWrapper'
 include ':app'
