@@ -5,9 +5,10 @@ import android.util.Log
 import android.view.View
 import com.matt.demo.R
 import com.matt.demo.net.base.SimpleTObserver
-import com.matt.sample_base.ui.base.LazyLoadBaseFragment
-import com.matt.sample_base.utils.RxUtils
+import com.matt.demo.ui.activity.ChartActivity
 import com.matt.demo.vm.ChartViewModel
+import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
+import com.matt.libwrapper.utils.RxUtils
 import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.type.KType
 import com.matt.mpwrapper.view.type.MasterViewType
@@ -23,9 +24,10 @@ import kotlinx.android.synthetic.main.fragment_chart.view.*
 class ChartFragment : LazyLoadBaseFragment() {
     companion object {
         const val KEY_KTYPE = "KEY_KTYPE"
-        fun newInstance(kType: KType): ChartFragment {
+        fun newInstance(kType: KType, symbol: String): ChartFragment {
             return ChartFragment().apply {
                 arguments = Bundle().apply {
+                    putString(ChartActivity.KEY_SYMBOL, symbol)
                     putSerializable(KEY_KTYPE, kType)
                 }
             }
@@ -37,7 +39,7 @@ class ChartFragment : LazyLoadBaseFragment() {
     }
 
     val mChartViewMode by lazy {
-        getVM(ChartViewModel::class.java)
+        getVMByFragment(ChartViewModel::class.java)
     }
 
     lateinit var kType: KType
@@ -48,6 +50,9 @@ class ChartFragment : LazyLoadBaseFragment() {
             bundle?.getSerializable(KEY_KTYPE)
                 ?: throw IllegalArgumentException("KEY_KTYPE 不允许为null")
         kType = serializable as KType
+        val symbol = bundle.getString(ChartActivity.KEY_SYMBOL)
+            ?: throw IllegalArgumentException("KEY_SYMBOL 不允许为null")
+        mChartViewMode.mSymbol = symbol
     }
 
 

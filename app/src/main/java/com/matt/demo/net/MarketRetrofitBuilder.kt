@@ -1,7 +1,7 @@
 package com.bitconch.lib_wrapper.net
 
 import com.matt.demo.config.GlobalConfig
-import com.matt.sample_base.data.repository.net.AbstractRetrofitBuilder
+import com.matt.libwrapper.repository.net.AbstractRetrofitBuilder
 import retrofit2.Retrofit
 
 

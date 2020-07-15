@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.matt.demo.R
-import com.matt.sample_base.ui.base.HandleExceptionActivity
 import com.matt.demo.ui.fragment.ChartContainerFragment
 import com.matt.demo.vm.ChartViewModel
+import com.matt.libwrapper.ui.base.HandleExceptionActivity
 
 class ChartActivity : HandleExceptionActivity() {
     companion object {

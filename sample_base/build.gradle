@@ -13,35 +13,7 @@ dependencies {
     //mp包装库
     api project(path: ':mpwrapper')
 
-
-    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-
-    api 'androidx.recyclerview:recyclerview:1.1.0'
-    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-
-
-    //https://github.com/Blankj/AndroidUtilCode
-    api 'com.blankj:utilcode:1.25.9'
-
-    //https://github.com/ReactiveX/RxJava
-    api 'io.reactivex.rxjava2:rxjava:2.2.17'
-    //https://github.com/ReactiveX/RxAndroid
-    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
-
-    //网络请求
-    //https://github.com/google/gson
-    api "com.google.code.gson:gson:2.8.6"
-    //https://github.com/square/okhttp
-    api 'com.squareup.okhttp3:okhttp:4.5.0'
-    api 'com.squareup.okhttp3:logging-interceptor:4.5.0'
-    //https://github.com/square/retrofit
-    api 'com.squareup.retrofit2:retrofit:2.7.2'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.7.2'
-    api 'com.squareup.retrofit2:converter-gson:2.7.2'
-
-    //https://github.com/H07000223/FlycoTabLayout/blob/master/README_CN.md
-    api 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
-
-    // https://github.com/CymChad/BaseRecyclerViewAdapterHelper
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.3'
+    //
+    //api 'com.github.scsfwgy:TemplateApp:0.0.5'
+    api project(path: ':lib_wrapper')
 }

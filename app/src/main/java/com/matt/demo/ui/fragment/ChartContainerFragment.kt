@@ -4,8 +4,8 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.matt.demo.R
-import com.matt.sample_base.ui.base.LazyLoadBaseFragment
 import com.matt.demo.vm.ChartViewModel
+import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
 import com.matt.mpwrapper.view.type.KType
 import kotlinx.android.synthetic.main.fragment_chart_container.view.*
 
@@ -28,7 +28,7 @@ class ChartContainerFragment : LazyLoadBaseFragment() {
     }
 
     val mCharViewMode by lazy {
-        getVM(ChartViewModel::class.java)
+        getVMByActivity(ChartViewModel::class.java)
     }
 
     override fun safeInitAll(rootView: View) {
@@ -43,7 +43,7 @@ class ChartContainerFragment : LazyLoadBaseFragment() {
         }
         val fragments = ArrayList<Fragment>()
         kTypeList.forEach {
-            fragments.add(ChartFragment.newInstance(it))
+            fragments.add(ChartFragment.newInstance(it,mCharViewMode.mSymbol))
         }
         mRootView.run {
             fcc_stl_tab.setViewPager(

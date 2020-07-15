@@ -10,8 +10,8 @@ import com.matt.demo.R
 import com.matt.demo.bean.ApiProduct
 import com.matt.demo.net.ServiceWrapper
 import com.matt.demo.net.base.SimpleTObserver
-import com.matt.sample_base.ui.base.HandleExceptionActivity
-import com.matt.sample_base.utils.RxUtils
+import com.matt.libwrapper.ui.base.HandleExceptionActivity
+import com.matt.libwrapper.utils.RxUtils
 import kotlinx.android.synthetic.main.activity_symbol_list.*
 import kotlinx.android.synthetic.main.item_activity_symbol_list.view.*
 
@@ -33,8 +33,8 @@ class SymbolListActivity : HandleExceptionActivity() {
             R.layout.item_activity_symbol_list,
             mDataList
         ) {
-            override fun convert(helper: BaseViewHolder, item: ApiProduct) {
-                helper.itemView.run {
+            override fun convert(holder: BaseViewHolder, item: ApiProduct) {
+                holder.itemView.run {
                     iasl_tv_cnName.text = item.cnName
                     iasl_tv_enName.text = item.enName
                     iasl_tv_currPrice.text = item.currentPriceFormat
