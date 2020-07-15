@@ -10,5 +10,5 @@ android {
 }
 
 dependencies {
-    api project(path: ':sample_base')
+    api project(path: ':sample_binance')
 }

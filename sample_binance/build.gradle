@@ -1,14 +1,18 @@
 apply plugin: 'com.android.library'
 apply from: rootProject.file('lib_common.gradle')
+apply plugin: 'kotlin-android'
 
 
 android {
     defaultConfig {
+        resourcePrefix "bin_"
         versionCode 1
         versionName "1.0"
     }
 }
 
 dependencies {
-
+    api project(path: ':sample_base')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

@@ -1,4 +1,4 @@
-package com.bitconch.lib_wrapper.net
+package com.matt.demo.net
 
 import com.matt.demo.config.GlobalConfig
 import com.matt.libwrapper.repository.net.AbstractRetrofitBuilder

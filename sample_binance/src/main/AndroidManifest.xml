@@ -1,5 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sample_binance">
 
-    /
+    <application>
+        <activity android:name=".ui.activity.BinListActivity" />
+    </application>
+
 </manifest>
