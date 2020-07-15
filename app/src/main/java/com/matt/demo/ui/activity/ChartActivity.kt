@@ -23,21 +23,17 @@ class ChartActivity : HandleExceptionActivity() {
         getVM(ChartViewModel::class.java)
     }
 
+    override fun onCatchCreate(savedInstanceState: Bundle?) {
+        setContentView(R.layout.activity_chart)
+        initView()
+        initListener()
+    }
+
     override fun getIntentExtras(intent: Intent) {
         super.getIntentExtras(intent)
         val symbol =
             intent.getStringExtra(KEY_SYMBOL) ?: throw IllegalArgumentException("mSymbol不允许为null")
         mCharViewMode.mSymbol = symbol
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.activity_chart
-    }
-
-
-    override fun safeInitAll(savedInstanceState: Bundle?) {
-        initView()
-        initListener()
     }
 
     private fun initView() {

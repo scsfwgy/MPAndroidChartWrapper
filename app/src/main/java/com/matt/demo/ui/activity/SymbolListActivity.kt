@@ -44,11 +44,8 @@ class SymbolListActivity : HandleExceptionActivity() {
         }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_symbol_list
-    }
-
-    override fun safeInitAll(savedInstanceState: Bundle?) {
+    override fun onCatchCreate(savedInstanceState: Bundle?) {
+        setContentView(R.layout.activity_symbol_list)
         initAdapter()
         initListener()
         asl_srl_refresh.isRefreshing = true
@@ -63,10 +60,10 @@ class SymbolListActivity : HandleExceptionActivity() {
         ServiceWrapper.TRADE_SERVICE.getProductList(map)
             .compose(RxUtils.rxObSchedulerHelper())
             .subscribe(object : SimpleTObserver<List<ApiProduct>>(mActivity) {
-                override fun onSuccess(it: List<ApiProduct>) {
+                override fun onFinalSuccess(data: List<ApiProduct>) {
                     asl_srl_refresh.isRefreshing = false
                     mDataList.clear()
-                    mDataList.addAll(it)
+                    mDataList.addAll(data)
                     mAdapter.notifyDataSetChanged()
                 }
             })

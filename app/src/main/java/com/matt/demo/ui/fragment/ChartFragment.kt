@@ -76,9 +76,9 @@ class ChartFragment : LazyLoadBaseFragment() {
         mChartViewMode.getQuoteListByNet(mChartViewMode.mSymbol, kType)
             .compose(RxUtils.rxObSchedulerHelper())
             .subscribe(object : SimpleTObserver<List<Price>>(mBaseActivity) {
-                override fun onSuccess(it: List<Price>) {
-                    Log.d(TAG, it.toString())
-                    renderChart(it)
+                override fun onFinalSuccess(data: List<Price>) {
+                    Log.d(TAG, data.toString())
+                    renderChart(data)
                 }
             })
     }

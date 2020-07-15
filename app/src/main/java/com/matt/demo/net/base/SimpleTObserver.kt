@@ -1,9 +1,11 @@
 package com.matt.demo.net.base
 
 import com.matt.demo.bean.ApiData
-import com.matt.libwrapper.ui.base.BaseActivity
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
+import com.matt.libwrapper.exception.ApiSuccessNullException
+import com.matt.libwrapper.exception.ExceptionManager
+import com.matt.libwrapper.exception.ExceptionType
+import com.matt.libwrapper.widget.IDisposable
+import com.matt.libwrapper.widget.ObserverWrapper
 
 /**
  * ============================================================
@@ -12,44 +14,37 @@ import io.reactivex.disposables.Disposable
  * 描 述 ：
  * ============================================================
  */
-abstract class SimpleTObserver<T>(baseActivity: BaseActivity) : Observer<ApiData<T>> {
-    val mBaseActivity: BaseActivity = baseActivity
+abstract class SimpleTObserver<T>(iDisposable: IDisposable) :
+    ObserverWrapper<ApiData<T>>(iDisposable) {
 
-    override fun onComplete() {
-    }
-
-    override fun onSubscribe(d: Disposable) {
-        mBaseActivity.add(d)
-    }
-
-    override fun onNext(t: ApiData<T>) {
-        if (mBaseActivity.isActivityFinish()) {
-            activityFinished()
-            return
-        }
+    override fun onCatchNext(t: ApiData<T>) {
+        super.onCatchNext(t)
         if (t.isSuccess) {
-            onUnCheckSuccess(t.data)
+            onInnerSuccess(t.data)
         } else {
-            mBaseActivity.show(t.message)
+            onFinalFail(t.code, null)
         }
     }
 
-    override fun onError(e: Throwable) {
-        mBaseActivity.show(e.message)
+    override fun onCatchError(e: Throwable) {
+        super.onCatchError(e)
+        onFinalFail(null, e)
     }
 
-    open fun onUnCheckSuccess(it: T?) {
-        if (it == null) throw IllegalArgumentException("后端返回数据不允许为null")
-        onSuccess(it)
+    override fun onHandlerException(e: Exception) {
+        //super.onHandlerException(e)
+        onFinalFail(null, e)
     }
 
-    abstract fun onSuccess(it: T)
-
-    /**
-     * 回调回来如果页面已经销毁调用该方法。如果收到该指令，不向下执行任何指令。你可以handler这个方法继续做处理
-     */
-    open fun activityFinished() {
-        //do nothing
+    open fun onInnerSuccess(data: T?) {
+        if (data == null) throw ApiSuccessNullException("data不允许为null")
+        onFinalSuccess(data)
     }
+
+    open fun onFinalFail(code: Int?, throwable: Throwable?) {
+        ExceptionManager.handlerException(throwable, null, ExceptionType.NET)
+    }
+
+    abstract fun onFinalSuccess(data: T)
 
 }
