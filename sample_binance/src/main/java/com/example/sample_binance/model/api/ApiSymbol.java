@@ -1,5 +1,7 @@
 package com.example.sample_binance.model.api;
 
+import java.io.Serializable;
+
 /**
  * ============================================================
  * 作 者 :    wgyscsf@163.com
@@ -7,7 +9,7 @@ package com.example.sample_binance.model.api;
  * 描 述 ：
  * ============================================================
  **/
-public class ApiSymbol {
+public class ApiSymbol implements Serializable {
 
     /**
      * symbol : ETHBTC

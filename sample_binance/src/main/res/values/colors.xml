@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="bin_theme">#FF0F1216</color>
+    <color name="bin_tab_txt_select">#FFE0E3E5</color>
+    <color name="bin_tab_txt_unselect">#FF7D8491</color>
+
+</resources>

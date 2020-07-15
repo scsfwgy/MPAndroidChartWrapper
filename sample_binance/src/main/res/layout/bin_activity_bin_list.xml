@@ -3,13 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/bin_theme"
     tools:context=".ui.activity.BinListActivity">
 
     <com.flyco.tablayout.SlidingTabLayout
         android:id="@+id/babl_stl_tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:layout_height="45dp"
+        app:tl_textSelectColor="@color/bin_tab_txt_select"
+        app:tl_textUnselectColor="@color/bin_tab_txt_unselect" />
 
 
     <androidx.viewpager.widget.ViewPager

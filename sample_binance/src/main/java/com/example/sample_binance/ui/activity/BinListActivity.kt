@@ -9,9 +9,12 @@ import com.example.sample_binance.model.api.ApiSymbol
 import com.example.sample_binance.model.api.ApiSymbolWrapper
 import com.example.sample_binance.repository.net.BinObserver
 import com.example.sample_binance.repository.net.BinanceServiceWrapper
+import com.example.sample_binance.ui.fragment.BinListFragment
 import com.matt.libwrapper.ui.base.HandleExceptionActivity
 import com.matt.libwrapper.utils.RxUtils
 import com.matt.libwrapper.widget.ObserverWrapper
+import com.matt.libwrapper.widget.simple.SimpleFragmentPagerAdapter
+import kotlinx.android.synthetic.main.bin_activity_bin_list.*
 
 class BinListActivity : HandleExceptionActivity() {
     companion object {
@@ -33,8 +36,22 @@ class BinListActivity : HandleExceptionActivity() {
             .subscribe(object : BinObserver<ApiSymbolWrapper>(this) {
                 override fun onFinalSuccess(t: ApiSymbolWrapper) {
                     Log.d(TAG, t.symbols.toString())
+                    renderTabLayout(t.symbols)
                 }
             })
+    }
+
+    private fun renderTabLayout(symbols: List<ApiSymbol>) {
+        val groupMap = symbols.groupBy {
+            it.quoteAsset
+        }.toSortedMap()
+        val titles = groupMap.keys
+        val fragments = groupMap.values.map {
+            BinListFragment.newInstance(it as ArrayList<ApiSymbol>)
+        }
+        babl_vp_viewPager.adapter =
+            SimpleFragmentPagerAdapter(supportFragmentManager, fragments, titles.toList())
+        babl_stl_tabLayout.setViewPager(babl_vp_viewPager)
     }
 
     private fun loadKLine() {
