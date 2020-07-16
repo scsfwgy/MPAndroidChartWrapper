@@ -11,7 +11,8 @@ import android.app.Application
  **/
 object SampleBinanceInit {
 
-    const val BASE_URL = "https://api.binance.com"
+    //不需要翻墙
+    const val BASE_URL = "https://api.binancezh.com/"
 
     fun init(application: Application) {
 
