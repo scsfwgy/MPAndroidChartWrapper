@@ -44,10 +44,24 @@ class BinListActivity : HandleExceptionActivity() {
     private fun renderTabLayout(symbols: List<ApiSymbol>) {
         val groupMap = symbols.groupBy {
             it.quoteAsset
-        }.toSortedMap()
+        }.toSortedMap(Comparator<String> { item1, _ ->
+            when (item1) {
+                "USDT" -> {
+                    -1
+                }
+                "BTC" -> {
+                    -1
+                }
+                else -> {
+                    1
+                }
+            }
+        })
         val titles = groupMap.keys
-        val fragments = groupMap.values.map {
-            BinListFragment.newInstance(it as ArrayList<ApiSymbol>)
+        val fragments = groupMap.values.map { list ->
+            BinListFragment.newInstance(
+                list as ArrayList<ApiSymbol>
+            )
         }
         babl_vp_viewPager.adapter =
             SimpleFragmentPagerAdapter(supportFragmentManager, fragments, titles.toList())

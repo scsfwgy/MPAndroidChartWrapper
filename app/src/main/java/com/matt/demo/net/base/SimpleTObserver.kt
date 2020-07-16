@@ -31,7 +31,7 @@ abstract class SimpleTObserver<T>(iDisposable: IDisposable) :
         onFinalFail(null, e)
     }
 
-    override fun onHandlerException(e: Exception) {
+    override fun onHandlerException(e: Throwable) {
         //super.onHandlerException(e)
         onFinalFail(null, e)
     }

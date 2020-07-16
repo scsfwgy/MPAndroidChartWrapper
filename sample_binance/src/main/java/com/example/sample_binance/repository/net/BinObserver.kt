@@ -19,8 +19,13 @@ abstract class BinObserver<T>(iDisposable: IDisposable) : ObserverWrapper<T>(iDi
         onFinalSuccess(t)
     }
 
+    override fun onCatchError(e: Throwable) {
+        super.onCatchError(e)
+        onHandlerException(e)
+    }
 
-    override fun onHandlerException(e: Exception) {
+
+    override fun onHandlerException(e: Throwable) {
         if (e is SocketTimeoutException) {
             ToastUtils.showLong("连接超时，币安api需要科学上网，请检查")
         } else {
