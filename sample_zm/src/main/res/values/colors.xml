@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!--app主题色-->
+    <color name="wrapper_theme_design">#4281ff</color>
+    <!--一级标题色，标题、用户名-->
+    <color name="wrapper_txt_333_design">#292c33</color>
+    <!--二级标题色，正文用色、弹窗内容-->
+    <color name="wrapper_txt_666_design">#596580</color>
+    <!--副标题、内容-->
+    <color name="wrapper_txt_999_design">#a3afcc</color>
+    <!--空白页，提示性文字-->
+    <color name="wrapper_txt_b2b2b2_design">#b2b2b2</color>
+
+    <!--分割线-->
+    <color name="wrapper_divider_design">#ebf2ff</color>
+
+    <!--item颜色-->
+    <color name="wrapper_item_design">#ffffff</color>
+    <color name="wrapper_item_press_design">#fbfbfb</color>
+    <color name="wrapper_item_ripper">#b2b2b2</color>
+    <color name="wrapper_item_shadow">#b2b2b2</color>
+
+
+</resources>
