@@ -4,6 +4,7 @@
 
     <application>
         <activity android:name=".ui.activity.BinListActivity" />
+        <activity android:name=".ui.activity.BinChartActivity" />
     </application>
 
 </manifest>

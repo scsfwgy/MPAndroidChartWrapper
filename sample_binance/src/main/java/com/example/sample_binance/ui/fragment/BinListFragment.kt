@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.example.sample_binance.R
 import com.example.sample_binance.model.api.ApiSymbol
+import com.example.sample_binance.ui.activity.BinChartActivity
 import com.matt.libwrapper.exception.ParamsException
 import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
 import kotlinx.android.synthetic.main.bin_fragment_bin_list.view.*
@@ -42,7 +43,6 @@ class BinListFragment : LazyLoadBaseFragment() {
                     bifbl_tv_symbol.text = item.symbol
                 }
             }
-
         }
     }
 
@@ -58,7 +58,15 @@ class BinListFragment : LazyLoadBaseFragment() {
 
     override fun safeInitAll(rootView: View) {
         initAdapter()
+        initlistener()
         loadData()
+    }
+
+    private fun initlistener() {
+        mBaseQuickAdapter.setOnItemClickListener { _, _, position ->
+            val apiSymbol = mBaseQuickAdapter.data[position]
+            BinChartActivity.goIntent(mContext, apiSymbol.symbol)
+        }
     }
 
     private fun initAdapter() {
