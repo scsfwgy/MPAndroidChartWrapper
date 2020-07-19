@@ -2,19 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bin_theme">
 
     <LinearLayout
         android:id="@+id/babc_ll_topContainer"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#4CAF50"
+        android:background="#1A4CAF50"
         android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="上部容器,各种业务逻辑UI" />
+            android:text="上部容器,各种业务逻辑UI"
+            android:textColor="@color/bin_txt_first" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:background="@color/bin_item"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.ruffian.library.widget.RTextView
+                android:id="@+id/babc_tv_kType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日线"
+                android:textColor="@color/bin_global_yellow"
+                android:textSize="16sp"
+                app:icon_src_normal="@drawable/ic_triangle_down"
+                app:icon_direction="right"
+                app:icon_width="15dp"
+                app:icon_height="10dp"
+                android:padding="4dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -29,13 +63,14 @@
         android:id="@+id/babc_ll_bottomContainer"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#03A9F4"
+        android:background="#3303A9F4"
         android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="底部容器,各种业务逻辑UI" />
+            android:text="底部容器,各种业务逻辑UI"
+            android:textColor="@color/bin_txt_first" />
 
     </LinearLayout>
 

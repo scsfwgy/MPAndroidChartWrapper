@@ -75,7 +75,7 @@ class BinChartFragment : LazyLoadBaseFragment() {
     private fun loadKLine() {
         val params = HashMap<String, Any>()
         params["symbol"] = mSymbol
-        params["interval"] = "1d"
+        params["interval"] = kType.apiKey
         BinanceServiceWrapper.sBinanceService.klines(params)
             .compose(RxUtils.rxObSchedulerHelper())
             .subscribe(object : BinObserver<Array<Array<Any>>>(this) {
@@ -102,5 +102,10 @@ class BinChartFragment : LazyLoadBaseFragment() {
         mRootView.run {
             bfc_kv_kview.reLoadData(it)
         }
+    }
+
+    fun updateBinKType(currBinKType: BinKType) {
+        kType = currBinKType
+        loadKLine()
     }
 }

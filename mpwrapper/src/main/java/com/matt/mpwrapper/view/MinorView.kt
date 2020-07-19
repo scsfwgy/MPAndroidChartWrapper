@@ -34,6 +34,12 @@ class MinorView @JvmOverloads constructor(
         val combinedData = minorViewDelegate.mCombinedData
         val lineData = minorViewDelegate.mLineData
         val barData = minorViewDelegate.mBarData
+
+        //reset
+        lineData.dataSets.clear()
+        barData.dataSets.clear()
+        combinedData.dataSets.clear()
+
         val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->
             val minorData =

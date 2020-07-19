@@ -9,7 +9,7 @@ import java.util.*
  * 描 述 ：
  * ============================================================
  */
-enum class BinKType(val id: Int, val apiKey: String, val label: String) {
+enum class BinKType(val id: Int, val label: String, val apiKey: String) {
     K_TIMESHARE(1, "分时", "1m"),
     K_1M(2, "1分", "1m"),
     K_3M(3, "3分", "3m"),
