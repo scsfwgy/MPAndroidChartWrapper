@@ -7,13 +7,14 @@ import com.example.sample_binance.R
 import com.example.sample_binance.ui.fragment.BinChartFragment
 import com.example.sample_binance.ui.pop.KViewTypePop
 import com.matt.libwrapper.exception.ParamsException
-import com.matt.libwrapper.ui.base.HandleExceptionActivity
+import com.matt.libwrapper.ui.base.template.Template
+import com.matt.libwrapper.ui.base.template.TemplateBarActivity
 import com.matt.mpwrapper.view.type.BinKType
 import kotlinx.android.synthetic.main.bin_activity_bin_chart.*
 import razerdp.basepopup.BasePopupWindow
 
 
-class BinChartActivity : HandleExceptionActivity() {
+class BinChartActivity : TemplateBarActivity() {
     companion object {
         const val KEY_SYMBOL = "KEY_SYMBOL"
 
@@ -42,8 +43,20 @@ class BinChartActivity : HandleExceptionActivity() {
         BinChartFragment.newInstance(mCurrBinKType, mSymbol)
     }
 
+    override fun templateType(): Int {
+        return Template.TEMPLATETYPE_DEFVIEW
+    }
+
+    override fun addChildrenView(): Any {
+        return R.layout.bin_activity_bin_chart
+    }
+
+    override fun renderTitle(): Any {
+        return mSymbol
+    }
+
     override fun onCatchCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.bin_activity_bin_chart)
+        super.onCatchCreate(savedInstanceState)
         iniView()
         initListener()
     }

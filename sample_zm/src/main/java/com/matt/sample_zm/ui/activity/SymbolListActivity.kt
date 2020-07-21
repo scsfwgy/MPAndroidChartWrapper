@@ -9,13 +9,15 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.matt.sample_zm.net.ServiceWrapper
 import com.matt.sample_zm.net.base.SimpleTObserver
 import com.matt.libwrapper.ui.base.HandleExceptionActivity
+import com.matt.libwrapper.ui.base.template.Template
+import com.matt.libwrapper.ui.base.template.TemplateBarActivity
 import com.matt.libwrapper.utils.RxUtils
 import com.matt.sample_zm.R
 import com.matt.sample_zm.bean.ApiProduct
 import kotlinx.android.synthetic.main.zm_activity_symbol_list.*
 import kotlinx.android.synthetic.main.zm_item_activity_symbol_list.view.*
 
-class SymbolListActivity : HandleExceptionActivity() {
+class SymbolListActivity : TemplateBarActivity() {
 
     companion object {
         fun goIntent(context: Context) {
@@ -44,8 +46,20 @@ class SymbolListActivity : HandleExceptionActivity() {
         }
     }
 
+    override fun templateType(): Int {
+        return Template.TEMPLATETYPE_DEFVIEW
+    }
+
+    override fun addChildrenView(): Any {
+        return R.layout.zm_activity_symbol_list
+    }
+
+    override fun renderTitle(): Any {
+        return "ZM 列表"
+    }
+
     override fun onCatchCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.zm_activity_symbol_list)
+        super.onCatchCreate(savedInstanceState)
         initAdapter()
         initListener()
         asl_srl_refresh.isRefreshing = true

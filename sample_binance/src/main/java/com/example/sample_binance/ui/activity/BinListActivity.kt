@@ -11,12 +11,14 @@ import com.example.sample_binance.repository.net.BinObserver
 import com.example.sample_binance.repository.net.BinanceServiceWrapper
 import com.example.sample_binance.ui.fragment.BinListFragment
 import com.matt.libwrapper.ui.base.HandleExceptionActivity
+import com.matt.libwrapper.ui.base.template.Template
+import com.matt.libwrapper.ui.base.template.TemplateBarActivity
 import com.matt.libwrapper.utils.RxUtils
 import com.matt.libwrapper.widget.ObserverWrapper
 import com.matt.libwrapper.widget.simple.SimpleFragmentPagerAdapter
 import kotlinx.android.synthetic.main.bin_activity_bin_list.*
 
-class BinListActivity : HandleExceptionActivity() {
+class BinListActivity : TemplateBarActivity() {
     companion object {
         fun goIntent(context: Context) {
             val intent = Intent(context, BinListActivity::class.java)
@@ -24,8 +26,20 @@ class BinListActivity : HandleExceptionActivity() {
         }
     }
 
+    override fun templateType(): Int {
+        return Template.TEMPLATETYPE_DEFVIEW
+    }
+
+    override fun addChildrenView(): Any {
+        return R.layout.bin_activity_bin_list
+    }
+
+    override fun renderTitle(): Any {
+        return "币安产品列表"
+    }
+
     override fun onCatchCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.bin_activity_bin_list)
+        super.onCatchCreate(savedInstanceState)
         //loadKLine()
         loadExchangeInfo()
     }

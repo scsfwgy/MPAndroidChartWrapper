@@ -6,9 +6,11 @@ import android.os.Bundle
 import com.matt.sample_zm.ui.fragment.ChartContainerFragment
 import com.matt.sample_zm.vm.ChartViewModel
 import com.matt.libwrapper.ui.base.HandleExceptionActivity
+import com.matt.libwrapper.ui.base.template.Template
+import com.matt.libwrapper.ui.base.template.TemplateBarActivity
 import com.matt.sample_zm.R
 
-class ChartActivity : HandleExceptionActivity() {
+class ChartActivity : TemplateBarActivity() {
     companion object {
         const val KEY_SYMBOL = "KEY_SYMBOL"
         fun goIntent(context: Context, symbol: String) {
@@ -23,8 +25,20 @@ class ChartActivity : HandleExceptionActivity() {
         getVM(ChartViewModel::class.java)
     }
 
+    override fun templateType(): Int {
+        return Template.TEMPLATETYPE_DEFVIEW
+    }
+
+    override fun addChildrenView(): Any {
+        return R.layout.zm_activity_chart
+    }
+
+    override fun renderTitle(): Any {
+        return mCharViewMode.mSymbol
+    }
+
     override fun onCatchCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.zm_activity_chart)
+        super.onCatchCreate(savedInstanceState)
         initView()
         initListener()
     }
