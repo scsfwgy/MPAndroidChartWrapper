@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ruffian.library.widget.RLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:background_normal="@color/bin_item"
+    app:border_color_normal="@color/bin_divider"
+    app:border_width_normal="0.5dp"
+    app:corner_radius="4dp"
+    android:layout_marginStart="14dp"
+    android:layout_marginEnd="14dp"
+    android:padding="14dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Main"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            android:background="@color/bin_divider"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
+
+        <TextView
+            android:id="@+id/bpi_tv_ma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MA"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:layout_marginStart="6dp" />
+
+        <TextView
+            android:id="@+id/bpi_tv_ema"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EMA"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:layout_marginStart="6dp" />
+
+        <TextView
+            android:id="@+id/bpi_tv_boll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BOLL"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:layout_marginStart="6dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="10dp"
+                android:background="@color/bin_divider"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp" />
+
+            <ImageView
+                android:id="@+id/bpi_tv_maineye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wrapper_app_back" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/bin_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stub"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            android:background="@color/bin_divider"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
+
+        <TextView
+            android:id="@+id/bpi_tv_macd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MACD"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:layout_marginStart="6dp" />
+
+        <TextView
+            android:id="@+id/bpi_tv_kdj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KDJ"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:layout_marginStart="6dp" />
+
+        <TextView
+            android:id="@+id/bpi_tv_rsi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RSI"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:layout_marginStart="6dp" />
+
+        <TextView
+            android:id="@+id/bpi_tv_wr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WR"
+            android:textColor="@color/bin_txt_first"
+            android:textSize="16dp"
+            android:padding="8dp"
+            android:layout_marginStart="6dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="10dp"
+                android:background="@color/bin_divider"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp" />
+
+            <ImageView
+                android:id="@+id/bpi_tv_stubeye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wrapper_app_back" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</com.ruffian.library.widget.RLinearLayout>

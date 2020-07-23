@@ -7,7 +7,7 @@
     android:orientation="vertical"
     app:background_normal="@color/bin_item"
     app:border_color_normal="@color/bin_divider"
-    app:border_width_normal="1dp"
+    app:border_width_normal="0.5dp"
     app:corner_radius="4dp"
     android:layout_marginStart="14dp"
     android:layout_marginEnd="14dp">

@@ -40,7 +40,6 @@ class MainActivity : TemplateBarActivity() {
     }
 
     private fun initView() {
-        getBarContainer().setBackgroundColor(getColor2(R.color.wrapper_theme_design))
         getLeftImageView().visibility = View.INVISIBLE
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.example.sample_binance.R
 import com.example.sample_binance.ui.fragment.BinChartFragment
+import com.example.sample_binance.ui.pop.IndicatorPop
 import com.example.sample_binance.ui.pop.KViewTypePop
 import com.matt.libwrapper.exception.ParamsException
 import com.matt.libwrapper.ui.base.template.Template
@@ -30,6 +31,10 @@ class BinChartActivity : TemplateBarActivity() {
     val mKViewTypePop by lazy {
         val binKTypeList = BinKType.binKTypeList()
         KViewTypePop(mContext, binKTypeList, mCurrBinKType)
+    }
+
+    val mIndicatorPop by lazy {
+        IndicatorPop(mContext)
     }
 
     var mCurrBinKType = BinKType.K_1D
@@ -88,6 +93,9 @@ class BinChartActivity : TemplateBarActivity() {
         }
         babc_tv_kType.setOnClickListener {
             kViewTypePop.showPopupWindow(babc_tv_kType, mCurrBinKType)
+        }
+        babc_tv_indicator.setOnClickListener {
+            mIndicatorPop.showPopupWindow(babc_tv_indicator)
         }
     }
 
