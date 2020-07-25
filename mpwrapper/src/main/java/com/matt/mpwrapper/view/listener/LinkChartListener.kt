@@ -15,18 +15,17 @@ import com.github.mikephil.charting.listener.OnChartGestureListener
  **/
 class LinkChartListener(
     private val mMasterChart: CombinedChart,
-    private val mFollowChart: CombinedChart
+    private val mFollowCharts: Array<CombinedChart>
 ) :
     OnChartGestureListener {
 
-    fun getFollowChart(): CombinedChart {
-        return mFollowChart
+    fun getFollowCharts(): Array<CombinedChart> {
+        return mFollowCharts
     }
 
 
     fun linkCharts() {
         val masterMatrix = mMasterChart.viewPortHandler.matrixTouch
-        val followMatrix = mFollowChart.viewPortHandler.matrixTouch
         val masterValue = FloatArray(9) {
             0f
         }
@@ -36,14 +35,21 @@ class LinkChartListener(
             0f
         }
 
-        followMatrix.getValues(followValue)
+        mFollowCharts.forEach {
+            it.viewPortHandler.matrixTouch.getValues(followValue)
+        }
 
         masterValue.forEachIndexed { index, fl ->
             followValue[index] = fl
         }
 
-        followMatrix.setValues(followValue)
-        mFollowChart.viewPortHandler.refresh(followMatrix, mFollowChart, true)
+        mFollowCharts.forEach {
+            it.viewPortHandler.matrixTouch.setValues(followValue)
+        }
+
+        mFollowCharts.forEach {
+            it.viewPortHandler.refresh(it.viewPortHandler.matrixTouch, it, true)
+        }
     }
 
     override fun onChartGestureEnd(

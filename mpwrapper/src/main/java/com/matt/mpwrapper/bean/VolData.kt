@@ -7,7 +7,7 @@ package com.matt.mpwrapper.bean
  * 描 述 ：
  * ============================================================
  */
-class VolData : KViewBaseData() {
+class VolData {
     //量图
     var vol: Vol? = null
 }

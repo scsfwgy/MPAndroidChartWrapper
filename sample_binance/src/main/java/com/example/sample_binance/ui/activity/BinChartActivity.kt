@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.example.sample_binance.R
+import com.example.sample_binance.model.kview.BinKType
 import com.example.sample_binance.ui.fragment.BinChartFragment
 import com.example.sample_binance.ui.pop.IndicatorPop
 import com.example.sample_binance.ui.pop.KViewTypePop
 import com.matt.libwrapper.exception.ParamsException
 import com.matt.libwrapper.ui.base.template.Template
 import com.matt.libwrapper.ui.base.template.TemplateBarActivity
-import com.matt.mpwrapper.view.type.BinKType
 import kotlinx.android.synthetic.main.bin_activity_bin_chart.*
 import razerdp.basepopup.BasePopupWindow
 

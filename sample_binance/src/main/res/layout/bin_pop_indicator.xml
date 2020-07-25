@@ -85,7 +85,7 @@
                 android:id="@+id/bpi_tv_maineye"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/wrapper_app_back" />
+                android:src="@drawable/ic_markets_reset_active" />
 
         </LinearLayout>
 
@@ -178,7 +178,7 @@
                 android:id="@+id/bpi_tv_stubeye"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/wrapper_app_back" />
+                android:src="@drawable/ic_markets_reset_active" />
 
         </LinearLayout>
 

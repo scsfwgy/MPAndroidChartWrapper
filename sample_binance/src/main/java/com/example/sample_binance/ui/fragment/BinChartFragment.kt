@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.example.sample_binance.R
+import com.example.sample_binance.model.kview.BinKType
 import com.example.sample_binance.repository.net.BinObserver
 import com.example.sample_binance.repository.net.BinanceServiceWrapper
 import com.example.sample_binance.ui.activity.BinChartActivity
 import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
 import com.matt.libwrapper.utils.RxUtils
 import com.matt.mpwrapper.bean.Price
-import com.matt.mpwrapper.view.type.BinKType
 import com.matt.mpwrapper.view.type.MasterViewType
 import kotlinx.android.synthetic.main.bin_fragment_chart.view.*
 
@@ -82,6 +82,7 @@ class BinChartFragment : LazyLoadBaseFragment() {
                 override fun onFinalSuccess(t: Array<Array<Any>>) {
                     Log.d(TAG, t.toString())
                     val priceList = ArrayList<Price>(t.size)
+                    val volList = ArrayList<Float>(t.size)
                     t.forEach {
                         val price =
                             Price(
@@ -92,15 +93,19 @@ class BinChartFragment : LazyLoadBaseFragment() {
                                 (it[4] as String).toFloat()//收盘价
                             )
                         priceList.add(price)
+                        volList.add((it[5] as String).toFloat())
                     }
-                    renderChart(priceList)
+                    renderChart(priceList, volList)
                 }
             })
     }
 
-    private fun renderChart(it: List<Price>) {
+    private fun renderChart(
+        it: List<Price>,
+        volList: ArrayList<Float>
+    ) {
         mRootView.run {
-            bfc_kv_kview.reLoadData(it)
+            bfc_kv_kview.reLoadData(it, volList)
         }
     }
 

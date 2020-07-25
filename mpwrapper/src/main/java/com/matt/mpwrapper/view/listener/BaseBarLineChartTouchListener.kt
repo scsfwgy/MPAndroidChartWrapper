@@ -113,9 +113,11 @@ open class BaseBarLineChartTouchListener(
         if (chart !is CombinedChart) {
             throw IllegalArgumentException("BaseBarLineChartTouchListener只允许用在CombinedChart中，请检查")
         }
-        val followChart = getFollowChart()
+        val followCharts = getFollowCharts()
         triggerHighlightByChart(chart, e, showHighlight)
-        triggerHighlightByChart(followChart, e, showHighlight)
+        followCharts.forEach {
+            triggerHighlightByChart(it, e, showHighlight)
+        }
     }
 
     fun triggerHighlightByChart(chart: CombinedChart, e: MotionEvent, showHighlight: Boolean) {
@@ -130,11 +132,11 @@ open class BaseBarLineChartTouchListener(
         }
     }
 
-    private fun getFollowChart(): CombinedChart {
+    private fun getFollowCharts(): Array<CombinedChart> {
         val chart = mChart
         val onChartGestureListener = chart.onChartGestureListener
         if (onChartGestureListener is LinkChartListener) {
-            return onChartGestureListener.getFollowChart()
+            return onChartGestureListener.getFollowCharts()
         } else {
             throw IllegalArgumentException(
                 "onChartGestureListener类型错误，" +

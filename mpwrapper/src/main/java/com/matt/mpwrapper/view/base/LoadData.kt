@@ -14,15 +14,15 @@ interface LoadData {
     /**
      * 重新加载数据，也是第一次加载数据用
      */
-    fun reLoadData(priceList: List<Price>)
+    fun reLoadData(priceList: List<Price>, volList: List<Float>? = null)
 
     /**
      * 加载更多数据
      */
-    fun loadMoreData(priceList: List<Price>)
+    fun loadMoreData(priceList: List<Price>, volList: List<Float>? = null)
 
     /**
      * 实时数据
      */
-    fun pushData(price: Price)
+    fun pushData(price: Price, volList: List<Float>? = null)
 }

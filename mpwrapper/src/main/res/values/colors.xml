@@ -63,6 +63,6 @@
     <!--vol-->
     <color name="mp_volview_ma5">#f29b3d</color>
     <color name="mp_volview_ma10">#f347f9</color>
-    <color name="mp_volview_vol">#188808</color>
+
 
 </resources>

@@ -1,4 +1,4 @@
-package com.matt.mpwrapper.view.type
+package com.example.sample_binance.model.kview
 
 import java.util.*
 
@@ -51,7 +51,8 @@ enum class BinKType(val id: Int, val label: String, val apiKey: String) {
         }
 
         fun getBinKTypeTitleList(): List<String> {
-            val binKTypeList = binKTypeList()
+            val binKTypeList =
+                binKTypeList()
             return binKTypeList.map { it.label }
         }
     }

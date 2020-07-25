@@ -2,15 +2,8 @@ package com.example.sample_binance.ui.pop
 
 import android.content.Context
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.example.sample_binance.R
 import com.matt.libwrapper.ui.base.BasePopWindow
-import com.matt.mpwrapper.ktx.getColor
-import com.matt.mpwrapper.view.type.BinKType
-import kotlinx.android.synthetic.main.bin_item_pop_kview_type.view.*
-import kotlinx.android.synthetic.main.bin_pop_kview_type.view.*
 
 /**
  *

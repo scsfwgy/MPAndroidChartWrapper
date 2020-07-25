@@ -1,15 +1,13 @@
 package com.matt.mpwrapper.view.delegate
 
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.matt.mpwrapper.R
-import com.matt.mpwrapper.bean.KViewConstant
-import com.matt.mpwrapper.bean.KViewData
-import com.matt.mpwrapper.bean.MasterData
-import com.matt.mpwrapper.bean.MinorData
+import com.matt.mpwrapper.bean.*
 import com.matt.mpwrapper.ktx.dip2px
 import com.matt.mpwrapper.ktx.getColor
 import com.matt.mpwrapper.ktx.getDrawable
@@ -17,6 +15,7 @@ import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
 import com.matt.mpwrapper.view.base.BaseKView
+import com.matt.mpwrapper.view.data.BaseLineDataSet
 import com.matt.mpwrapper.view.listener.BaseBarLineChartTouchListener
 import com.matt.mpwrapper.view.renderer.BaseCombinedChartRenderer
 
@@ -95,6 +94,10 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
     }
     val mLineData by lazy {
         LineData()
+    }
+
+    val mShowHighlightEntryList by lazy {
+        ArrayList<Entry>()
     }
 
     fun initChartAttrs() {
@@ -366,11 +369,26 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
         return getKViewDataListByIndex(index)?.minorData
     }
 
+    fun getVolDataByIndex(index: Int): VolData? {
+        return getKViewDataListByIndex(index)?.volData
+    }
+
     fun getUnPressLegend(label: String): Array<LegendEntry> {
         val legendEntry = LegendEntry()
         legendEntry.label = label
         legendEntry.formColor = mBaseNoPressColor
         legendEntry.form = Legend.LegendForm.NONE
         return arrayOf(legendEntry)
+    }
+
+    val mShowHighlightLineData by lazy {
+        val baseLineDataSet = BaseLineDataSet(
+            mShowHighlightEntryList,
+            "show line"
+        )
+        baseLineDataSet.isHighlightEnabled = true
+        baseLineDataSet.highLightColor = mBaseHighLightColor
+        baseLineDataSet.color = Color.TRANSPARENT
+        baseLineDataSet
     }
 }

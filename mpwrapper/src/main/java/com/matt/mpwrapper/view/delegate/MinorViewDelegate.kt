@@ -1,6 +1,5 @@
 package com.matt.mpwrapper.view.delegate
 
-import android.graphics.Color
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.data.BarEntry
@@ -66,10 +65,6 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
         )
     }
 
-    val mShowHighlightEntryList by lazy {
-        ArrayList<Entry>()
-    }
-
     val mMacdBarEntryListArr: Array<out MutableList<BarEntry>> by lazy {
         arrayOf(ArrayList<BarEntry>(), ArrayList<BarEntry>())
     }
@@ -84,17 +79,6 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
 
     val mKdjEntryListArr: Array<out MutableList<Entry>> by lazy {
         arrayOf(ArrayList<Entry>(), ArrayList(), ArrayList())
-    }
-
-    val mShowHighlightLineData by lazy {
-        val baseLineDataSet = BaseLineDataSet(
-            mShowHighlightEntryList,
-            "show line"
-        )
-        baseLineDataSet.isHighlightEnabled = true
-        baseLineDataSet.highLightColor = mBaseHighLightColor
-        baseLineDataSet.color = Color.TRANSPARENT
-        baseLineDataSet
     }
 
     val mMacdBarDataSetArr by lazy {
