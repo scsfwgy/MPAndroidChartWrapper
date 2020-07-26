@@ -93,7 +93,11 @@ open class BaseBarLineChartTouchListener(
         super.onLongPress(e)
         val touchMode = touchMode
         //拖动时不触发高亮线
-        if (touchMode == ChartTouchListener.DRAG) {
+        if (touchMode == ChartTouchListener.DRAG ||
+            touchMode == MotionEvent.ACTION_UP ||
+            touchMode == MotionEvent.ACTION_CANCEL ||
+            touchMode == MotionEvent.ACTION_MOVE
+        ) {
             return
         }
         triggerHighlight(e, true)
