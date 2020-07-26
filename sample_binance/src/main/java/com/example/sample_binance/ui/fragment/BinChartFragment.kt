@@ -11,7 +11,10 @@ import com.example.sample_binance.ui.activity.BinChartActivity
 import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
 import com.matt.libwrapper.utils.RxUtils
 import com.matt.mpwrapper.bean.Price
+import com.matt.mpwrapper.view.KView
+import com.matt.mpwrapper.view.type.MasterIndicatorType
 import com.matt.mpwrapper.view.type.MasterViewType
+import com.matt.mpwrapper.view.type.MinorIndicatorType
 import kotlinx.android.synthetic.main.bin_fragment_chart.view.*
 
 /**
@@ -109,8 +112,20 @@ class BinChartFragment : LazyLoadBaseFragment() {
         }
     }
 
+    fun getKView(): KView {
+        return mRootView.bfc_kv_kview
+    }
+
     fun updateBinKType(currBinKType: BinKType) {
         kType = currBinKType
         loadKLine()
+    }
+
+    fun updateMasterIndicatorType(masterIndicatorType: MasterIndicatorType) {
+        getKView().getMasterView().mMasterViewDelegate.showIndicatorType(masterIndicatorType)
+    }
+
+    fun updateMinorIndicatorType(minorIndicatorType: MinorIndicatorType) {
+        getKView().getMinorView().mMinorViewDelegate.showIndicatorType(minorIndicatorType)
     }
 }

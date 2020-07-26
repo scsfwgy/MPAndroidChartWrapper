@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.example.sample_binance.R
 import com.example.sample_binance.model.kview.BinKType
+import com.example.sample_binance.repository.sp.BinSpHelper
 import com.matt.libwrapper.ui.base.BasePopWindow
 import com.matt.mpwrapper.ktx.getColor
 import kotlinx.android.synthetic.main.bin_item_pop_kview_type.view.*
@@ -22,8 +23,8 @@ import kotlinx.android.synthetic.main.bin_pop_kview_type.view.*
  **/
 class KViewTypePop(
     context: Context,
-    private val list: List<BinKType>,
-    var mCurrKType: BinKType
+    var mCurrKType: BinKType,
+    val kTypeListener: KTypeListener
 ) :
     BasePopWindow(context) {
     override fun onCreateContentView(): View {
@@ -48,16 +49,24 @@ class KViewTypePop(
 
     init {
         initAdapter()
-        loadData()
         initListener()
+        loadData()
     }
 
     private fun initListener() {
-
+        mBaseQuickAdapter.setOnItemClickListener { _, _, position ->
+            dismiss()
+            val binKType = mBaseQuickAdapter.data[position]
+            BinSpHelper.updateBinKType(binKType)
+            kTypeListener.onClick(binKType)
+            mCurrKType = binKType
+            mBaseQuickAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun loadData() {
-        mBaseQuickAdapter.setNewInstance(list.toMutableList())
+        val list = BinKType.binKTypeList().toMutableList()
+        mBaseQuickAdapter.setNewInstance(list)
     }
 
     private fun initAdapter() {
@@ -68,9 +77,7 @@ class KViewTypePop(
         }
     }
 
-    fun showPopupWindow(anchorView: View, kType: BinKType) {
-        mCurrKType = kType
-        mBaseQuickAdapter.notifyDataSetChanged()
-        super.showPopupWindow(anchorView)
+    interface KTypeListener {
+        fun onClick(binKType: BinKType)
     }
 }

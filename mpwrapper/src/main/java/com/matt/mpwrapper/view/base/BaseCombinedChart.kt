@@ -25,7 +25,12 @@ abstract class BaseCombinedChart(
         getContext() ?: throw IllegalArgumentException("getContext() cannot be null")
     }
 
-    init {
 
+    fun updateAll() {
+        //刷新数据
+        data?.notifyDataChanged()
+        //刷新view
+        notifyDataSetChanged()
+        invalidate()
     }
 }

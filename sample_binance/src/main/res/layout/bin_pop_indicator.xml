@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="Main"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp" />
 
         <View
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="MA"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:layout_marginStart="6dp" />
 
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="EMA"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:layout_marginStart="6dp" />
 
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:text="BOLL"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:layout_marginStart="6dp" />
 
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:text="Stub"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp" />
 
         <View
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:text="MACD"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:layout_marginStart="6dp" />
 
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:text="KDJ"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:layout_marginStart="6dp" />
 
@@ -143,7 +143,7 @@
             android:layout_height="wrap_content"
             android:text="RSI"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:layout_marginStart="6dp" />
 
@@ -153,7 +153,7 @@
             android:layout_height="wrap_content"
             android:text="WR"
             android:textColor="@color/bin_txt_first"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:layout_marginStart="6dp" />
 

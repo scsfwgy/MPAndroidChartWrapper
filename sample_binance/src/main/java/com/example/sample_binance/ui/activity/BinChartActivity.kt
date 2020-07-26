@@ -5,12 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import com.example.sample_binance.R
 import com.example.sample_binance.model.kview.BinKType
+import com.example.sample_binance.repository.sp.BinSpHelper
 import com.example.sample_binance.ui.fragment.BinChartFragment
 import com.example.sample_binance.ui.pop.IndicatorPop
 import com.example.sample_binance.ui.pop.KViewTypePop
 import com.matt.libwrapper.exception.ParamsException
 import com.matt.libwrapper.ui.base.template.Template
 import com.matt.libwrapper.ui.base.template.TemplateBarActivity
+import com.matt.mpwrapper.view.type.MasterIndicatorType
+import com.matt.mpwrapper.view.type.MinorIndicatorType
 import kotlinx.android.synthetic.main.bin_activity_bin_chart.*
 import razerdp.basepopup.BasePopupWindow
 
@@ -28,16 +31,30 @@ class BinChartActivity : TemplateBarActivity() {
 
     lateinit var mSymbol: String
 
+    var mCurrBinKType = BinSpHelper.getBinKType()
+
     val mKViewTypePop by lazy {
-        val binKTypeList = BinKType.binKTypeList()
-        KViewTypePop(mContext, binKTypeList, mCurrBinKType)
+        KViewTypePop(mContext, mCurrBinKType, object : KViewTypePop.KTypeListener {
+            override fun onClick(binKType: BinKType) {
+                mCurrBinKType = binKType
+                babc_tv_kType.text = mCurrBinKType.label
+                chartFragment.updateBinKType(mCurrBinKType)
+            }
+        })
     }
 
     val mIndicatorPop by lazy {
-        IndicatorPop(mContext)
-    }
+        IndicatorPop(mContext, object : IndicatorPop.MainClickListener {
+            override fun onClick(masterIndicatorType: MasterIndicatorType) {
+                chartFragment.updateMasterIndicatorType(masterIndicatorType)
+            }
 
-    var mCurrBinKType = BinKType.K_1D
+        }, object : IndicatorPop.MinorClickListener {
+            override fun onClick(minorIndicatorType: MinorIndicatorType) {
+                chartFragment.updateMinorIndicatorType(minorIndicatorType)
+            }
+        })
+    }
 
     override fun getIntentExtras(intent: Intent) {
         super.getIntentExtras(intent)
@@ -72,7 +89,6 @@ class BinChartActivity : TemplateBarActivity() {
 
     private fun initListener() {
         val kViewTypePop = mKViewTypePop
-        val mBaseQuickAdapter = kViewTypePop.mBaseQuickAdapter
         kViewTypePop.onDismissListener = object : BasePopupWindow.OnDismissListener() {
             override fun onDismiss() {
                 val drawable = getDrawable(R.drawable.ic_triangle_down)
@@ -84,15 +100,8 @@ class BinChartActivity : TemplateBarActivity() {
             val helper = babc_tv_kType.helper
             helper.iconNormal = getDrawable(R.drawable.ic_triangle_up)
         }
-        mBaseQuickAdapter.setOnItemClickListener { _, _, position ->
-            kViewTypePop.dismiss()
-            val binKType = mBaseQuickAdapter.data[position]
-            mCurrBinKType = binKType
-            babc_tv_kType.text = mCurrBinKType.label
-            chartFragment.updateBinKType(mCurrBinKType)
-        }
         babc_tv_kType.setOnClickListener {
-            kViewTypePop.showPopupWindow(babc_tv_kType, mCurrBinKType)
+            kViewTypePop.showPopupWindow(babc_tv_kType)
         }
         babc_tv_indicator.setOnClickListener {
             mIndicatorPop.showPopupWindow(babc_tv_indicator)

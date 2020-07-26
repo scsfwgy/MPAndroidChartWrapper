@@ -70,6 +70,4 @@ abstract class BaseKView(
             moveViewToX(getData().entryCount.toFloat())
         }
     }
-
-
 }

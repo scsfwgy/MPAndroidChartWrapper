@@ -321,21 +321,10 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         masterView.legendRenderer.computeLegend(mBaseKView.data)
     }
 
-    fun showIndicatorType(toNext: Boolean = false) {
-        if (toNext) {
-            mMasterIndicatorType = when (mMasterIndicatorType) {
-                MasterIndicatorType.NONE -> {
-                    MasterIndicatorType.MA
-                }
-                MasterIndicatorType.MA -> {
-                    MasterIndicatorType.BOLL
-                }
-                MasterIndicatorType.BOLL -> {
-                    MasterIndicatorType.NONE
-                }
-            }
-        }
-        val masterIndicatorType: MasterIndicatorType = mMasterIndicatorType
+    /**
+     * 切换指标
+     */
+    fun showIndicatorType(masterIndicatorType: MasterIndicatorType) {
         when {
             masterIndicatorType === MasterIndicatorType.NONE -> {
                 setMaDataSetArrVisible(false)
@@ -353,6 +342,25 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
                 throw  IllegalArgumentException("MasterIndicatorType 类型错误")
             }
         }
+        mMasterView.updateAll()
+    }
+
+    fun showIndicatorType(toNext: Boolean = false) {
+        if (toNext) {
+            mMasterIndicatorType = when (mMasterIndicatorType) {
+                MasterIndicatorType.NONE -> {
+                    MasterIndicatorType.MA
+                }
+                MasterIndicatorType.MA -> {
+                    MasterIndicatorType.BOLL
+                }
+                MasterIndicatorType.BOLL -> {
+                    MasterIndicatorType.NONE
+                }
+            }
+        }
+        val masterIndicatorType: MasterIndicatorType = mMasterIndicatorType
+        showIndicatorType(masterIndicatorType)
     }
 
     /**

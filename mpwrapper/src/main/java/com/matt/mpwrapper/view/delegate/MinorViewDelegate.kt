@@ -269,25 +269,7 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
         }
     }
 
-
-    fun showIndicatorType(toNext: Boolean = false) {
-        if (toNext) {
-            mMinorIndicatorType = when (mMinorIndicatorType) {
-                MinorIndicatorType.MACD -> {
-                    MinorIndicatorType.KDJ
-                }
-                MinorIndicatorType.KDJ -> {
-                    MinorIndicatorType.RSI
-                }
-                MinorIndicatorType.RSI -> {
-                    MinorIndicatorType.MACD
-                }
-            }
-        }
-        //默认高亮线对应的line一定要显示
-        setLineDataSetArrVisible(arrayOf(mShowHighlightLineData), true)
-
-        val minorIndicatorType: MinorIndicatorType = mMinorIndicatorType
+    fun showIndicatorType(minorIndicatorType: MinorIndicatorType) {
         when {
             minorIndicatorType === MinorIndicatorType.MACD -> {
                 setMacdDataSetArrVisible(true)
@@ -308,6 +290,29 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
                 throw  IllegalArgumentException("MasterIndicatrixType 类型错误")
             }
         }
+        mMinorView.updateAll()
+    }
+
+
+    fun showIndicatorType(toNext: Boolean = false) {
+        if (toNext) {
+            mMinorIndicatorType = when (mMinorIndicatorType) {
+                MinorIndicatorType.MACD -> {
+                    MinorIndicatorType.KDJ
+                }
+                MinorIndicatorType.KDJ -> {
+                    MinorIndicatorType.RSI
+                }
+                MinorIndicatorType.RSI -> {
+                    MinorIndicatorType.MACD
+                }
+            }
+        }
+        //默认高亮线对应的line一定要显示
+        setLineDataSetArrVisible(arrayOf(mShowHighlightLineData), true)
+
+        val minorIndicatorType: MinorIndicatorType = mMinorIndicatorType
+        showIndicatorType(minorIndicatorType)
     }
 
     fun setMacdDataSetArrVisible(visible: Boolean) {

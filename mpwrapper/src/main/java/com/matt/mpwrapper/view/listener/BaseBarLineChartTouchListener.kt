@@ -10,8 +10,6 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import com.github.mikephil.charting.listener.BarLineChartTouchListener
 import com.github.mikephil.charting.listener.ChartTouchListener
-import com.matt.mpwrapper.view.MasterView
-import com.matt.mpwrapper.view.MinorView
 
 /**
  *
@@ -77,13 +75,6 @@ open class BaseBarLineChartTouchListener(
      * 触发单击,不会继续出发双击
      */
     override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-        val chart = mChart
-        if (chart is MasterView) {
-            chart.mMasterViewDelegate.showIndicatorType(true)
-        }
-        if (chart is MinorView) {
-            chart.mMinorViewDelegate.showIndicatorType(true)
-        }
         return super.onSingleTapConfirmed(e)
     }
 
