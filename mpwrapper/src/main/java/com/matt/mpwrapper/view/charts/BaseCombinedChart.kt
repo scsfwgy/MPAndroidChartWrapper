@@ -1,4 +1,4 @@
-package com.matt.mpwrapper.view.base
+package com.matt.mpwrapper.view.charts
 
 import android.content.Context
 import android.util.AttributeSet

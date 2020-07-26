@@ -13,9 +13,9 @@ import com.matt.mpwrapper.bean.Ma
 import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
+import com.matt.mpwrapper.view.components.MasterViewMarker
 import com.matt.mpwrapper.view.data.BaseCandleDataSet
 import com.matt.mpwrapper.view.data.BaseLineDataSet
-import com.matt.mpwrapper.view.marker.MasterViewMarker
 import com.matt.mpwrapper.view.type.BollType
 import com.matt.mpwrapper.view.type.MaType
 import com.matt.mpwrapper.view.type.MasterIndicatorType
@@ -194,7 +194,12 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     fun initMasterChart() {
         mMasterView.run {
             //marker
-            val masterViewMarker = MasterViewMarker(this, mContext, 4)
+            val masterViewMarker =
+                MasterViewMarker(
+                    this,
+                    mContext,
+                    4
+                )
             masterViewMarker.chartView = this
             marker = masterViewMarker
 
