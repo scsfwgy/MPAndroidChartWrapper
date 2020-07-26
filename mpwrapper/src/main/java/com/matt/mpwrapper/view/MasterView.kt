@@ -61,25 +61,27 @@ class MasterView @JvmOverloads constructor(
                     val ma = masterData?.ma
                     val boll = masterData?.boll
                     if (ma != null) {
+                        val maEntryListArr = masterViewDelegate.mMaEntryListArr
                         if (ma.ma5 != invalidData) {
-                            masterViewDelegate.mMa5EntryList.add(Entry(xValue, ma.ma5))
+                            maEntryListArr[0].add(Entry(xValue, ma.ma5))
                         }
                         if (ma.ma10 != invalidData) {
-                            masterViewDelegate.mMa10EntryList.add(Entry(xValue, ma.ma10))
+                            maEntryListArr[1].add(Entry(xValue, ma.ma10))
                         }
                         if (ma.ma20 != invalidData) {
-                            masterViewDelegate.mMa20EntryList.add(Entry(xValue, ma.ma20))
+                            maEntryListArr[2].add(Entry(xValue, ma.ma20))
                         }
                     }
                     if (boll != null) {
+                        val bollEntryListArr = masterViewDelegate.mBollEntryListArr
                         if (boll.up != invalidData) {
-                            masterViewDelegate.mBollUpEntryList.add(Entry(xValue, boll.up))
+                            bollEntryListArr[0].add(Entry(xValue, boll.up))
                         }
                         if (boll.mb != invalidData) {
-                            masterViewDelegate.mBollMbEntryList.add(Entry(xValue, boll.mb))
+                            bollEntryListArr[1].add(Entry(xValue, boll.mb))
                         }
                         if (boll.dn != invalidData) {
-                            masterViewDelegate.mBollDnEntryList.add(Entry(xValue, boll.dn))
+                            bollEntryListArr[2].add(Entry(xValue, boll.dn))
                         }
                     }
                     val candleEntry =

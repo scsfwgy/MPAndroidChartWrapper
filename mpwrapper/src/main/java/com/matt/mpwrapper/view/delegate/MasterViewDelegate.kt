@@ -38,29 +38,45 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     var mMasterIndicatorType: MasterIndicatorType = MasterIndicatorType.MA
 
     //ma
-    val mMasterViewMa5Color by lazy {
-        getColor(R.color.mp_masterview_ma5)
-    }
-    val mMasterViewMa10Color by lazy {
-        getColor(R.color.mp_masterview_ma10)
-    }
-    val mMasterViewMa20Color by lazy {
-        getColor(R.color.mp_masterview_ma20)
-
+    val mMaColorArr by lazy {
+        arrayOf(
+            getColor(R.color.mp_masterview_ma5),
+            getColor(R.color.mp_masterview_ma10),
+            getColor(R.color.mp_masterview_ma20)
+        )
     }
 
     //boll
-    val mMasterViewBollUpColor by lazy {
-        getColor(R.color.mp_masterview_bollup)
-
+    val mBollColorArr by lazy {
+        arrayOf(
+            getColor(R.color.mp_masterview_bollup),
+            getColor(R.color.mp_masterview_bollmb),
+            getColor(R.color.mp_masterview_bolldn)
+        )
     }
-    val mMasterViewBollMdColor by lazy {
-        getColor(R.color.mp_masterview_bollmb)
 
+    val mMaEntryListArr by lazy {
+        arrayOf(
+            ArrayList<Entry>(),
+            ArrayList(),
+            ArrayList()
+        )
     }
-    val mMasterViewBollDnColor by lazy {
-        getColor(R.color.mp_masterview_bolldn)
 
+    val mBollEntryListArr by lazy {
+        arrayOf(
+            ArrayList<Entry>(),
+            ArrayList(),
+            ArrayList()
+        )
+    }
+
+    val mMaType by lazy {
+        arrayOf(MaType.MA5, MaType.MA10, MaType.MA20)
+    }
+
+    val mBollType by lazy {
+        arrayOf(BollType.UP, BollType.MD, BollType.DN)
     }
 
     val mMasterTimeSharingColor by lazy {
@@ -70,30 +86,11 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         getDrawable(R.drawable.shape_gradient_filled)
     }
 
-
     val mTimeSharingEntryList by lazy {
         ArrayList<Entry>()
     }
     val mCandleEntryList by lazy {
         ArrayList<CandleEntry>()
-    }
-    val mMa5EntryList by lazy {
-        ArrayList<Entry>()
-    }
-    val mMa10EntryList by lazy {
-        ArrayList<Entry>()
-    }
-    val mMa20EntryList by lazy {
-        ArrayList<Entry>()
-    }
-    val mBollUpEntryList by lazy {
-        ArrayList<Entry>()
-    }
-    val mBollMbEntryList by lazy {
-        ArrayList<Entry>()
-    }
-    val mBollDnEntryList by lazy {
-        ArrayList<Entry>()
     }
 
     val mLimitLine by lazy {
@@ -162,48 +159,35 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
 
     val mMaLineDataSetArr by lazy {
-        val ma5 = BaseLineDataSet(
-            mMa5EntryList,
-            MaType.MA5.toString()
-        )
-        ma5.color = mMasterViewMa5Color
-        val ma10 = BaseLineDataSet(
-            mMa10EntryList,
-            MaType.MA10.toString()
-        )
-        ma10.color = mMasterViewMa10Color
-        val ma20 = BaseLineDataSet(
-            mMa20EntryList,
-            MaType.MA20.toString()
-        )
-        ma20.color = mMasterViewMa20Color
-        val arrayOf = arrayOf(ma5, ma10, ma20)
-        arrayOf.forEach {
-            it.cubicIntensity = 1f
-        }
-        arrayOf
+        val map = arrayOf(0, 1, 2)
+            .map {
+                val arrayList = mMaEntryListArr[it]
+                val maType = mMaType[it]
+                val color = mMaColorArr[it]
+                val baseLineDataSet = BaseLineDataSet(
+                    arrayList,
+                    maType.toString()
+                )
+                baseLineDataSet.color = color
+                baseLineDataSet
+            }.toTypedArray()
+        map
     }
 
     val mBollLineDataSetArr by lazy {
-        val bollup = BaseLineDataSet(
-            mBollUpEntryList,
-            BollType.UP.toString()
-        )
-        bollup.color = mMasterViewBollUpColor
-
-        val bollmd = BaseLineDataSet(
-            mBollMbEntryList,
-            BollType.MD.toString()
-        )
-        bollmd.color = mMasterViewBollMdColor
-
-        val bollDn = BaseLineDataSet(
-            mBollDnEntryList,
-            BollType.DN.toString()
-        )
-        bollDn.color = mMasterViewBollDnColor
-
-        arrayOf(bollup, bollmd, bollDn)
+        val map = arrayOf(0, 1, 2)
+            .map {
+                val arrayList = mBollEntryListArr[it]
+                val maType = mBollType[it]
+                val color = mBollColorArr[it]
+                val baseLineDataSet = BaseLineDataSet(
+                    arrayList,
+                    maType.toString()
+                )
+                baseLineDataSet.color = color
+                baseLineDataSet
+            }.toTypedArray()
+        map
     }
 
 
@@ -243,11 +227,11 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     fun getMaLegend(ma: Ma, press: Boolean): Array<LegendEntry> {
         return if (press) {
             val ma5 =
-                generateLegendEntry(mMasterViewMa5Color, "MA5 " + numFormat(ma.ma5))
+                generateLegendEntry(mMaColorArr[0], "MA5 " + numFormat(ma.ma5))
             val ma10 =
-                generateLegendEntry(mMasterViewMa10Color, "MA10 " + numFormat(ma.ma10))
+                generateLegendEntry(mMaColorArr[1], "MA10 " + numFormat(ma.ma10))
             val ma20 =
-                generateLegendEntry(mMasterViewMa20Color, "MA20 " + numFormat(ma.ma20))
+                generateLegendEntry(mMaColorArr[2], "MA20 " + numFormat(ma.ma20))
             arrayOf(ma5, ma10, ma20)
         } else {
             getUnPressLegend("MA(5,10,20)")
@@ -259,17 +243,17 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
             press -> {
                 val up =
                     generateLegendEntry(
-                        mMasterViewBollUpColor,
+                        mBollColorArr[0],
                         "UPPER " + numFormat(boll.up)
                     )
                 val md =
                     generateLegendEntry(
-                        mMasterViewBollMdColor,
+                        mBollColorArr[1],
                         "MID " + numFormat(boll.mb)
                     )
                 val dn =
                     generateLegendEntry(
-                        mMasterViewBollDnColor,
+                        mBollColorArr[2],
                         "LOWER " + numFormat(boll.dn)
                     )
                 return arrayOf(up, md, dn)
