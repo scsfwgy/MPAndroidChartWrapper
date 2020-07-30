@@ -2,6 +2,7 @@ package com.matt.demo
 
 import android.app.Application
 import com.blankj.utilcode.util.Utils
+import com.example.sample_binance.SampleBinanceInit
 
 /**
  * ============================================================
@@ -14,5 +15,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Utils.init(this)
+        SampleBinanceInit.init(this)
     }
 }

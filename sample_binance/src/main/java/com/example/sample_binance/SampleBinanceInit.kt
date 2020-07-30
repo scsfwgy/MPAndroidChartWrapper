@@ -1,6 +1,7 @@
 package com.example.sample_binance
 
 import android.app.Application
+import com.example.sample_binance.repository.ws.BinWsImpl
 
 /**
  * ============================================================
@@ -10,11 +11,14 @@ import android.app.Application
  * ============================================================
  **/
 object SampleBinanceInit {
+    val TAG = SampleBinanceInit.javaClass.simpleName
 
     //不需要翻墙
     const val BASE_URL = "https://api.binancezh.com/"
+    const val BASE_URL_WS = "https://stream.binancezh.com:9443"
 
     fun init(application: Application) {
+        BinWsImpl.getBinWs().conn()
 
     }
 }
