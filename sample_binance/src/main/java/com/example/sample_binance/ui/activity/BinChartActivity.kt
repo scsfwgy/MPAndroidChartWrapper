@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.example.sample_binance.R
 import com.example.sample_binance.model.kview.BinKType
 import com.example.sample_binance.repository.sp.BinSpHelper
+import com.example.sample_binance.repository.ws.BinWsApi
 import com.example.sample_binance.ui.fragment.BinChartFragment
 import com.example.sample_binance.ui.pop.IndicatorPop
 import com.example.sample_binance.ui.pop.KViewTypePop
@@ -81,6 +82,15 @@ class BinChartActivity : TemplateBarActivity() {
         super.onCatchCreate(savedInstanceState)
         iniView()
         initListener()
+        loadData()
+    }
+
+    private fun loadData() {
+        val kline = BinWsApi.kline(mSymbol, mCurrBinKType.apiKey, true)
+        if (!kline) {
+            showToast("k线推送数据订阅失败，请重试")
+            return
+        }
     }
 
     private fun iniView() {

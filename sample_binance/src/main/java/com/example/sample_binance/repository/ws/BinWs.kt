@@ -1,5 +1,7 @@
 package com.example.sample_binance.repository.ws
 
+import okhttp3.WebSocket
+
 /**
  * ============================================================
  * 作 者 :    wgyscsf@163.com
@@ -10,4 +12,6 @@ package com.example.sample_binance.repository.ws
 interface BinWs {
     fun conn()
     fun disConn()
+    fun send(msg: String?):Boolean
+    fun getWebSocket(): WebSocket?
 }
