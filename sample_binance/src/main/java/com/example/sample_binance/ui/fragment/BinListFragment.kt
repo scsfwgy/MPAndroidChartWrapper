@@ -3,13 +3,19 @@ package com.example.sample_binance.ui.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.ColorUtils.getColor
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.example.sample_binance.R
+import com.example.sample_binance.model.api.Api24Hr
 import com.example.sample_binance.model.api.ApiSymbol
+import com.example.sample_binance.repository.memory.GlobalCache
 import com.example.sample_binance.ui.activity.BinChartActivity
 import com.matt.libwrapper.exception.ParamsException
 import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
+import com.matt.mpwrapper.ktx.getColor
+import com.matt.mpwrapper.utils.XFormatUtil
+import com.matt.mpwrapper.view.MpWrapperConfig
 import kotlinx.android.synthetic.main.bin_fragment_bin_list.view.*
 import kotlinx.android.synthetic.main.bin_item_fragment_bin_list.view.*
 
@@ -22,25 +28,69 @@ import kotlinx.android.synthetic.main.bin_item_fragment_bin_list.view.*
  **/
 class BinListFragment : LazyLoadBaseFragment() {
     companion object {
-        const val KEY_LIST = "KEY_LIST"
+        const val KEY_CURRENCY = "KEY_CURRENCY"
 
         @JvmStatic
-        fun newInstance(list: ArrayList<ApiSymbol>) =
+        fun newInstance(currency: String) =
             BinListFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_LIST, list)
+                    putString(KEY_CURRENCY, currency)
                 }
             }
     }
 
-    lateinit var mList: List<ApiSymbol>
+    lateinit var mCurrency: String
+
+    val mGreenUp by lazy {
+        MpWrapperConfig.mConfig.greenUp
+    }
+
+    val mRedColor: Int by lazy {
+        getColor(com.matt.mpwrapper.R.color.mp_basekview_red)
+    }
+    val mGreenColor: Int by lazy {
+        getColor(com.matt.mpwrapper.R.color.mp_basekview_green)
+    }
+    val mBaseEqualColor: Int by lazy {
+        getColor(com.matt.mpwrapper.R.color.mp_basekview_equal)
+    }
+    val mUpColor: Int by lazy {
+        if (mGreenUp) mGreenColor else mRedColor
+    }
+    val mDownColor: Int by lazy {
+        if (!mGreenUp) mGreenColor else mRedColor
+    }
 
     val mBaseQuickAdapter by lazy {
         object :
-            BaseQuickAdapter<ApiSymbol, BaseViewHolder>(R.layout.bin_item_fragment_bin_list, null) {
-            override fun convert(holder: BaseViewHolder, item: ApiSymbol) {
+            BaseQuickAdapter<Api24Hr, BaseViewHolder>(R.layout.bin_item_fragment_bin_list, null) {
+            override fun convert(holder: BaseViewHolder, item: Api24Hr) {
                 holder.itemView.run {
+                    val symbolBySymbol = GlobalCache.getSymbolBySymbol(item.symbol)
+                    val priceChangePercent = item.priceChangePercent
+                    val lastPrice = item.lastPrice
                     bifbl_tv_symbol.text = item.symbol
+                    bifbl_tv_price.text =
+                        XFormatUtil.globalFormat(lastPrice, symbolBySymbol?.baseAssetPrecision ?: 2)
+                    bifbl_tv_rate.text = XFormatUtil.globalFormat(
+                        priceChangePercent,
+                        2
+                    ) + "%"
+                    when {
+                        priceChangePercent > 0 -> {
+                            bifbl_tv_price.setTextColor(mUpColor)
+                            bifbl_tv_rate.setTextColor(mUpColor)
+                        }
+                        priceChangePercent < 0 -> {
+                            bifbl_tv_price.setTextColor(mDownColor)
+                            bifbl_tv_rate.setTextColor(mDownColor)
+
+                        }
+                        else -> {
+                            bifbl_tv_price.setTextColor(mBaseEqualColor)
+                            bifbl_tv_rate.setTextColor(mBaseEqualColor)
+                        }
+                    }
                 }
             }
         }
@@ -48,8 +98,7 @@ class BinListFragment : LazyLoadBaseFragment() {
 
     override fun getBundleExtras(bundle: Bundle?) {
         super.getBundleExtras(bundle)
-        val list = bundle?.getSerializable(KEY_LIST) ?: throw ParamsException("参数异常")
-        mList = list as List<ApiSymbol>
+        mCurrency = bundle?.getString(KEY_CURRENCY) ?: throw ParamsException("参数异常")
     }
 
     override fun layoutId(): Int {
@@ -77,6 +126,10 @@ class BinListFragment : LazyLoadBaseFragment() {
     }
 
     private fun loadData() {
-        mBaseQuickAdapter.setNewInstance(mList.toMutableList())
+        val filter = GlobalCache.getSymbolMap().values.filter { it.quoteAsset == mCurrency }
+        val map =
+            filter.mapNotNull { GlobalCache.get24HrBySymbol(it.symbol) }
+                .sortedByDescending { it.lastPrice }
+        mBaseQuickAdapter.setNewInstance(map.toMutableList())
     }
 }

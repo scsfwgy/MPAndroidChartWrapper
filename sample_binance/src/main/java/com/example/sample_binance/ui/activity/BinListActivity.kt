@@ -3,19 +3,20 @@ package com.example.sample_binance.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.example.sample_binance.R
+import com.example.sample_binance.model.api.Api24Hr
 import com.example.sample_binance.model.api.ApiSymbol
 import com.example.sample_binance.model.api.ApiSymbolWrapper
+import com.example.sample_binance.repository.memory.GlobalCache
 import com.example.sample_binance.repository.net.BinObserver
 import com.example.sample_binance.repository.net.BinanceServiceWrapper
 import com.example.sample_binance.ui.fragment.BinListFragment
-import com.matt.libwrapper.ui.base.HandleExceptionActivity
 import com.matt.libwrapper.ui.base.template.Template
 import com.matt.libwrapper.ui.base.template.TemplateBarActivity
 import com.matt.libwrapper.utils.RxUtils
-import com.matt.libwrapper.widget.ObserverWrapper
+import com.matt.libwrapper.widget.simple.SimpleCatchObserver
 import com.matt.libwrapper.widget.simple.SimpleFragmentPagerAdapter
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.bin_activity_bin_list.*
 
 class BinListActivity : TemplateBarActivity() {
@@ -45,12 +46,22 @@ class BinListActivity : TemplateBarActivity() {
     }
 
     private fun loadExchangeInfo() {
-        BinanceServiceWrapper.sBinanceService.exchangeInfo()
+        val exchangeInfo = BinanceServiceWrapper.sBinanceService.exchangeInfo()
+        val _24hr = BinanceServiceWrapper.sBinanceService._24hr()
+        Observable.merge(exchangeInfo, _24hr)
             .compose(RxUtils.rxObSchedulerHelper())
-            .subscribe(object : BinObserver<ApiSymbolWrapper>(this) {
-                override fun onFinalSuccess(t: ApiSymbolWrapper) {
-                    Log.d(TAG, t.symbols.toString())
-                    renderTabLayout(t.symbols)
+            .subscribe(object : BinObserver<Any>(this) {
+                override fun onFinalSuccess(t: Any) {
+                    if (t is ApiSymbolWrapper) {
+                        GlobalCache.updateSymbol(t.symbols)
+                    } else if (t is List<*>) {
+                        GlobalCache.update24Hr(t as List<Api24Hr>)
+                    }
+                }
+
+                override fun onCatchComplete() {
+                    super.onCatchComplete()
+                    renderTabLayout(GlobalCache.getSymbolMap().values.toList())
                 }
             })
     }
@@ -72,27 +83,12 @@ class BinListActivity : TemplateBarActivity() {
             }
         })
         val titles = groupMap.keys
-        val fragments = groupMap.values.map { list ->
-            BinListFragment.newInstance(
-                list as ArrayList<ApiSymbol>
-            )
+        val fragments = titles.map {
+            BinListFragment.newInstance(it)
         }
         babl_vp_viewPager.adapter =
             SimpleFragmentPagerAdapter(supportFragmentManager, fragments, titles.toList())
         babl_stl_tabLayout.setViewPager(babl_vp_viewPager)
     }
 
-    private fun loadKLine() {
-        val params = HashMap<String, Any>()
-        params["symbol"] = "BTCUSDT"
-        params["interval"] = "1d"
-        BinanceServiceWrapper.sBinanceService.klines(params)
-            .compose(RxUtils.rxObSchedulerHelper())
-            .subscribe(object : BinObserver<Array<Array<Any>>>(this) {
-
-                override fun onFinalSuccess(t: Array<Array<Any>>) {
-                    Log.d(TAG, t.toString())
-                }
-            })
-    }
 }
