@@ -9,7 +9,7 @@ import com.blankj.utilcode.util.GsonUtils
  * 描 述 ：
  * ============================================================
  */
-class WsBase(
+class WsReqBase(
     val method: String,
     val params: Array<String>,
     val id: Int
@@ -17,7 +17,7 @@ class WsBase(
     companion object {
         fun binWsApi(params: Array<String>, subscribe: Boolean, id: Int = 10): String {
             val wsBase =
-                WsBase(if (subscribe) "SUBSCRIBE" else "UNSUBSCRIBE", params, id)
+                WsReqBase(if (subscribe) "SUBSCRIBE" else "UNSUBSCRIBE", params, id)
             return GsonUtils.toJson(wsBase)
         }
 

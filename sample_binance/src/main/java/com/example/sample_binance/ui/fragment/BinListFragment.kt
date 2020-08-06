@@ -8,12 +8,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.example.sample_binance.R
 import com.example.sample_binance.model.api.Api24Hr
-import com.example.sample_binance.model.api.ApiSymbol
 import com.example.sample_binance.repository.memory.GlobalCache
 import com.example.sample_binance.ui.activity.BinChartActivity
 import com.matt.libwrapper.exception.ParamsException
 import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
-import com.matt.mpwrapper.ktx.getColor
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
 import kotlinx.android.synthetic.main.bin_fragment_bin_list.view.*

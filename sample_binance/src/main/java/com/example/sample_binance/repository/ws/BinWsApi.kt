@@ -1,6 +1,6 @@
 package com.example.sample_binance.repository.ws
 
-import com.example.sample_binance.model.ws.WsBase
+import com.example.sample_binance.model.ws.WsReqBase
 
 /**
  * ============================================================
@@ -13,7 +13,13 @@ object BinWsApi {
 
     fun kline(symbol: String, interval: String, sub: Boolean): Boolean {
         val api = "${symbol.toLowerCase()}@kline_${interval}"
-        val binWsApi = WsBase.binWsApi(api, sub)
+        val binWsApi = WsReqBase.binWsApi(api, sub)
+        return send(binWsApi)
+    }
+
+    fun simpleTicker(symbol: String,sub: Boolean): Boolean {
+        val api = "${symbol.toLowerCase()}@miniTicker"
+        val binWsApi = WsReqBase.binWsApi(api, sub)
         return send(binWsApi)
     }
 
