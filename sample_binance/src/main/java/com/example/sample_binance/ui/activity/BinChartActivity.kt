@@ -70,7 +70,7 @@ class BinChartActivity : TemplateBarActivity() {
         mSymbol = intent.getStringExtra(KEY_SYMBOL) ?: throw ParamsException("KEY_SYMBOL参数缺失")
     }
 
-    override fun eventbusEnable(): Boolean {
+    override fun eventBusEnable(): Boolean {
         return true
     }
 
@@ -159,7 +159,7 @@ class BinChartActivity : TemplateBarActivity() {
     }
 
     fun sub(sub: Boolean) {
-        val kline = BinWsApi.simpleTicker(mSymbol, sub)
+        val kline = BinWsApi.simpleTicker(arrayOf(mSymbol), sub)
         if (sub && !kline) {
             showToast("k线推送数据订阅失败，请重试")
             return

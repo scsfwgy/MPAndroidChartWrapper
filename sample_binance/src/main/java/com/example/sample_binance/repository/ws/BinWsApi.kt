@@ -11,14 +11,14 @@ import com.example.sample_binance.model.ws.WsReqBase
  **/
 object BinWsApi {
 
-    fun kline(symbol: String, interval: String, sub: Boolean): Boolean {
-        val api = "${symbol.toLowerCase()}@kline_${interval}"
+    fun kline(symbols: Array<String>, interval: String, sub: Boolean): Boolean {
+        val api = symbols.map { "${it.toLowerCase()}@kline_${interval}" }.toTypedArray()
         val binWsApi = WsReqBase.binWsApi(api, sub)
         return send(binWsApi)
     }
 
-    fun simpleTicker(symbol: String,sub: Boolean): Boolean {
-        val api = "${symbol.toLowerCase()}@miniTicker"
+    fun simpleTicker(symbols: Array<String>, sub: Boolean): Boolean {
+        val api = symbols.map { "${it.toLowerCase()}@miniTicker" }.toTypedArray()
         val binWsApi = WsReqBase.binWsApi(api, sub)
         return send(binWsApi)
     }

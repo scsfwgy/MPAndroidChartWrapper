@@ -65,19 +65,19 @@ class BinWsListener(val binWs: BinWs) : WebSocketListener() {
 
     fun onSafeMsg(text: String) {
         log("onMessage:$text")
-        if (text.contains("result")) {
+        if (text.contains("result") || !text.contains("stream")) {
             log("收到了不包含事件类型的事件，终止解析：$text")
             return
         }
-        val json = JsonParser.parseString(text)
-        if (json.isJsonObject) {
-            val jsonObject = json.asJsonObject
-            val type = jsonObject["e"].asString
-                ?: throw IllegalArgumentException("不存在字段e,数据非法")
-            dispatchMsgByType(text, type)
-        } else {
-            throw IllegalArgumentException("收到的信息：!json.isJsonObject，非法")
-        }
+        val orginElement = JsonParser.parseString(text)
+        if (!orginElement.isJsonObject) throw IllegalArgumentException("收到的信息：!json.isJsonObject，非法")
+        val jsonObject = orginElement.asJsonObject
+        val dataElement = jsonObject["data"]
+        if (!dataElement.isJsonObject) throw IllegalArgumentException("收到的信息：!dataElement.isJsonObject，非法")
+        val dataObject = dataElement.asJsonObject
+        val type = dataObject["e"].asString ?: throw IllegalArgumentException("type不允许为null")
+        val json = dataObject.toString()
+        dispatchMsgByType(json, type)
     }
 
     fun dispatchMsgByType(json: String, type: String) {

@@ -1,21 +1,28 @@
 package com.example.sample_binance.ui.fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ColorUtils.getColor
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.example.sample_binance.R
 import com.example.sample_binance.model.api.Api24Hr
+import com.example.sample_binance.model.ws.WsSimpleTicker
 import com.example.sample_binance.repository.memory.GlobalCache
+import com.example.sample_binance.repository.ws.BinWsApi
 import com.example.sample_binance.ui.activity.BinChartActivity
 import com.matt.libwrapper.exception.ParamsException
 import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
+import com.matt.libwrapper.utils.RxUtils
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
 import kotlinx.android.synthetic.main.bin_fragment_bin_list.view.*
 import kotlinx.android.synthetic.main.bin_item_fragment_bin_list.view.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * ============================================================
@@ -103,17 +110,29 @@ class BinListFragment : LazyLoadBaseFragment() {
         return R.layout.bin_fragment_bin_list
     }
 
+    override fun eventBusEnable(): Boolean {
+        return true
+    }
+
     override fun safeInitAll(rootView: View) {
         initAdapter()
-        initlistener()
+        initListener()
         loadData()
     }
 
-    private fun initlistener() {
+    private fun initListener() {
         mBaseQuickAdapter.setOnItemClickListener { _, _, position ->
             val apiSymbol = mBaseQuickAdapter.data[position]
             BinChartActivity.goIntent(mContext, apiSymbol.symbol)
         }
+        mRootView.bfbl_rv_recycle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    subSimpleTickerBySymbols(visible = mCurrentVisible)
+                }
+            }
+        })
     }
 
     private fun initAdapter() {
@@ -129,5 +148,48 @@ class BinListFragment : LazyLoadBaseFragment() {
             filter.mapNotNull { GlobalCache.get24HrBySymbol(it.symbol) }
                 .sortedByDescending { it.lastPrice }
         mBaseQuickAdapter.setNewInstance(map.toMutableList())
+
+        val subscribe = RxUtils.timer(500).subscribe {
+            subSimpleTickerBySymbols(mCurrentVisible)
+        }
+        addDisposable(subscribe)
+    }
+
+    override fun onVisable(visable: Boolean) {
+        super.onVisable(visable)
+        subSimpleTickerBySymbols(visable)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(wsSimpleTicker: WsSimpleTicker) {
+        val data = mBaseQuickAdapter.data
+        data.forEachIndexed loop@{ index, api24Hr ->
+            if (api24Hr.symbol == wsSimpleTicker.s) {
+                api24Hr.lastPrice = wsSimpleTicker.c
+                api24Hr.priceChangePercent =
+                    (wsSimpleTicker.o - wsSimpleTicker.c) / wsSimpleTicker.o * 100f
+                mBaseQuickAdapter.notifyItemChanged(index)
+                return@loop
+            }
+        }
+    }
+
+    private fun subSimpleTickerBySymbols(visible: Boolean, all: Boolean = false) {
+        val linearLayoutManager = mRootView.bfbl_rv_recycle.layoutManager as LinearLayoutManager
+        val first = linearLayoutManager.findFirstVisibleItemPosition()
+        val last = linearLayoutManager.findLastVisibleItemPosition()
+        val filterIndexed =
+            if (all) {
+                mBaseQuickAdapter.data
+            } else {
+                mBaseQuickAdapter.data.filterIndexed { index, _ -> index in first until last }
+            }.map { it.symbol }
+        if (filterIndexed.isEmpty()) return
+        BinWsApi.simpleTicker(filterIndexed.toTypedArray(), visible)
+    }
+
+    override fun onCatchDestroy() {
+        super.onCatchDestroy()
+        subSimpleTickerBySymbols(false, true)
     }
 }
