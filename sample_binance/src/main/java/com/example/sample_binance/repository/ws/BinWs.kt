@@ -12,6 +12,7 @@ import okhttp3.WebSocket
 interface BinWs {
     fun conn()
     fun disConn()
-    fun send(msg: String?):Boolean
+    fun send(msg: String?): Boolean
     fun getWebSocket(): WebSocket?
+    fun setWebSocket(webSocket: WebSocket?)
 }
