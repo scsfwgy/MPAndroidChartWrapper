@@ -74,26 +74,32 @@ class BinListFragment : LazyLoadBaseFragment() {
                     val symbolBySymbol = GlobalCache.getSymbolBySymbol(item.symbol)
                     val priceChangePercent = item.priceChangePercent
                     val lastPrice = item.lastPrice
+                    val append = if (priceChangePercent > 0) {
+                        "+"
+                    } else ""
+                    val finalRateFormat =
+                        append + XFormatUtil.globalFormat(priceChangePercent, 2, false) + "%"
                     bifbl_tv_symbol.text = item.symbol
                     bifbl_tv_price.text =
-                        XFormatUtil.globalFormat(lastPrice, symbolBySymbol?.baseAssetPrecision ?: 2)
-                    bifbl_tv_rate.text = XFormatUtil.globalFormat(
-                        priceChangePercent,
-                        2
-                    ) + "%"
+                        XFormatUtil.globalFormat(
+                            lastPrice,
+                            symbolBySymbol?.baseAssetPrecision ?: 2,
+                            false
+                        )
+                    bifbl_tv_rate.text = finalRateFormat
+                    val helper = bifbl_tv_rate.helper
                     when {
                         priceChangePercent > 0 -> {
                             bifbl_tv_price.setTextColor(mUpColor)
-                            bifbl_tv_rate.setTextColor(mUpColor)
+                            helper.backgroundColorNormal = mUpColor
                         }
                         priceChangePercent < 0 -> {
                             bifbl_tv_price.setTextColor(mDownColor)
-                            bifbl_tv_rate.setTextColor(mDownColor)
-
+                            helper.backgroundColorNormal = mDownColor
                         }
                         else -> {
                             bifbl_tv_price.setTextColor(mBaseEqualColor)
-                            bifbl_tv_rate.setTextColor(mBaseEqualColor)
+                            helper.backgroundColorNormal = mBaseEqualColor
                         }
                     }
                 }
@@ -159,7 +165,7 @@ class BinListFragment : LazyLoadBaseFragment() {
             if (api24Hr.symbol == wsSimpleTicker.s) {
                 api24Hr.lastPrice = wsSimpleTicker.c
                 api24Hr.priceChangePercent =
-                    (wsSimpleTicker.o - wsSimpleTicker.c) / wsSimpleTicker.o * 100f
+                    (wsSimpleTicker.c - wsSimpleTicker.o) / wsSimpleTicker.o * 100f
                 mBaseQuickAdapter.notifyItemChanged(index)
                 return@loop
             }
