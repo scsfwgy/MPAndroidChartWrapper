@@ -125,14 +125,6 @@ class BinListFragment : LazyLoadBaseFragment() {
             val apiSymbol = mBaseQuickAdapter.data[position]
             BinChartActivity.goIntent(mContext, apiSymbol.symbol)
         }
-        mRootView.bfbl_rv_recycle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    subSimpleTickerBySymbols(visible = mCurrentVisible)
-                }
-            }
-        })
     }
 
     private fun initAdapter() {
@@ -149,16 +141,16 @@ class BinListFragment : LazyLoadBaseFragment() {
                 .sortedByDescending { it.lastPrice }
         mBaseQuickAdapter.setNewInstance(map.toMutableList())
 
-        val subscribe = RxUtils.timer(500).subscribe {
-            subSimpleTickerBySymbols(mCurrentVisible)
-        }
-        addDisposable(subscribe)
+        //订阅
+        subSimpleTickerBySymbols(mCurrentVisible)
     }
 
     override fun onVisable(visable: Boolean) {
         super.onVisable(visable)
-        subSimpleTickerBySymbols(visable)
+        //订阅
+        subSimpleTickerBySymbols(mCurrentVisible)
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(wsSimpleTicker: WsSimpleTicker) {
@@ -174,22 +166,9 @@ class BinListFragment : LazyLoadBaseFragment() {
         }
     }
 
-    private fun subSimpleTickerBySymbols(visible: Boolean, all: Boolean = false) {
-        val linearLayoutManager = mRootView.bfbl_rv_recycle.layoutManager as LinearLayoutManager
-        val first = linearLayoutManager.findFirstVisibleItemPosition()
-        val last = linearLayoutManager.findLastVisibleItemPosition()
-        val filterIndexed =
-            if (all) {
-                mBaseQuickAdapter.data
-            } else {
-                mBaseQuickAdapter.data.filterIndexed { index, _ -> index in first until last }
-            }.map { it.symbol }
+    private fun subSimpleTickerBySymbols(visible: Boolean) {
+        val filterIndexed = mBaseQuickAdapter.data.map { it.symbol }
         if (filterIndexed.isEmpty()) return
         BinWsApi.simpleTicker(filterIndexed.toTypedArray(), visible)
-    }
-
-    override fun onCatchDestroy() {
-        super.onCatchDestroy()
-        subSimpleTickerBySymbols(false, true)
     }
 }
