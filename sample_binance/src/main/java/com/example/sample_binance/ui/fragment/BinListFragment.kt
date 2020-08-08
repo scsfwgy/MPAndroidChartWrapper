@@ -1,10 +1,8 @@
 package com.example.sample_binance.ui.fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ColorUtils.getColor
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -16,7 +14,6 @@ import com.example.sample_binance.repository.ws.BinWsApi
 import com.example.sample_binance.ui.activity.BinChartActivity
 import com.matt.libwrapper.exception.ParamsException
 import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
-import com.matt.libwrapper.utils.RxUtils
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
 import kotlinx.android.synthetic.main.bin_fragment_bin_list.view.*
@@ -74,26 +71,32 @@ class BinListFragment : LazyLoadBaseFragment() {
                     val symbolBySymbol = GlobalCache.getSymbolBySymbol(item.symbol)
                     val priceChangePercent = item.priceChangePercent
                     val lastPrice = item.lastPrice
+                    val append = if (priceChangePercent > 0) {
+                        "+"
+                    } else ""
+                    val finalRateFormat =
+                        append + XFormatUtil.globalFormat(priceChangePercent, 2, false) + "%"
                     bifbl_tv_symbol.text = item.symbol
                     bifbl_tv_price.text =
-                        XFormatUtil.globalFormat(lastPrice, symbolBySymbol?.baseAssetPrecision ?: 2)
-                    bifbl_tv_rate.text = XFormatUtil.globalFormat(
-                        priceChangePercent,
-                        2
-                    ) + "%"
+                        XFormatUtil.globalFormat(
+                            lastPrice,
+                            symbolBySymbol?.baseAssetPrecision ?: 2,
+                            false
+                        )
+                    bifbl_tv_rate.text = finalRateFormat
+                    val helper = bifbl_tv_rate.helper
                     when {
                         priceChangePercent > 0 -> {
                             bifbl_tv_price.setTextColor(mUpColor)
-                            bifbl_tv_rate.setTextColor(mUpColor)
+                            helper.backgroundColorNormal = mUpColor
                         }
                         priceChangePercent < 0 -> {
                             bifbl_tv_price.setTextColor(mDownColor)
-                            bifbl_tv_rate.setTextColor(mDownColor)
-
+                            helper.backgroundColorNormal = mDownColor
                         }
                         else -> {
                             bifbl_tv_price.setTextColor(mBaseEqualColor)
-                            bifbl_tv_rate.setTextColor(mBaseEqualColor)
+                            helper.backgroundColorNormal = mBaseEqualColor
                         }
                     }
                 }
@@ -125,14 +128,6 @@ class BinListFragment : LazyLoadBaseFragment() {
             val apiSymbol = mBaseQuickAdapter.data[position]
             BinChartActivity.goIntent(mContext, apiSymbol.symbol)
         }
-        mRootView.bfbl_rv_recycle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    subSimpleTickerBySymbols(visible = mCurrentVisible)
-                }
-            }
-        })
     }
 
     private fun initAdapter() {
@@ -149,16 +144,16 @@ class BinListFragment : LazyLoadBaseFragment() {
                 .sortedByDescending { it.lastPrice }
         mBaseQuickAdapter.setNewInstance(map.toMutableList())
 
-        val subscribe = RxUtils.timer(500).subscribe {
-            subSimpleTickerBySymbols(mCurrentVisible)
-        }
-        addDisposable(subscribe)
+        //订阅
+        subSimpleTickerBySymbols(mCurrentVisible)
     }
 
     override fun onVisable(visable: Boolean) {
         super.onVisable(visable)
-        subSimpleTickerBySymbols(visable)
+        //订阅
+        subSimpleTickerBySymbols(mCurrentVisible)
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(wsSimpleTicker: WsSimpleTicker) {
@@ -167,29 +162,16 @@ class BinListFragment : LazyLoadBaseFragment() {
             if (api24Hr.symbol == wsSimpleTicker.s) {
                 api24Hr.lastPrice = wsSimpleTicker.c
                 api24Hr.priceChangePercent =
-                    (wsSimpleTicker.o - wsSimpleTicker.c) / wsSimpleTicker.o * 100f
+                    (wsSimpleTicker.c - wsSimpleTicker.o) / wsSimpleTicker.o * 100f
                 mBaseQuickAdapter.notifyItemChanged(index)
                 return@loop
             }
         }
     }
 
-    private fun subSimpleTickerBySymbols(visible: Boolean, all: Boolean = false) {
-        val linearLayoutManager = mRootView.bfbl_rv_recycle.layoutManager as LinearLayoutManager
-        val first = linearLayoutManager.findFirstVisibleItemPosition()
-        val last = linearLayoutManager.findLastVisibleItemPosition()
-        val filterIndexed =
-            if (all) {
-                mBaseQuickAdapter.data
-            } else {
-                mBaseQuickAdapter.data.filterIndexed { index, _ -> index in first until last }
-            }.map { it.symbol }
+    private fun subSimpleTickerBySymbols(visible: Boolean) {
+        val filterIndexed = mBaseQuickAdapter.data.map { it.symbol }
         if (filterIndexed.isEmpty()) return
         BinWsApi.simpleTicker(filterIndexed.toTypedArray(), visible)
-    }
-
-    override fun onCatchDestroy() {
-        super.onCatchDestroy()
-        subSimpleTickerBySymbols(false, true)
     }
 }
