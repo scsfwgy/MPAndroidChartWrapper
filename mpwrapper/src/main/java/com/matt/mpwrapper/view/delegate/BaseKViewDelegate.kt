@@ -54,7 +54,7 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
         getColor(R.color.mp_basekview_gridBg)
     }
     val mBaseBgColor: Int by lazy {
-        getColor(R.color.colorPrimary)
+        getColor(R.color.mp_basekview_bg)
     }
     val mBaseXAxisTxtColor: Int by lazy {
         getColor(R.color.mp_basekview_xAxisTxtColor)
@@ -316,6 +316,7 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
     }
 
     fun generateLegend(legend: Legend): Legend {
+        legend.textColor = mBaseYAxisTxtColor
         return legend
     }
 

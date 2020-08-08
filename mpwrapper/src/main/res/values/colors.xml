@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimary">#ff000000</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -13,8 +13,8 @@
     <color name="mp_basekview_limit">#ff0000</color>
     <!--就蜡烛图来说，就是蜡烛中间那条线-->
     <color name="color_mp_shadow">#1e15c7</color>
-    <color name="mp_basekview_gridBg">#edfcea</color>
-    <color name="mp_basekview_bg">#cfcfcf</color>
+    <color name="mp_basekview_gridBg">#ff000000</color>
+    <color name="mp_basekview_bg">#ff000000</color>
     <color name="mp_basekview_txt">#8a8a8b</color>
     <color name="mp_basekview_border">#8a8a8b</color>
     <color name="mp_basekview_xAxisTxtColor">#8a8a8b</color>
