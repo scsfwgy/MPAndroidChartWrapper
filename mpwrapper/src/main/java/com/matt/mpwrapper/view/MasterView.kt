@@ -44,10 +44,17 @@ class MasterView @JvmOverloads constructor(
         val candleData = masterViewDelegate.mCandleData
         val candleDataSet = masterViewDelegate.mCandleDataSet
 
-        //reset
-        lineData.dataSets.clear()
-        candleData.dataSets.clear()
-        combinedData.dataSets.clear()
+
+        masterViewDelegate.run {
+            //reset
+            mLineData.dataSets.clear()
+            mCandleData.dataSets.clear()
+            mCombinedData.dataSets.clear()
+
+            mMaEntryListArr.forEach { it.clear() }
+            mBollEntryListArr.forEach { it.clear() }
+            mCandleDataSet.clear()
+        }
 
         val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->

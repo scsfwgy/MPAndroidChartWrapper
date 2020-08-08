@@ -131,17 +131,18 @@ class BinChartActivity : TemplateBarActivity() {
     }
 
     private fun initListener() {
+        babc_tv_kType.text = mCurrBinKType.label
         val kViewTypePop = mKViewTypePop
         kViewTypePop.onDismissListener = object : BasePopupWindow.OnDismissListener() {
             override fun onDismiss() {
                 val drawable = getDrawable(R.drawable.ic_triangle_down)
                 val helper = babc_tv_kType.helper
-                helper.iconNormal = drawable
+                helper.iconNormalRight = drawable
             }
         }
         kViewTypePop.setOnPopupWindowShowListener {
             val helper = babc_tv_kType.helper
-            helper.iconNormal = getDrawable(R.drawable.ic_triangle_up)
+            helper.iconNormalRight = getDrawable(R.drawable.ic_triangle_up)
         }
         babc_tv_kType.setOnClickListener {
             kViewTypePop.showPopupWindow(babc_tv_kType)

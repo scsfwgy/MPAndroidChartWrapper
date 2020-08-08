@@ -15,7 +15,9 @@ import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
 import com.matt.mpwrapper.view.base.BaseKView
+import com.matt.mpwrapper.view.data.BaseCombinedData
 import com.matt.mpwrapper.view.data.BaseLineDataSet
+import com.matt.mpwrapper.view.data.CombinedDataControl
 import com.matt.mpwrapper.view.listener.BaseBarLineChartTouchListener
 import com.matt.mpwrapper.view.renderer.BaseCombinedChartRenderer
 
@@ -98,6 +100,10 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
 
     val mShowHighlightEntryList by lazy {
         ArrayList<Entry>()
+    }
+
+    val mCombinedDataControl by lazy {
+        CombinedDataControl(BaseCombinedData())
     }
 
     fun initChartAttrs() {

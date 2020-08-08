@@ -39,13 +39,12 @@
                 android:id="@+id/babc_tv_kType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="日线"
+                android:text="@string/mp_placeholder"
                 android:textColor="@color/bin_global_yellow"
                 android:textSize="16sp"
-                app:icon_src_normal="@drawable/ic_triangle_down"
-                app:icon_direction="right"
-                app:icon_width="15dp"
-                app:icon_height="10dp"
+                app:icon_normal_right="@drawable/ic_triangle_down"
+                app:icon_width_right="15dp"
+                app:icon_height_right="10dp"
                 android:padding="4dp" />
 
             <com.ruffian.library.widget.RTextView
