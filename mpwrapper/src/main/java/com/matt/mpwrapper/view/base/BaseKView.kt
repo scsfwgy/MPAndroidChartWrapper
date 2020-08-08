@@ -3,9 +3,8 @@ package com.matt.mpwrapper.view.base
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.CombinedData
 import com.matt.mpwrapper.view.charts.BaseCombinedChart
-import com.matt.mpwrapper.view.data.CombinedDataControl
 import com.matt.mpwrapper.view.delegate.BaseKViewDelegate
 
 /**
@@ -73,31 +72,31 @@ abstract class BaseKView(
         }
     }
 
-    fun getCombinedDataControl(): CombinedDataControl {
-        return mBaseKViewDelegate.mCombinedDataControl
-    }
-
-    override fun getCombinedData(): CombinedData {
-        return getCombinedDataControl().combinedData
-    }
-
-    override fun getLineData(): LineData {
-        return getCombinedDataControl().lineData
-    }
-
-    override fun getCandleData(): CandleData {
-        return getCombinedDataControl().candleData
-    }
-
-    override fun getBarData(): BarData {
-        return getCombinedDataControl().barData
-    }
-
-    override fun getBubbleData(): BubbleData {
-        return getCombinedDataControl().bubbleData
-    }
-
-    override fun getScatterData(): ScatterData {
-        return getCombinedDataControl().scatterData
-    }
+//    fun getCombinedDataControl(): CombinedDataControl {
+//        return mBaseKViewDelegate.mCombinedDataControl
+//    }
+//
+//    override fun getCombinedData(): CombinedData {
+//        return getCombinedDataControl().combinedData
+//    }
+//
+//    override fun getLineData(): LineData {
+//        return getCombinedDataControl().lineData
+//    }
+//
+//    override fun getCandleData(): CandleData {
+//        return getCombinedDataControl().candleData
+//    }
+//
+//    override fun getBarData(): BarData {
+//        return getCombinedDataControl().barData
+//    }
+//
+//    override fun getBubbleData(): BubbleData {
+//        return getCombinedDataControl().bubbleData
+//    }
+//
+//    override fun getScatterData(): ScatterData {
+//        return getCombinedDataControl().scatterData
+//    }
 }

@@ -36,9 +36,7 @@ class MinorView @JvmOverloads constructor(
         val barData = minorViewDelegate.mBarData
 
         //reset
-        lineData.dataSets.clear()
-        barData.dataSets.clear()
-        combinedData.dataSets.clear()
+        minorViewDelegate.mCombinedDataControl.resetAll()
 
         val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->
@@ -47,25 +45,25 @@ class MinorView @JvmOverloads constructor(
             val xValue = index.toFloat()
 
             //展示高亮线的
-            minorViewDelegate.mShowHighlightEntryList.add(Entry(xValue, 0f))
+            minorViewDelegate.mShowHighlightLineData.addEntry(Entry(xValue, 0f))
 
             val macd = minorData.macd
             if (macd != null) {
                 val dif = macd.dif
                 if (dif != invalidData) {
-                    minorViewDelegate.mMacdEntryListArr[0].add(Entry(xValue, dif))
+                    minorViewDelegate.mMacdLineDataSetArr[0].addEntry(Entry(xValue, dif))
                 }
                 val dea = macd.dea
                 if (dea != invalidData) {
-                    minorViewDelegate.mMacdEntryListArr[1].add(Entry(xValue, dea))
+                    minorViewDelegate.mMacdLineDataSetArr[1].addEntry(Entry(xValue, dea))
                 }
                 val m = macd.macd
                 if (m != invalidData) {
-                    val macdBarEntryListArr = minorViewDelegate.mMacdBarEntryListArr
+                    val macdBarEntryListArr = minorViewDelegate.mMacdBarDataSetArr
                     if (m >= 0) {
-                        macdBarEntryListArr[0].add(BarEntry(xValue, m))
+                        macdBarEntryListArr[0].addEntry(BarEntry(xValue, m))
                     } else {
-                        macdBarEntryListArr[1].add(BarEntry(xValue, m))
+                        macdBarEntryListArr[1].addEntry(BarEntry(xValue, m))
                     }
                 }
 

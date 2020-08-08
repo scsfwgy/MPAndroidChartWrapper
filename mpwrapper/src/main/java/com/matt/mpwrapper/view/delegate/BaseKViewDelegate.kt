@@ -15,8 +15,6 @@ import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MpWrapperConfig
 import com.matt.mpwrapper.view.base.BaseKView
-import com.matt.mpwrapper.view.data.BaseCombinedData
-import com.matt.mpwrapper.view.data.BaseLineDataSet
 import com.matt.mpwrapper.view.data.CombinedDataControl
 import com.matt.mpwrapper.view.listener.BaseBarLineChartTouchListener
 import com.matt.mpwrapper.view.renderer.BaseCombinedChartRenderer
@@ -29,6 +27,8 @@ import com.matt.mpwrapper.view.renderer.BaseCombinedChartRenderer
  * ============================================================
  */
 open class BaseKViewDelegate(baseKView: BaseKView) {
+    //默认的高亮线对应的lineDataSet
+    val LABEL_DEF_SHOWHIGHLIGHT = "LABEL_DEF_SHOWHIGHLIGHT"
 
     val mGreenUp by lazy {
         MpWrapperConfig.mConfig.greenUp
@@ -98,12 +98,8 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
         LineData()
     }
 
-    val mShowHighlightEntryList by lazy {
-        ArrayList<Entry>()
-    }
-
     val mCombinedDataControl by lazy {
-        CombinedDataControl(BaseCombinedData())
+        CombinedDataControl()
     }
 
     fun initChartAttrs() {
@@ -389,10 +385,7 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
     }
 
     val mShowHighlightLineData by lazy {
-        val baseLineDataSet = BaseLineDataSet(
-            mShowHighlightEntryList,
-            "show line"
-        )
+        val baseLineDataSet = mCombinedDataControl.getLineDataSet(LABEL_DEF_SHOWHIGHLIGHT)
         baseLineDataSet.isHighlightEnabled = true
         baseLineDataSet.highLightColor = mBaseHighLightColor
         baseLineDataSet.color = Color.TRANSPARENT

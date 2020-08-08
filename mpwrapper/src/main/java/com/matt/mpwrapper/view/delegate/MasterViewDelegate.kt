@@ -3,7 +3,6 @@ package com.matt.mpwrapper.view.delegate
 import android.graphics.drawable.Drawable
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
@@ -14,8 +13,6 @@ import com.matt.mpwrapper.bean.MasterData
 import com.matt.mpwrapper.utils.XFormatUtil
 import com.matt.mpwrapper.view.MasterView
 import com.matt.mpwrapper.view.components.MasterViewMarker
-import com.matt.mpwrapper.view.data.BaseCandleDataSet
-import com.matt.mpwrapper.view.data.BaseLineDataSet
 import com.matt.mpwrapper.view.type.BollType
 import com.matt.mpwrapper.view.type.MaType
 import com.matt.mpwrapper.view.type.MasterIndicatorType
@@ -55,22 +52,6 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         )
     }
 
-    val mMaEntryListArr by lazy {
-        arrayOf(
-            ArrayList<Entry>(),
-            ArrayList(),
-            ArrayList()
-        )
-    }
-
-    val mBollEntryListArr by lazy {
-        arrayOf(
-            ArrayList<Entry>(),
-            ArrayList(),
-            ArrayList()
-        )
-    }
-
     val mMaType by lazy {
         arrayOf(MaType.MA5, MaType.MA10, MaType.MA20)
     }
@@ -84,13 +65,6 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
     val mMasterTimeSharingFillDrawable: Drawable by lazy {
         getDrawable(R.drawable.shape_gradient_filled)
-    }
-
-    val mTimeSharingEntryList by lazy {
-        ArrayList<Entry>()
-    }
-    val mCandleEntryList by lazy {
-        ArrayList<CandleEntry>()
     }
 
     val mLimitLine by lazy {
@@ -119,11 +93,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
 
     val mTimeSharingDataSet by lazy {
         val timeSharingDataSet =
-            BaseLineDataSet(
-                mTimeSharingEntryList,
-                MasterViewType.TIMESHARING.toString()
-            )
-
+            mCombinedDataControl.getLineDataSet(MasterViewType.TIMESHARING.toString())
         /**
          * 线涨跌相关设置
          */
@@ -143,7 +113,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
 
     val mCandleDataSet by lazy {
-        val candleDataSet = BaseCandleDataSet(mCandleEntryList, MasterViewType.CANDLE.toString())
+        val candleDataSet = mCombinedDataControl.getCandleDataSet(MasterViewType.CANDLE.toString())
         /**
          * 蜡烛图涨跌相关设置
          */
@@ -161,13 +131,9 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mMaLineDataSetArr by lazy {
         val map = arrayOf(0, 1, 2)
             .map {
-                val arrayList = mMaEntryListArr[it]
                 val maType = mMaType[it]
                 val color = mMaColorArr[it]
-                val baseLineDataSet = BaseLineDataSet(
-                    arrayList,
-                    maType.toString()
-                )
+                val baseLineDataSet = mCombinedDataControl.getLineDataSet(maType.toString())
                 baseLineDataSet.color = color
                 baseLineDataSet
             }.toTypedArray()
@@ -177,13 +143,9 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mBollLineDataSetArr by lazy {
         val map = arrayOf(0, 1, 2)
             .map {
-                val arrayList = mBollEntryListArr[it]
                 val maType = mBollType[it]
                 val color = mBollColorArr[it]
-                val baseLineDataSet = BaseLineDataSet(
-                    arrayList,
-                    maType.toString()
-                )
+                val baseLineDataSet = mCombinedDataControl.getLineDataSet(maType.toString())
                 baseLineDataSet.color = color
                 baseLineDataSet
             }.toTypedArray()

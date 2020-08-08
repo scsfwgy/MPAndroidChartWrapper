@@ -2,7 +2,6 @@ package com.matt.mpwrapper.view.delegate
 
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LegendEntry
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
@@ -12,8 +11,6 @@ import com.matt.mpwrapper.bean.Vol
 import com.matt.mpwrapper.bean.VolData
 import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.view.VolView
-import com.matt.mpwrapper.view.data.BaseBarDataSet
-import com.matt.mpwrapper.view.data.BaseLineDataSet
 import com.matt.mpwrapper.view.type.VolType
 
 /**
@@ -39,38 +36,26 @@ class VolViewDelegate(val mVolView: VolView) : BaseKViewDelegate(mVolView) {
         )
     }
 
-    val mVolBarEntryListArr: Array<out MutableList<BarEntry>> by lazy {
-        arrayOf(ArrayList(), ArrayList<BarEntry>())
-    }
-
-    val mVolMaEntryListArr: Array<out MutableList<Entry>> by lazy {
-        arrayOf(ArrayList<Entry>(), ArrayList())
-    }
 
     val mVolBarDataSetArr by lazy {
-        mVolBarEntryListArr.mapIndexed { index, mutableList ->
-            val barDataSet = BaseBarDataSet(mutableList, VolType.VOL.toString() + index)
-            barDataSet.color = mVolBarColorArr[index]
-            barDataSet
+        mCombinedDataControl.getBarDataSets(
+            arrayOf(
+                VolType.VOL.toString() + 0,
+                VolType.VOL.toString() + 1
+            )
+        ).mapIndexed { index, baseLineDataSet ->
+            baseLineDataSet.color = mVolBarColorArr[index]
+            baseLineDataSet
         }.toTypedArray()
     }
 
     val mVolMaLineDataSetArr by lazy {
-        mVolMaEntryListArr.mapIndexed { index, mutableList ->
-            val baseLineDataSet = BaseLineDataSet(
-                mutableList,
-                when (index) {
-                    0 -> {
-                        VolType.MA5.toString()
-                    }
-                    1 -> {
-                        VolType.MA10.toString()
-                    }
-                    else -> {
-                        throw IllegalArgumentException("参数错误")
-                    }
-                }
+        mCombinedDataControl.getLineDataSets(
+            arrayOf(
+                VolType.MA5.toString(),
+                VolType.MA10.toString()
             )
+        ).mapIndexed { index, baseLineDataSet ->
             baseLineDataSet.color = mVolMaColorArr[index]
             baseLineDataSet
         }.toTypedArray()

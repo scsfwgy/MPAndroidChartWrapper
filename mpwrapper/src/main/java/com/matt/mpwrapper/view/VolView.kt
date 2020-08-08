@@ -36,9 +36,7 @@ class VolView @JvmOverloads constructor(
         val barData = volViewDelegate.mBarData
 
         //reset
-        lineData.dataSets.clear()
-        barData.dataSets.clear()
-        combinedData.dataSets.clear()
+        volViewDelegate.mCombinedDataControl.resetAll()
 
         val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->
@@ -48,16 +46,16 @@ class VolView @JvmOverloads constructor(
             val xValue = index.toFloat()
 
             //展示高亮线的
-            volViewDelegate.mShowHighlightEntryList.add(Entry(xValue, 0f))
+            volViewDelegate.mShowHighlightLineData.addEntry(Entry(xValue, 0f))
 
             val vol = volData.vol ?: throw IllegalArgumentException("volData.vol字段为null,不允许为null")
             val volMa5 = vol.volMa5
             if (volMa5 != invalidData) {
-                volViewDelegate.mVolMaEntryListArr[0].add(Entry(xValue, volMa5))
+                volViewDelegate.mVolMaLineDataSetArr[0].addEntry(Entry(xValue, volMa5))
             }
             val volMa10 = vol.volMa10
             if (volMa10 != invalidData) {
-                volViewDelegate.mVolMaEntryListArr[1].add(Entry(xValue, volMa10))
+                volViewDelegate.mVolMaLineDataSetArr[1].addEntry(Entry(xValue, volMa10))
             }
             val up = if (index != 0) {
                 val c = kViewDataList[index - 1].price?.c ?: 0f
@@ -67,11 +65,11 @@ class VolView @JvmOverloads constructor(
             }
             val m = vol.vol
             if (m != invalidData) {
-                val volBarEntryListArr = volViewDelegate.mVolBarEntryListArr
+                val volBarEntryListArr = volViewDelegate.mVolBarDataSetArr
                 if (up) {
-                    volBarEntryListArr[0].add(BarEntry(xValue, m))
+                    volBarEntryListArr[0].addEntry(BarEntry(xValue, m))
                 } else {
-                    volBarEntryListArr[1].add(BarEntry(xValue, m))
+                    volBarEntryListArr[1].addEntry(BarEntry(xValue, m))
                 }
             }
 

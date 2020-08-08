@@ -45,16 +45,8 @@ class MasterView @JvmOverloads constructor(
         val candleDataSet = masterViewDelegate.mCandleDataSet
 
 
-        masterViewDelegate.run {
-            //reset
-            mLineData.dataSets.clear()
-            mCandleData.dataSets.clear()
-            mCombinedData.dataSets.clear()
-
-            mMaEntryListArr.forEach { it.clear() }
-            mBollEntryListArr.forEach { it.clear() }
-            mCandleDataSet.clear()
-        }
+        //reset
+        masterViewDelegate.mCombinedDataControl.resetAll()
 
         val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->
@@ -68,27 +60,27 @@ class MasterView @JvmOverloads constructor(
                     val ma = masterData?.ma
                     val boll = masterData?.boll
                     if (ma != null) {
-                        val maEntryListArr = masterViewDelegate.mMaEntryListArr
+                        val maEntryListArr = masterViewDelegate.mMaLineDataSetArr
                         if (ma.ma5 != invalidData) {
-                            maEntryListArr[0].add(Entry(xValue, ma.ma5))
+                            maEntryListArr[0].addEntry(Entry(xValue, ma.ma5))
                         }
                         if (ma.ma10 != invalidData) {
-                            maEntryListArr[1].add(Entry(xValue, ma.ma10))
+                            maEntryListArr[1].addEntry(Entry(xValue, ma.ma10))
                         }
                         if (ma.ma20 != invalidData) {
-                            maEntryListArr[2].add(Entry(xValue, ma.ma20))
+                            maEntryListArr[2].addEntry(Entry(xValue, ma.ma20))
                         }
                     }
                     if (boll != null) {
-                        val bollEntryListArr = masterViewDelegate.mBollEntryListArr
+                        val bollEntryListArr = masterViewDelegate.mBollLineDataSetArr
                         if (boll.up != invalidData) {
-                            bollEntryListArr[0].add(Entry(xValue, boll.up))
+                            bollEntryListArr[0].addEntry(Entry(xValue, boll.up))
                         }
                         if (boll.mb != invalidData) {
-                            bollEntryListArr[1].add(Entry(xValue, boll.mb))
+                            bollEntryListArr[1].addEntry(Entry(xValue, boll.mb))
                         }
                         if (boll.dn != invalidData) {
-                            bollEntryListArr[2].add(Entry(xValue, boll.dn))
+                            bollEntryListArr[2].addEntry(Entry(xValue, boll.dn))
                         }
                     }
                     val candleEntry =

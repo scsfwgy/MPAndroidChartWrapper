@@ -2,7 +2,6 @@ package com.matt.mpwrapper.view.delegate
 
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LegendEntry
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
@@ -14,8 +13,6 @@ import com.matt.mpwrapper.bean.MinorData
 import com.matt.mpwrapper.bean.Rsi
 import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.view.MinorView
-import com.matt.mpwrapper.view.data.BaseBarDataSet
-import com.matt.mpwrapper.view.data.BaseLineDataSet
 import com.matt.mpwrapper.view.type.KdjType
 import com.matt.mpwrapper.view.type.MacdType
 import com.matt.mpwrapper.view.type.MinorIndicatorType
@@ -65,94 +62,53 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
         )
     }
 
-    val mMacdBarEntryListArr: Array<out MutableList<BarEntry>> by lazy {
-        arrayOf(ArrayList<BarEntry>(), ArrayList<BarEntry>())
-    }
-
-    val mMacdEntryListArr: Array<out MutableList<Entry>> by lazy {
-        arrayOf(ArrayList<Entry>(), ArrayList())
-    }
-
-    val mRsiEntryListArr: Array<out MutableList<Entry>> by lazy {
-        arrayOf(ArrayList<Entry>(), ArrayList(), ArrayList())
-    }
-
-    val mKdjEntryListArr: Array<out MutableList<Entry>> by lazy {
-        arrayOf(ArrayList<Entry>(), ArrayList(), ArrayList())
-    }
-
     val mMacdBarDataSetArr by lazy {
-        mMacdBarEntryListArr.mapIndexed { index, mutableList ->
-            val barDataSet = BaseBarDataSet(mutableList, MacdType.MACD.toString() + index)
-            barDataSet.color = mMacdBarColorArr[index]
-            barDataSet
+        arrayOf(
+            mCombinedDataControl.getBarDataSet(MacdType.MACD.toString() + 0),
+            mCombinedDataControl.getBarDataSet(MacdType.MACD.toString() + 1)
+        ).mapIndexed { index, baseBarDataSet ->
+            baseBarDataSet.color = mMacdBarColorArr[index]
+            baseBarDataSet
         }.toTypedArray()
     }
 
     val mMacdLineDataSetArr by lazy {
-        mMacdEntryListArr.mapIndexed { index, mutableList ->
-            val baseLineDataSet = BaseLineDataSet(
-                mutableList,
-                when (index) {
-                    0 -> {
-                        MacdType.DIF.toString()
-                    }
-                    1 -> {
-                        MacdType.DEA.toString()
-                    }
-                    else -> {
-                        throw IllegalArgumentException("参数错误")
-                    }
-                }
+        mCombinedDataControl.getLineDataSets(
+            arrayOf(
+                MacdType.DIF.toString(),
+                MacdType.DEA.toString()
             )
-            baseLineDataSet.color = mMacdColorArr[index]
-            baseLineDataSet
-        }.toTypedArray()
+        )
+            .mapIndexed { index, baseLineDataSet ->
+                baseLineDataSet.color = mMacdColorArr[index]
+                baseLineDataSet
+            }.toTypedArray()
+
     }
 
     val mKdjLineDataSetArr by lazy {
-        mKdjEntryListArr.mapIndexed { index, mutableList ->
-            val baseLineDataSet = BaseLineDataSet(
-                mutableList,
-                when (index) {
-                    0 -> {
-                        KdjType.K.toString()
-                    }
-                    1 -> {
-                        KdjType.D.toString()
-                    }
-                    2 -> {
-                        KdjType.J.toString()
-                    }
-                    else -> {
-                        throw IllegalArgumentException("参数错误")
-                    }
-                }
+        mCombinedDataControl.getLineDataSets(
+            arrayOf(
+                KdjType.K.toString(),
+                KdjType.D.toString(),
+                KdjType.J.toString()
+
             )
+        ).mapIndexed { index, baseLineDataSet ->
             baseLineDataSet.color = mKdjColorArr[index]
             baseLineDataSet
         }.toTypedArray()
     }
 
     val mRsiLineDataSetArr by lazy {
-        mRsiEntryListArr.mapIndexed { index, mutableList ->
-            val baseLineDataSet = BaseLineDataSet(
-                mutableList,
-                when (index) {
-                    0 -> {
-                        RsiType.RSI6.toString()
-                    }
-                    1 -> {
-                        RsiType.RSI12.toString()
-                    }
-                    2 -> {
-                        RsiType.RSI24.toString()
-                    }
-                    else -> {
-                        throw IllegalArgumentException("参数错误")
-                    }
-                }
+        mCombinedDataControl.getLineDataSets(
+            arrayOf(
+                RsiType.RSI6.toString(),
+                RsiType.RSI12.toString(),
+                RsiType.RSI24.toString()
+
             )
+        ).mapIndexed { index, baseLineDataSet ->
             baseLineDataSet.color = mRsiColorArr[index]
             baseLineDataSet
         }.toTypedArray()
