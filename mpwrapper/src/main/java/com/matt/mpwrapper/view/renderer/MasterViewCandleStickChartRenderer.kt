@@ -20,6 +20,7 @@ class MasterViewCandleStickChartRenderer(
     viewPortHandler: ViewPortHandler
 ) : CandleStickChartRenderer(chart, animator, viewPortHandler) {
 
+
     override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
         val candleData = mChart.candleData
         for (high in indices) {

@@ -75,14 +75,22 @@ abstract class BaseKView @JvmOverloads constructor(
      */
     open fun resetALl() {
         getChartViewDelegate().mCombinedDataControl.resetAll()
+        lineData?.dataSets?.clear()
+        candleData?.dataSets?.clear()
+        barData?.dataSets?.clear()
+        scatterData?.dataSets?.clear()
+        bubbleData?.dataSets?.clear()
+        combinedData?.dataSets?.clear()
         updateAll()
     }
 
     override fun onLoading(loadingMsg: String?) {
         //一定要先清空数据
-        getChartViewDelegate().mCombinedDataControl.resetAll()
+        resetALl()
+        //只有mData=null,setNoDataText才会绘制
+        mData = null
         setNoDataText(loadingMsg ?: "加载中...")
-        updateAll()
+        invalidate()
     }
 
     override fun onLoadingFail(loadingFailMsg: String?) {
