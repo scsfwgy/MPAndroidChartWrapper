@@ -169,6 +169,8 @@ class BinChartActivity : TemplateBarActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(wsSimpleTicker: WsSimpleTicker) {
+        chartFragment.onEvent(wsSimpleTicker)
+
         val open = wsSimpleTicker.o
         val current = wsSimpleTicker.c
         val rate = (current - open) / open * 100

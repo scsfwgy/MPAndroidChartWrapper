@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import com.matt.mpwrapper.R
-import com.matt.mpwrapper.bean.*
+import com.matt.mpwrapper.bean.KViewData
+import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.base.BaseInit
 import com.matt.mpwrapper.view.base.ILoadData
 import com.matt.mpwrapper.view.listener.LinkChartListener
@@ -91,97 +92,26 @@ class KView @JvmOverloads constructor(
         mChartArr.forEach { it.onLoadingFail(loadingFailMsg) }
     }
 
-
     override fun reLoadData(priceList: List<Price>, volList: List<Float>?) {
         mKViewDataList.clear()
-        collectData(priceList, volList)
-
+        val processNewData = processNewData(priceList, volList, reload = true, loadMore = false)
+        mChartArr.forEach {
+            it.reLoadData(processNewData)
+        }
     }
 
     override fun loadMoreData(priceList: List<Price>, volList: List<Float>?) {
-        collectData(priceList, volList)
+        val processNewData = processNewData(priceList, volList, reload = false, loadMore = true)
+        mChartArr.forEach {
+            it.loadMoreData(processNewData)
+        }
     }
 
     override fun pushData(priceList: List<Price>, volList: List<Float>?) {
-        collectData(priceList, volList)
-    }
-
-    private fun collectData(priceList: List<Price>, volList: List<Float>?) {
-        val map = priceList.map { it.c }
-        //主图
-        val calculateMA5 = FinancialAlgorithm.calculateMA(map, 5)
-        val calculateMA10 = FinancialAlgorithm.calculateMA(map, 10)
-        val calculateMA20 = FinancialAlgorithm.calculateMA(map, 20)
-        val calculateBOLL = FinancialAlgorithm.calculateBOLL(map)
-        //副图
-        val calculateMACD = FinancialAlgorithm.calculateMACD(map)
-        val calculateRSI6 = FinancialAlgorithm.calculateRSI(map, 6)
-        val calculateRSI12 = FinancialAlgorithm.calculateRSI(map, 12)
-        val calculateRSI24 = FinancialAlgorithm.calculateRSI(map, 24)
-        val calculateKDJ = FinancialAlgorithm.calculateKDJ(map)
-        //量图
-        val calculateVolMA5 = if (volList != null) {
-            FinancialAlgorithm.calculateMA(volList, 5)
-        } else {
-            null
+        val processNewData = processNewData(priceList, volList, reload = false, loadMore = false)
+        mChartArr.forEach {
+            it.pushData(processNewData)
         }
-
-        val calculateVolMA10 = if (volList != null) {
-            FinancialAlgorithm.calculateMA(volList, 10)
-        } else {
-            null
-        }
-
-
-        val kViewDataList = mKViewDataList
-        priceList.forEachIndexed { index, it ->
-            val ma5 = calculateMA5[index]
-            val ma10 = calculateMA10[index]
-            val ma20 = calculateMA20[index]
-            val boll = calculateBOLL[index]
-            val kViewData = KViewData()
-            kViewData.price = it
-
-            //主图
-            val masterData = MasterData()
-            masterData.ma = Ma(ma5, ma10, ma20)
-            masterData.boll = boll
-            kViewData.masterData = masterData
-
-            //副图
-            val minData = MinorData()
-            minData.macd = calculateMACD[index]
-            val rsi6 = calculateRSI6[index]
-            val rsi12 = calculateRSI12[index]
-            val rsi24 = calculateRSI24[index]
-            minData.rsi = Rsi(rsi6, rsi12, rsi24)
-            minData.kdj = calculateKDJ[index]
-            kViewData.minorData = minData
-
-            //量图
-            val vols = volList?.get(index)
-            val volMa5 = calculateVolMA5?.get(index)
-            val volMa10 = calculateVolMA10?.get(index)
-            if (vols != null && volMa5 != null && volMa10 != null) {
-                val volData = VolData()
-                volData.vol = Vol(vols, volMa5, volMa10)
-                kViewData.volData = volData
-            }
-
-            kViewDataList.add(kViewData)
-        }
-        val masterView = getMasterView()
-        masterView.renderView()
-        val volView = getVolView()
-        if (volList != null) {
-            volView.visibility = View.VISIBLE
-            volView.renderView()
-        } else {
-            volView.visibility = View.GONE
-        }
-
-        val minorView = getMinorView()
-        minorView.renderView()
     }
 
     override fun kViewDataList(): MutableList<KViewData> {
@@ -191,4 +121,29 @@ class KView @JvmOverloads constructor(
     override fun digit(): Int {
         return mYDataDigit
     }
+
+    private fun processNewData(
+        priceList: List<Price>,
+        volList: List<Float>?,
+        reload: Boolean,
+        loadMore: Boolean
+    ): List<KViewData> {
+        if (reload) {
+            mKViewDataList.clear()
+        }
+        val simpleDataList2KViewDataList =
+            FinancialAlgorithmConvert.simpleDataList2KViewDataList(priceList, volList)
+        if (loadMore) {
+            mKViewDataList.addAll(0, simpleDataList2KViewDataList)
+        } else {
+            mKViewDataList.addAll(simpleDataList2KViewDataList)
+        }
+        if (volList == null) {
+            getVolView().visibility = View.GONE
+        } else {
+            getVolView().visibility = View.VISIBLE
+        }
+        return simpleDataList2KViewDataList
+    }
+
 }

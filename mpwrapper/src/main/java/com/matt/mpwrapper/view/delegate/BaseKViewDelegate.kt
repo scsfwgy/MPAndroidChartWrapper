@@ -111,7 +111,7 @@ abstract class BaseKViewDelegate(baseKView: BaseKView) {
             setDrawBorders(true)
             setBorderColor(mBaseBorderColor)
             //边框宽度
-            setBorderWidth(1.0f)
+            setBorderWidth(0.5f)
             //是否绘制Grid背景
             setDrawGridBackground(true)
             //设置Grid背景的颜色，这个就是所有有x、y轴线的背景色

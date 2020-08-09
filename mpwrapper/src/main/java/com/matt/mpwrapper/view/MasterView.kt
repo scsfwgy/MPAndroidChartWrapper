@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
+import com.matt.mpwrapper.bean.KViewData
 import com.matt.mpwrapper.view.base.BaseKView
 import com.matt.mpwrapper.view.delegate.BaseKViewDelegate
 import com.matt.mpwrapper.view.delegate.MasterViewDelegate
@@ -40,73 +41,84 @@ class MasterView @JvmOverloads constructor(
         return mMasterViewDelegate
     }
 
-    fun renderView() {
+    override fun renderTemplateItemView(
+        realIndex: Int,
+        newDataIndex: Int,
+        it: KViewData,
+        reload: Boolean,
+        loadMore: Boolean,
+        pushData: Boolean
+    ) {
+        val masterViewDelegate = mMasterViewDelegate
+        val candleDataSet = masterViewDelegate.mCandleDataSet
+        val lineDataSet = masterViewDelegate.mTimeSharingDataSet
+        val masterViewType = masterViewDelegate.mMasterViewType
+        val p = it.price ?: throw IllegalArgumentException("price字段为null,不允许为null")
+        //x轴采用下标索引
+        val xValue = realIndex.toFloat()
+        val invalidData = FinancialAlgorithm.invalidData
+        when (masterViewType) {
+            MasterViewType.CANDLE -> {
+                val masterData = it.masterData
+                val ma = masterData?.ma
+                val boll = masterData?.boll
+                if (ma != null) {
+                    val maEntryListArr = masterViewDelegate.mMaLineDataSetArr
+                    if (ma.ma5 != invalidData) {
+                        maEntryListArr[0].addEntry(Entry(xValue, ma.ma5))
+                    }
+                    if (ma.ma10 != invalidData) {
+                        maEntryListArr[1].addEntry(Entry(xValue, ma.ma10))
+                    }
+                    if (ma.ma20 != invalidData) {
+                        maEntryListArr[2].addEntry(Entry(xValue, ma.ma20))
+                    }
+                }
+                if (boll != null) {
+                    val bollEntryListArr = masterViewDelegate.mBollLineDataSetArr
+                    if (boll.up != invalidData) {
+                        bollEntryListArr[0].addEntry(Entry(xValue, boll.up))
+                    }
+                    if (boll.mb != invalidData) {
+                        bollEntryListArr[1].addEntry(Entry(xValue, boll.mb))
+                    }
+                    if (boll.dn != invalidData) {
+                        bollEntryListArr[2].addEntry(Entry(xValue, boll.dn))
+                    }
+                }
+                val candleEntry =
+                    CandleEntry(xValue, p.h, p.l, p.o, p.c)
+                candleDataSet.addEntry(candleEntry)
+            }
+            MasterViewType.TIMESHARING -> {
+                val entry = Entry(xValue, p.c)
+                lineDataSet.addEntry(entry)
+            }
+        }
+    }
+
+    override fun renderTemplateFinal(
+        kViewDataList: List<KViewData>,
+        reload: Boolean,
+        loadMore: Boolean,
+        pushData: Boolean
+    ) {
         val masterViewDelegate = mMasterViewDelegate
         val masterViewType = masterViewDelegate.mMasterViewType
         val combinedData = masterViewDelegate.mCombinedData
         val lineData = masterViewDelegate.mLineData
-        val lineDataSet = masterViewDelegate.mTimeSharingDataSet
-        val candleData = masterViewDelegate.mCandleData
-        val candleDataSet = masterViewDelegate.mCandleDataSet
-
-        val kViewDataList = mBaseInit.kViewDataList()
-        kViewDataList.forEachIndexed { index, kViewData ->
-            val p = kViewData.price ?: throw IllegalArgumentException("price字段为null,不允许为null")
-            //x轴采用下标索引
-            val xValue = index.toFloat()
-            val invalidData = FinancialAlgorithm.invalidData
-            when (masterViewType) {
-                MasterViewType.CANDLE -> {
-                    val masterData = kViewData.masterData
-                    val ma = masterData?.ma
-                    val boll = masterData?.boll
-                    if (ma != null) {
-                        val maEntryListArr = masterViewDelegate.mMaLineDataSetArr
-                        if (ma.ma5 != invalidData) {
-                            maEntryListArr[0].addEntry(Entry(xValue, ma.ma5))
-                        }
-                        if (ma.ma10 != invalidData) {
-                            maEntryListArr[1].addEntry(Entry(xValue, ma.ma10))
-                        }
-                        if (ma.ma20 != invalidData) {
-                            maEntryListArr[2].addEntry(Entry(xValue, ma.ma20))
-                        }
-                    }
-                    if (boll != null) {
-                        val bollEntryListArr = masterViewDelegate.mBollLineDataSetArr
-                        if (boll.up != invalidData) {
-                            bollEntryListArr[0].addEntry(Entry(xValue, boll.up))
-                        }
-                        if (boll.mb != invalidData) {
-                            bollEntryListArr[1].addEntry(Entry(xValue, boll.mb))
-                        }
-                        if (boll.dn != invalidData) {
-                            bollEntryListArr[2].addEntry(Entry(xValue, boll.dn))
-                        }
-                    }
-                    val candleEntry =
-                        CandleEntry(xValue, p.h, p.l, p.o, p.c)
-                    candleDataSet.addEntry(candleEntry)
-                }
-                MasterViewType.TIMESHARING -> {
-                    val entry = Entry(xValue, p.c)
-                    lineDataSet.addEntry(entry)
-                }
-            }
-        }
         if (masterViewType == MasterViewType.CANDLE) {
+            val candleData = masterViewDelegate.mCandleData
+            val candleDataSet = masterViewDelegate.mCandleDataSet
             //显示对应指标
             masterViewDelegate.showIndicatorType(false)
             candleData.addDataSet(candleDataSet)
             combinedData.setData(lineData)
             combinedData.setData(candleData)
         } else if (masterViewType == MasterViewType.TIMESHARING) {
+            val lineDataSet = masterViewDelegate.mTimeSharingDataSet
             lineData.addDataSet(lineDataSet)
             combinedData.setData(lineData)
         }
-        setKViewData(combinedData, kViewDataList.size)
-
-        //触发值未选择，进而触发未选择值对应的Legend
-        mSelectionListener.onNothingSelected()
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import com.example.sample_binance.R
 import com.example.sample_binance.model.kview.BinKType
+import com.example.sample_binance.model.ws.WsSimpleTicker
 import com.example.sample_binance.repository.net.BinObserver
 import com.example.sample_binance.repository.net.BinanceServiceWrapper
 import com.example.sample_binance.ui.activity.BinChartActivity
@@ -131,5 +132,18 @@ class BinChartFragment : LazyLoadBaseFragment() {
 
     fun updateMinorIndicatorType(minorIndicatorType: MinorIndicatorType) {
         getKView().getMinorView().mMinorViewDelegate.showIndicatorType(minorIndicatorType)
+    }
+
+    fun onEvent(wsSimpleTicker: WsSimpleTicker) {
+        val price = Price(
+            wsSimpleTicker.E,
+            wsSimpleTicker.c.toFloat(),
+            wsSimpleTicker.h.toFloat(),
+            wsSimpleTicker.l.toFloat(),
+            wsSimpleTicker.c.toFloat()
+
+        )
+        //fixme:这里逻辑有问题
+        //getKView().pushData(listOf(price), listOf(wsSimpleTicker.v.toFloat()))
     }
 }

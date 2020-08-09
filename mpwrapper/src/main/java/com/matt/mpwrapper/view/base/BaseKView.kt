@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import com.github.mikephil.charting.data.CombinedData
-import com.matt.mpwrapper.bean.Price
+import com.matt.mpwrapper.bean.KViewData
 import com.matt.mpwrapper.view.charts.BaseCombinedChart
 import com.matt.mpwrapper.view.delegate.IChartViewDelegate
 
@@ -20,7 +20,7 @@ abstract class BaseKView @JvmOverloads constructor(
     attributeSet: AttributeSet? = null,
     defStyle: Int = 0
 ) :
-    BaseCombinedChart(context, attributeSet, defStyle), ILoadData, IChartViewDelegate {
+    BaseCombinedChart(context, attributeSet, defStyle), IChartLoadData, IChartViewDelegate {
 
     protected val mDefMinCount = 40
     protected val mDefMaxCount = 100
@@ -28,16 +28,8 @@ abstract class BaseKView @JvmOverloads constructor(
 
     lateinit var mBaseInit: BaseInit
 
-    init {
-        initChartAttrs()
-    }
-
     fun initBaseK(baseInit: BaseInit) {
         this.mBaseInit = baseInit
-    }
-
-    private fun initChartAttrs() {
-
     }
 
     /**
@@ -58,7 +50,12 @@ abstract class BaseKView @JvmOverloads constructor(
     /**
      * 设置最终数据
      */
-    fun setKViewData(data: CombinedData, allDataSize: Int, reload: Boolean = true) {
+    fun setKViewData(
+        data: CombinedData,
+        reload: Boolean = true,
+        loadMore: Boolean = false
+    ) {
+        val allDataSize = mBaseInit.kViewDataList().size
         showDefCount(allDataSize)
         //调用系统方法
         setData(data)
@@ -98,13 +95,72 @@ abstract class BaseKView @JvmOverloads constructor(
         invalidate()
     }
 
-    override fun reLoadData(priceList: List<Price>, volList: List<Float>?) {
+    override fun reLoadData(kViewDataList: List<KViewData>) {
+        renderView(kViewDataList, reload = true, loadMore = false, pushData = false)
     }
 
-    override fun loadMoreData(priceList: List<Price>, volList: List<Float>?) {
+    override fun loadMoreData(kViewDataList: List<KViewData>) {
+        renderView(kViewDataList, reload = false, loadMore = true, pushData = false)
     }
 
-    override fun pushData(priceList: List<Price>, volList: List<Float>?) {
+    override fun pushData(kViewDataList: List<KViewData>) {
+        renderView(kViewDataList, reload = false, loadMore = false, pushData = true)
     }
 
+    /**
+     * 真正的渲染逻辑
+     */
+    open fun renderView(
+        kViewDataList: List<KViewData>,
+        reload: Boolean,
+        loadMore: Boolean,
+        pushData: Boolean
+    ) {
+        kViewDataList.forEachIndexed { index, kViewData ->
+            renderTemplateItemView(index, index, kViewData, reload, loadMore, pushData)
+        }
+
+        if (!pushData) {
+            renderTemplateFinal(kViewDataList, reload, loadMore, pushData)
+
+            //设置数据
+            val combinedData = getChartViewDelegate().mCombinedData
+            setKViewData(combinedData)
+            //触发值未选择，进而触发未选择值对应的Legend
+            mSelectionListener.onNothingSelected()
+        } else {
+            data?.notifyDataChanged()
+            notifyDataSetChanged()
+            moveViewToX(data?.entryCount?.toFloat() ?: 0f)
+        }
+
+    }
+
+    /**
+     * 渲染最后的动作
+     */
+    abstract fun renderTemplateFinal(
+        kViewDataList: List<KViewData>,
+        reload: Boolean,
+        loadMore: Boolean,
+        pushData: Boolean
+    )
+
+    /**
+     * 具体渲染单项，子类去实现
+     *
+     * @param realIndex 真实的渲染item的下标
+     * @param newDataIndex 当前数据集合的item的下标
+     * @param it 当前item
+     * @param reload 重新加载
+     * @param loadMore 加载更多
+     */
+    abstract fun renderTemplateItemView(
+        realIndex: Int,
+        newDataIndex: Int,
+        it: KViewData,
+        reload: Boolean,
+        loadMore: Boolean,
+        pushData: Boolean
+    )
 }
