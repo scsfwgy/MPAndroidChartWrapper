@@ -62,7 +62,8 @@ class VolViewDelegate(val mVolView: VolView) : BaseKViewDelegate(mVolView) {
     }
 
 
-    fun initMinorChart() {
+    override fun initChart() {
+        super.initChart()
         mVolView.run {
             axisRight.setLabelCount(3, true)
 

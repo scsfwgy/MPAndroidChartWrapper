@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.matt.mpwrapper.view.base.BaseKView
+import com.matt.mpwrapper.view.delegate.BaseKViewDelegate
 import com.matt.mpwrapper.view.delegate.MasterViewDelegate
 import com.matt.mpwrapper.view.type.MasterViewType
 
@@ -32,7 +33,11 @@ class MasterView @JvmOverloads constructor(
     }
 
     private fun initMasterChart() {
-        mMasterViewDelegate.initMasterChart()
+        mMasterViewDelegate.initChart()
+    }
+
+    override fun getChartViewDelegate(): BaseKViewDelegate {
+        return mMasterViewDelegate
     }
 
     fun renderView() {
@@ -43,10 +48,6 @@ class MasterView @JvmOverloads constructor(
         val lineDataSet = masterViewDelegate.mTimeSharingDataSet
         val candleData = masterViewDelegate.mCandleData
         val candleDataSet = masterViewDelegate.mCandleDataSet
-
-
-        //reset
-        masterViewDelegate.mCombinedDataControl.resetAll()
 
         val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->

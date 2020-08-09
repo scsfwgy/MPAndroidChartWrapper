@@ -9,7 +9,18 @@ import com.matt.mpwrapper.bean.Price
  * 描 述 ：
  * ============================================================
  */
-interface LoadData {
+interface ILoadData {
+
+
+    /**
+     * 在加载前调用
+     */
+    fun onLoading(loadingMsg: String? = null)
+
+    /**
+     * 加载失败后调用
+     */
+    fun onLoadingFail(loadingFailMsg: String? = null)
 
     /**
      * 重新加载数据，也是第一次加载数据用
@@ -24,5 +35,5 @@ interface LoadData {
     /**
      * 实时数据
      */
-    fun pushData(price: Price, volList: List<Float>? = null)
+    fun pushData(priceList: List<Price>, volList: List<Float>? = null)
 }

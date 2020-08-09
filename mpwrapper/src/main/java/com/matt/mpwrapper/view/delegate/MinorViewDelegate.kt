@@ -114,7 +114,8 @@ class MinorViewDelegate(minorView: MinorView) : BaseKViewDelegate(minorView) {
         }.toTypedArray()
     }
 
-    fun initMinorChart() {
+    override fun initChart() {
+        super.initChart()
         mMinorView.run {
             axisRight.setLabelCount(3, true)
 

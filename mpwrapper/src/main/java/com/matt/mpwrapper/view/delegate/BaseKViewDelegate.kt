@@ -26,7 +26,7 @@ import com.matt.mpwrapper.view.renderer.BaseCombinedChartRenderer
  * 描 述 ：
  * ============================================================
  */
-open class BaseKViewDelegate(baseKView: BaseKView) {
+abstract class BaseKViewDelegate(baseKView: BaseKView) {
     //默认的高亮线对应的lineDataSet
     val LABEL_DEF_SHOWHIGHLIGHT = "LABEL_DEF_SHOWHIGHLIGHT"
 
@@ -102,7 +102,7 @@ open class BaseKViewDelegate(baseKView: BaseKView) {
         CombinedDataControl()
     }
 
-    fun initChartAttrs() {
+    open fun initChart() {
         mBaseKView.run {
             /**
              * 背景边框相关

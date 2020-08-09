@@ -8,11 +8,10 @@ import android.widget.LinearLayout
 import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.*
 import com.matt.mpwrapper.view.base.BaseInit
-import com.matt.mpwrapper.view.base.LoadData
+import com.matt.mpwrapper.view.base.ILoadData
 import com.matt.mpwrapper.view.listener.LinkChartListener
 import com.matt.mpwrapper.view.type.MasterIndicatorType
 import com.matt.mpwrapper.view.type.MasterViewType
-import com.matt.mpwrapper.view.type.MinorIndicatorType
 import kotlinx.android.synthetic.main.mp_widget_kview.view.*
 
 /**
@@ -26,7 +25,7 @@ class KView @JvmOverloads constructor(
     private val mContext: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(mContext, attrs, defStyleAttr), LoadData, BaseInit {
+) : LinearLayout(mContext, attrs, defStyleAttr), ILoadData, BaseInit {
 
     init {
         initAttr()
@@ -57,33 +56,39 @@ class KView @JvmOverloads constructor(
 
     var mYDataDigit: Int = 0
 
+    val mChartArr by lazy {
+        arrayOf(getMasterView(), getMinorView(), getVolView())
+    }
+
     fun initKView(
         yDataDigit: Int = 4,
         masterViewType: MasterViewType = MasterViewType.CANDLE,
         masterIndicatorType: MasterIndicatorType = MasterIndicatorType.MA
     ) {
         mYDataDigit = yDataDigit
-        val masterView = getMasterView()
-        val minorView = getMinorView()
-        val volView = getVolView()
-        masterView.initBaseK(this)
-        minorView.initBaseK(this)
-        volView.initBaseK(this)
-        val masterViewDelegate = masterView.mMasterViewDelegate
-        masterViewDelegate.mMasterViewType = masterViewType
-        masterViewDelegate.mMasterIndicatorType = masterIndicatorType
 
-        val minorViewDelegate = minorView.mMinorViewDelegate
-        minorViewDelegate.mMinorIndicatorType = MinorIndicatorType.MACD
+        //chart初始化和关联在一起
+        mChartArr.forEach { baseKView ->
+            baseKView.initBaseK(this)
+            if (baseKView is MasterView) {
+                baseKView.mMasterViewDelegate.run {
+                    mMasterViewType = masterViewType
+                    mMasterIndicatorType = masterIndicatorType
+                }
+            }
+            //开始关联
+            baseKView.onChartGestureListener =
+                LinkChartListener(baseKView, mChartArr.filter { baseKView != it }.toTypedArray())
+        }
+    }
 
+    override fun onLoading(loadingMsg: String?) {
+        mChartArr.forEach { it.onLoading(loadingMsg) }
 
-        masterView.onChartGestureListener = LinkChartListener(
-            masterView,
-            arrayOf(minorView, volView)
-        )
-        minorView.onChartGestureListener =
-            LinkChartListener(minorView, arrayOf(masterView, volView))
-        volView.onChartGestureListener = LinkChartListener(volView, arrayOf(masterView, minorView))
+    }
+
+    override fun onLoadingFail(loadingFailMsg: String?) {
+        mChartArr.forEach { it.onLoadingFail(loadingFailMsg) }
     }
 
 
@@ -97,8 +102,8 @@ class KView @JvmOverloads constructor(
         collectData(priceList, volList)
     }
 
-    override fun pushData(price: Price, volList: List<Float>?) {
-        collectData(listOf(price), volList)
+    override fun pushData(priceList: List<Price>, volList: List<Float>?) {
+        collectData(priceList, volList)
     }
 
     private fun collectData(priceList: List<Price>, volList: List<Float>?) {

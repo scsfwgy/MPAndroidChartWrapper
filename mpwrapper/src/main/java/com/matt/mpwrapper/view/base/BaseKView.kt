@@ -4,8 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import com.github.mikephil.charting.data.CombinedData
+import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.charts.BaseCombinedChart
-import com.matt.mpwrapper.view.delegate.BaseKViewDelegate
+import com.matt.mpwrapper.view.delegate.IChartViewDelegate
 
 /**
  * ============================================================
@@ -14,21 +15,18 @@ import com.matt.mpwrapper.view.delegate.BaseKViewDelegate
  * 描 述 ：
  * ============================================================
  */
-abstract class BaseKView(
+abstract class BaseKView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyle: Int = 0
-) : BaseCombinedChart(context, attributeSet, defStyle) {
+) :
+    BaseCombinedChart(context, attributeSet, defStyle), ILoadData, IChartViewDelegate {
 
     protected val mDefMinCount = 40
     protected val mDefMaxCount = 100
     protected val mDefShowCount = 70
 
     lateinit var mBaseInit: BaseInit
-
-    val mBaseKViewDelegate by lazy {
-        BaseKViewDelegate(this)
-    }
 
     init {
         initChartAttrs()
@@ -39,7 +37,7 @@ abstract class BaseKView(
     }
 
     private fun initChartAttrs() {
-        mBaseKViewDelegate.initChartAttrs()
+
     }
 
     /**
@@ -72,31 +70,33 @@ abstract class BaseKView(
         }
     }
 
-//    fun getCombinedDataControl(): CombinedDataControl {
-//        return mBaseKViewDelegate.mCombinedDataControl
-//    }
-//
-//    override fun getCombinedData(): CombinedData {
-//        return getCombinedDataControl().combinedData
-//    }
-//
-//    override fun getLineData(): LineData {
-//        return getCombinedDataControl().lineData
-//    }
-//
-//    override fun getCandleData(): CandleData {
-//        return getCombinedDataControl().candleData
-//    }
-//
-//    override fun getBarData(): BarData {
-//        return getCombinedDataControl().barData
-//    }
-//
-//    override fun getBubbleData(): BubbleData {
-//        return getCombinedDataControl().bubbleData
-//    }
-//
-//    override fun getScatterData(): ScatterData {
-//        return getCombinedDataControl().scatterData
-//    }
+    /**
+     * 重置数据
+     */
+    open fun resetALl() {
+        getChartViewDelegate().mCombinedDataControl.resetAll()
+        updateAll()
+    }
+
+    override fun onLoading(loadingMsg: String?) {
+        //一定要先清空数据
+        getChartViewDelegate().mCombinedDataControl.resetAll()
+        setNoDataText(loadingMsg ?: "加载中...")
+        updateAll()
+    }
+
+    override fun onLoadingFail(loadingFailMsg: String?) {
+        setNoDataText(loadingFailMsg ?: "加载失败")
+        invalidate()
+    }
+
+    override fun reLoadData(priceList: List<Price>, volList: List<Float>?) {
+    }
+
+    override fun loadMoreData(priceList: List<Price>, volList: List<Float>?) {
+    }
+
+    override fun pushData(priceList: List<Price>, volList: List<Float>?) {
+    }
+
 }

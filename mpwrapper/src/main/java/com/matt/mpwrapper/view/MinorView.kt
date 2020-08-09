@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.matt.mpwrapper.view.base.BaseKView
+import com.matt.mpwrapper.view.delegate.BaseKViewDelegate
 import com.matt.mpwrapper.view.delegate.MinorViewDelegate
 
 /**
@@ -25,7 +26,11 @@ class MinorView @JvmOverloads constructor(
     }
 
     init {
-        mMinorViewDelegate.initMinorChart()
+        mMinorViewDelegate.initChart()
+    }
+
+    override fun getChartViewDelegate(): BaseKViewDelegate {
+        return mMinorViewDelegate
     }
 
     fun renderView() {
@@ -34,9 +39,6 @@ class MinorView @JvmOverloads constructor(
         val combinedData = minorViewDelegate.mCombinedData
         val lineData = minorViewDelegate.mLineData
         val barData = minorViewDelegate.mBarData
-
-        //reset
-        minorViewDelegate.mCombinedDataControl.resetAll()
 
         val kViewDataList = mBaseInit.kViewDataList()
         kViewDataList.forEachIndexed { index, kViewData ->

@@ -79,6 +79,7 @@ class BinChartFragment : LazyLoadBaseFragment() {
         val params = HashMap<String, Any>()
         params["symbol"] = mSymbol
         params["interval"] = kType.apiKey
+        getKView().onLoading("正在加载中...")
         BinanceServiceWrapper.sBinanceService.klines(params)
             .compose(RxUtils.rxObSchedulerHelper())
             .subscribe(object : BinObserver<Array<Array<Any>>>(this) {
@@ -100,6 +101,11 @@ class BinChartFragment : LazyLoadBaseFragment() {
                     }
                     renderChart(priceList, volList)
                 }
+
+                override fun onCatchError(e: Throwable) {
+                    super.onCatchError(e)
+                    getKView().onLoadingFail("加载失败，请稍后再试...")
+                }
             })
     }
 
@@ -107,9 +113,7 @@ class BinChartFragment : LazyLoadBaseFragment() {
         it: List<Price>,
         volList: ArrayList<Float>
     ) {
-        mRootView.run {
-            bfc_kv_kview.reLoadData(it, volList)
-        }
+        getKView().reLoadData(it, volList)
     }
 
     fun getKView(): KView {

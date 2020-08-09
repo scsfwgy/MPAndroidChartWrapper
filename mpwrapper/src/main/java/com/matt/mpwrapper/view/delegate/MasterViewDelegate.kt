@@ -153,7 +153,8 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     }
 
 
-    fun initMasterChart() {
+    override fun initChart() {
+        super.initChart()
         mMasterView.run {
             //marker
             val masterViewMarker =
