@@ -1,6 +1,10 @@
 package com.example.sample_binance.model.api;
 
+import com.matt.mpwrapper.utils.MathUtil;
+import com.matt.mpwrapper.utils.NumberUtils;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * ============================================================
@@ -41,4 +45,30 @@ public class ApiSymbol implements Serializable {
     public String quoteAsset;
     public int baseCommissionPrecision;
     public String status;
+    public List<ApiPriceFilter> filters;
+
+    //internal
+    private ApiPriceFilter getApiPriceFilter() {
+        if (filters == null) return null;
+        for (ApiPriceFilter filter : filters) {
+            if ("PRICE_FILTER".equals(filter.filterType)) {
+                return filter;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取产品精度，获取方式很扯，但是没办法
+     *
+     * @return
+     */
+    public int getPriceDigit() {
+        ApiPriceFilter apiPriceFilter = getApiPriceFilter();
+        if (apiPriceFilter == null) return 2;
+        double minPrice = apiPriceFilter.minPrice;
+        double divide = MathUtil.divide(1.0, minPrice);
+        int i = (int) divide;
+        return String.valueOf(i).length();
+    }
 }

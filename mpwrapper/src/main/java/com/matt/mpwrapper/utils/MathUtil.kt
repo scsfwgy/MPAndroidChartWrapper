@@ -13,74 +13,65 @@ object MathUtil {
     /**
      * double 保证精度相加
      */
-    fun add(number: Any?, vararg nums: Any): Double {
-        return calculate(0, true, number, nums)
+    fun add(number1: Any?, number2: Any?): Double {
+        return calculate(0, true, number1, number2)
     }
 
     /**
      * double 保证精度相减
      */
-    fun subtract(number: Any?, vararg nums: Any): Double {
-        return calculate(1, true, number, nums)
+    fun subtract(number1: Any?, number2: Any?): Double {
+        return calculate(1, true, number1, number2)
     }
 
     /**
      * double 保证精度相乘
      */
-    fun multiply(number: Any?, vararg nums: Any): Double {
-        return calculate(2, true, number, nums)
+    fun multiply(number1: Any?, number2: Any?): Double {
+        return calculate(2, true, number1, number2)
     }
 
     /**
      * 保证精度相除
      */
     @JvmStatic
-    fun divide(number: Any?, vararg nums: Any): Double {
+    fun divide(number: Any?, nums: Any): Double {
         return calculate(3, true, number, nums)
     }
 
-    private fun calculate(type: Int, safe: Boolean = true, number: Any?, vararg nums: Any): Double {
+    private fun calculate(type: Int, safe: Boolean = true, number1: Any?, number2: Any?): Double {
         return if (safe) {
             try {
-                mathData(type, number, nums)
+                mathData(type, number1, number2)
             } catch (e: Exception) {
                 e.printStackTrace()
                 0.0
             }
         } else {
-            mathData(type, number, nums)
+            mathData(type,number1, number2)
         }
     }
 
-    private fun mathData(type: Int, number: Any?, vararg nums: Any): Double {
-        val num = {
-            if (number == null || NumberUtils.toDouble(number.toString()) == 0.0) {
-                0.0
-            } else {
-                number
+    private fun mathData(type: Int, number1: Any?, number2: Any?): Double {
+        val num1 = number1?.toString() ?: "0.0"
+        val num2 = number2?.toString() ?: "0.0"
+        val bigDecimal1 = BigDecimal(num1)
+        val bigDecimal2 = BigDecimal(num2)
+        val result = when (type) {
+            0 -> {
+                bigDecimal1.add(bigDecimal2)
             }
-        }
-        var numBase = BigDecimal(num.toString())
-        if (nums.isNullOrEmpty()) return numBase.toDouble()
-        nums.forEach {
-            val data = it.toString()
-            val bigDecimal = BigDecimal(data)
-            numBase = when (type) {
-                0 -> {
-                    numBase.add(bigDecimal)
-                }
-                1 -> {
-                    numBase.subtract(bigDecimal)
-                }
-                2 -> {
-                    numBase.multiply(bigDecimal)
-                }
-                3 -> {
-                    numBase.divide(BigDecimal(data), 10, BigDecimal.ROUND_HALF_UP)
-                }
-                else -> throw IllegalArgumentException("参数不合法")
+            1 -> {
+                bigDecimal1.subtract(bigDecimal2)
             }
+            2 -> {
+                bigDecimal1.multiply(bigDecimal2)
+            }
+            3 -> {
+                bigDecimal1.divide(bigDecimal2, 10, BigDecimal.ROUND_HALF_UP)
+            }
+            else -> throw IllegalArgumentException("参数不合法")
         }
-        return numBase.toDouble()
+        return result.toDouble()
     }
 }

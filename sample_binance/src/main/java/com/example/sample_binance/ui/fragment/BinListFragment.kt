@@ -80,7 +80,7 @@ class BinListFragment : LazyLoadBaseFragment() {
                     bifbl_tv_price.text =
                         XFormatUtil.globalFormat(
                             lastPrice,
-                            symbolBySymbol?.baseAssetPrecision ?: 2,
+                            symbolBySymbol?.priceDigit ?: 2,
                             false
                         )
                     bifbl_tv_rate.text = finalRateFormat

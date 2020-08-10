@@ -175,8 +175,9 @@ class BinChartActivity : TemplateBarActivity() {
         val current = wsSimpleTicker.c
         val rate = (current - open) / open * 100
         val symbolBySymbol = GlobalCache.getSymbolBySymbol(mSymbol)
-        val currentFormat = XFormatUtil.globalFormat(current, symbolBySymbol?.quotePrecision ?: 2)
-        val rateFormat = XFormatUtil.globalFormat(rate, 2) + "%"
+        val currentFormat =
+            XFormatUtil.globalFormat(current, symbolBySymbol?.priceDigit ?: 2, false)
+        val rateFormat = XFormatUtil.globalFormat(rate, 2, false) + "%"
         val color = when {
             rate > 0 -> {
                 mUpColor
