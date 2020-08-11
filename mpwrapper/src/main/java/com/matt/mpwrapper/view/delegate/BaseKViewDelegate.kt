@@ -205,7 +205,7 @@ abstract class BaseKViewDelegate(baseKView: BaseKView) {
             /**
              * 动画
              */
-            animateX(1000)
+            //animateX(1000)
 
 
             /**

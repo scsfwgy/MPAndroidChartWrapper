@@ -110,6 +110,10 @@ class MinorView @JvmOverloads constructor(
 
     }
 
+    override fun refreshData(kViewData: KViewData) {
+
+    }
+
     override fun renderTemplateFinal(
         kViewDataList: List<KViewData>,
         reload: Boolean,

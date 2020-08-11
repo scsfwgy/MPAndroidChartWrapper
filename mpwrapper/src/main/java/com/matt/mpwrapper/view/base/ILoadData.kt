@@ -36,4 +36,9 @@ interface ILoadData {
      * 实时数据
      */
     fun pushData(priceList: List<Price>, volList: List<Float>? = null)
+
+    /**
+     * 刷新最新数据，只会刷新不会追加
+     */
+    fun refreshData(latestTime: Long, latestPrice: Float, latestVol: Float? = null)
 }

@@ -114,6 +114,24 @@ class KView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * 最新价格不会影响指标，是闭市价影响。
+     * todo:vol会影响量图的ma指标，暂时显先不处理。
+     */
+    override fun refreshData(latestTime: Long, latestPrice: Float, latestVol: Float?) {
+        val lastOrNull = mKViewDataList.lastOrNull()
+        lastOrNull?.run {
+            price?.c = latestPrice
+            price?.t = latestTime
+            volData?.vol?.vol = latestVol ?: 0f
+        }
+        mChartArr.forEach {
+            lastOrNull?.run {
+                it.refreshData(lastOrNull)
+            }
+        }
+    }
+
     override fun kViewDataList(): MutableList<KViewData> {
         return mKViewDataList
     }

@@ -36,4 +36,10 @@ interface IChartLoadData {
      * 实时数据
      */
     fun pushData(kViewDataList: List<KViewData>)
+
+
+    /**
+     * 刷新最新数据，只会刷新不会追加
+     */
+    fun refreshData(kViewData: KViewData)
 }

@@ -143,7 +143,11 @@ class BinChartFragment : LazyLoadBaseFragment() {
             wsSimpleTicker.c.toFloat()
 
         )
-        //fixme:这里逻辑有问题
-        //getKView().pushData(listOf(price), listOf(wsSimpleTicker.v.toFloat()))
+
+        getKView().refreshData(
+            wsSimpleTicker.E,
+            wsSimpleTicker.c.toFloat(),
+            wsSimpleTicker.v.toFloat()
+        )
     }
 }
