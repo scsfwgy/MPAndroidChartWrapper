@@ -1,15 +1,17 @@
+rootProject.name='MPAndroidChartWrapper'
+include ':mpwrapper'
+include ':sample_base'
 include ':sample_zm'
 include ':sample_binance'
-include ':sample_base'
-rootProject.name='MPAndroidChartWrapper'
 include ':app'
-include ':mpwrapper'
 
 
-//include 'lib_import'
-//project(':lib_import').projectDir = new File(settingsDir, "../TemplateApp/lib/lib_import")
-include ':lib_wrapper'
-project(':lib_wrapper').projectDir = new File(settingsDir, "../TemplateApp/lib_wrapper")
 
-include ':lib_import'
-project(':lib_import').projectDir = new File(settingsDir, "../TemplateApp/lib_import")
+/**
+ * 本地依赖方式，把当前项目和 https://github.com/scsfwgy/TemplateApp 放到一个根目录下，然后打开一下注释即可
+ */
+//include ':lib_wrapper'
+//project(':lib_wrapper').projectDir = new File(settingsDir, "../TemplateApp/lib_wrapper")
+//
+//include ':lib_import'
+//project(':lib_import').projectDir = new File(settingsDir, "../TemplateApp/lib_import")

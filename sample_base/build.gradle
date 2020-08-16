@@ -10,10 +10,14 @@ android {
 }
 
 dependencies {
-    //mp包装库
+    //https://github.com/scsfwgy/TemplateApp
+    api 'com.github.scsfwgy:TemplateApp:0.0.6'
+
+    //核心k线包装库
     api project(path: ':mpwrapper')
 
-    //
-    //api 'com.github.scsfwgy:TemplateApp:0.0.5'
-    api project(path: ':lib_wrapper')
+
+    //本地依赖方式
+    //api project(path: ':lib_wrapper')
+    //mp包装库
 }
