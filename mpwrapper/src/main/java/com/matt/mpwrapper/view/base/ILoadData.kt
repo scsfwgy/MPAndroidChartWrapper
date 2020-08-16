@@ -1,6 +1,9 @@
 package com.matt.mpwrapper.view.base
 
 import com.matt.mpwrapper.bean.Price
+import com.matt.mpwrapper.view.type.MasterIndicatorType
+import com.matt.mpwrapper.view.type.MasterViewType
+import com.matt.mpwrapper.view.type.MinorIndicatorType
 
 /**
  * ============================================================
@@ -11,6 +14,15 @@ import com.matt.mpwrapper.bean.Price
  */
 interface ILoadData {
 
+    /**
+     * 一些基础配置信息，可以动态更新
+     */
+    fun updateConfig(
+        yDataDigit: Int = 4,
+        masterViewType: MasterViewType = MasterViewType.CANDLE,
+        masterIndicatorType: MasterIndicatorType = MasterIndicatorType.MA,
+        minorIndicatorType: MinorIndicatorType = MinorIndicatorType.MACD
+    )
 
     /**
      * 在加载前调用

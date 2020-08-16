@@ -3,15 +3,15 @@ package com.matt.sample_zm.ui.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.matt.sample_zm.net.base.SimpleTObserver
-import com.matt.sample_zm.ui.activity.ChartActivity
-import com.matt.sample_zm.vm.ChartViewModel
 import com.matt.libwrapper.ui.base.LazyLoadBaseFragment
 import com.matt.libwrapper.utils.RxUtils
 import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.type.KType
 import com.matt.mpwrapper.view.type.MasterViewType
 import com.matt.sample_zm.R
+import com.matt.sample_zm.net.base.SimpleTObserver
+import com.matt.sample_zm.ui.activity.ChartActivity
+import com.matt.sample_zm.vm.ChartViewModel
 import kotlinx.android.synthetic.main.zm_fragment_chart.view.*
 
 /**
@@ -64,7 +64,7 @@ class ChartFragment : LazyLoadBaseFragment() {
 
     private fun initView() {
         mRootView.run {
-            fc_kv_kview.initKView(
+            fc_kv_kview.updateConfig(
                 4,
                 if (kType == KType.K_TIMESHARE) MasterViewType.TIMESHARING else
                     MasterViewType.CANDLE

@@ -63,13 +63,7 @@ class BinChartFragment : LazyLoadBaseFragment() {
     }
 
     private fun initView() {
-        mRootView.run {
-            bfc_kv_kview.initKView(
-                4,
-                if (kType == BinKType.K_TIMESHARE) MasterViewType.TIMESHARING else
-                    MasterViewType.CANDLE
-            )
-        }
+
     }
 
     private fun loadData() {
@@ -77,6 +71,12 @@ class BinChartFragment : LazyLoadBaseFragment() {
     }
 
     private fun loadKLine() {
+        //更新类型
+        val masterViewType = if (kType == BinKType.K_TIMESHARE) MasterViewType.TIMESHARING else
+            MasterViewType.CANDLE
+        getKView().updateConfig(4, masterViewType)
+
+
         val params = HashMap<String, Any>()
         params["symbol"] = mSymbol
         params["interval"] = kType.apiKey
