@@ -8,7 +8,9 @@ include ':app'
 
 
 /**
- * 本地依赖方式，把当前项目和 https://github.com/scsfwgy/TemplateApp 放到一个根目录下，然后打开一下注释即可
+ * 本地依赖方式，把当前项目和 https://github.com/scsfwgy/TemplateApp 放到一个根目录下，
+ * 同时需要注释掉https://github.com/scsfwgy/TemplateApp 和远程库jitpack相关的代码，
+ * 然后打开一下注释即可
  */
 //include ':lib_wrapper'
 //project(':lib_wrapper').projectDir = new File(settingsDir, "../TemplateApp/lib_wrapper")
