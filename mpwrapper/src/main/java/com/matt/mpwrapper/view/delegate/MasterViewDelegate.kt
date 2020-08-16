@@ -88,9 +88,6 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
         field
     }
 
-    //limit的值
-    var mLimitValue = 0f
-
     val mTimeSharingDataSet by lazy {
         val timeSharingDataSet =
             mCombinedDataControl.getLineDataSet(MasterViewType.TIMESHARING.toString())
@@ -323,15 +320,14 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
      */
     fun setLimit(limitLine: LimitLine, c: Float) {
         try {
-            this.mLimitValue = c
+            limitLine.label = XFormatUtil.globalFormat(c, mMasterView.mBaseInit.digit())
             mField.set(limitLine, c)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    fun refreshLimit() {
-        setLimit(mLimitLine, mLimitValue)
-        mMasterView.invalidate()
+    fun refreshLimit(latestPrice: Float) {
+        setLimit(mLimitLine, latestPrice)
     }
 }

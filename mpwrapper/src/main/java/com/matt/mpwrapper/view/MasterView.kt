@@ -126,6 +126,10 @@ class MasterView @JvmOverloads constructor(
         val kViewDataList = mBaseInit.kViewDataList()
         val index = kViewDataList.size - 1
         renderMainView(kViewData.price, index, true)
+        val c = kViewData.price?.c
+        if (c != null && c != 0.0f) {
+            mMasterViewDelegate.refreshLimit(c)
+        }
         invalidate()
     }
 
@@ -151,6 +155,10 @@ class MasterView @JvmOverloads constructor(
             val lineDataSet = masterViewDelegate.mTimeSharingDataSet
             lineData.addDataSet(lineDataSet)
             combinedData.setData(lineData)
+        }
+        val c = kViewDataList.last().price?.c
+        if (c != null && c != 0.0f) {
+            masterViewDelegate.refreshLimit(c)
         }
     }
 }
