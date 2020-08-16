@@ -3,7 +3,7 @@ package com.matt.sample_zm.net.base
 import com.matt.libwrapper.exception.ApiSuccessNullException
 import com.matt.libwrapper.exception.ExceptionManager
 import com.matt.libwrapper.exception.ExceptionType
-import com.matt.libwrapper.widget.IDisposable
+import com.matt.libwrapper.ui.base.loading.IDisposable
 import com.matt.libwrapper.widget.ObserverWrapper
 import com.matt.sample_zm.bean.ApiData
 

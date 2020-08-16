@@ -1,7 +1,7 @@
 package com.example.sample_binance.repository.net
 
 import com.blankj.utilcode.util.ToastUtils
-import com.matt.libwrapper.widget.IDisposable
+import com.matt.libwrapper.ui.base.loading.IDisposable
 import com.matt.libwrapper.widget.ObserverWrapper
 import java.net.SocketTimeoutException
 
