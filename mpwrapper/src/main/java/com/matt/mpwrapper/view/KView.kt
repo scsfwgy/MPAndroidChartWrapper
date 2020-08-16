@@ -2,6 +2,7 @@ package com.matt.mpwrapper.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -27,6 +28,7 @@ class KView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : LinearLayout(mContext, attrs, defStyleAttr), ILoadData, BaseInit {
+    val TAG = KView::class.simpleName
 
     init {
         initAttr()
@@ -120,13 +122,25 @@ class KView @JvmOverloads constructor(
      */
     override fun refreshData(latestTime: Long, latestPrice: Float, latestVol: Float?) {
         val lastOrNull = mKViewDataList.lastOrNull()
-        lastOrNull?.run {
-            price?.c = latestPrice
-            price?.t = latestTime
+        if (lastOrNull == null) {
+            Log.e(TAG, "refreshData:获取最后一个值为null,终止后续逻辑")
+            return
+        }
+        lastOrNull.run {
+            val p = price ?: throw IllegalArgumentException("获取到的最后一个模型的price为null,请检查")
+            val newT = if (latestTime > p.t) latestTime else p.t
+            val newO = p.o
+            val newH = if (latestPrice > p.h) latestPrice else p.h
+            val newL = if (latestPrice < p.l) latestPrice else p.l
+            val newC = latestPrice
+            val newPrice = Price(newT, newO, newH, newL, newC)
+
+            //赋值回
+            price = newPrice
             volData?.vol?.vol = latestVol ?: 0f
         }
         mChartArr.forEach {
-            lastOrNull?.run {
+            lastOrNull.run {
                 it.refreshData(lastOrNull)
             }
         }

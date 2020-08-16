@@ -57,7 +57,7 @@ class MasterView @JvmOverloads constructor(
         val xValue = realIndex.toFloat()
         val invalidData = FinancialAlgorithm.invalidData
         //渲染主图
-        renderMainView(p, realIndex)
+        renderMainView(p, realIndex, false)
         if (masterViewType == MasterViewType.CANDLE) {
             val masterData = it.masterData
             val ma = masterData?.ma
@@ -89,7 +89,7 @@ class MasterView @JvmOverloads constructor(
         }
     }
 
-    fun renderMainView(p: Price?, index: Int) {
+    fun renderMainView(p: Price?, index: Int, refresh: Boolean = false) {
         if (p == null) return
         val xValue = index.toFloat()
         val masterViewDelegate = mMasterViewDelegate
@@ -97,19 +97,35 @@ class MasterView @JvmOverloads constructor(
         val lineDataSet = masterViewDelegate.mTimeSharingDataSet
         val masterViewType = masterViewDelegate.mMasterViewType
         if (masterViewType == MasterViewType.CANDLE) {
-            val candleEntry =
-                CandleEntry(xValue, p.h, p.l, p.o, p.c)
-            candleDataSet.addEntry(candleEntry)
+            if (refresh) {
+                val entryForIndex = candleDataSet.getEntryForIndex(index)
+                entryForIndex.x = xValue
+                entryForIndex.high = p.h
+                entryForIndex.low = p.l
+                entryForIndex.open = p.o
+                entryForIndex.close = p.c
+            } else {
+                val candleEntry =
+                    CandleEntry(xValue, p.h, p.l, p.o, p.c)
+                candleDataSet.addEntry(candleEntry)
+            }
         } else if (masterViewType == MasterViewType.TIMESHARING) {
-            val entry = Entry(xValue, p.c)
-            lineDataSet.addEntry(entry)
+            if (refresh) {
+                val entryForIndex = lineDataSet.getEntryForIndex(index)
+                entryForIndex.y = p.c
+                entryForIndex.x = xValue
+            } else {
+                val entry = Entry(xValue, p.c)
+                lineDataSet.addEntry(entry)
+            }
+
         }
     }
 
     override fun refreshData(kViewData: KViewData) {
         val kViewDataList = mBaseInit.kViewDataList()
         val index = kViewDataList.size - 1
-        renderMainView(kViewData.price, index)
+        renderMainView(kViewData.price, index, true)
         invalidate()
     }
 
