@@ -294,6 +294,8 @@ abstract class BaseKViewDelegate(baseKView: BaseKView) {
             //axisRight.setGranularity(1f);
             //上边界内边距，也就是k线上面到边框的距离
             axisRight.spaceTop = 10f
+            //下边距，也就是k线下面到边框的距离
+            axisRight.spaceBottom = 10f
 
             axisRight.valueFormatter = object :
                 ValueFormatter() {
