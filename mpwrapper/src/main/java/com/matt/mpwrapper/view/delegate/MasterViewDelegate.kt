@@ -70,7 +70,8 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mLimitLine by lazy {
         val limitLine = LimitLine(0.0f, XFormatUtil.globalFormat(0.0, mBaseKView.mBaseInit.digit()))
         limitLine.lineWidth = 0.5f
-        limitLine.lineColor = mBaseLimitColor
+        limitLine.lineColor = mBaseXAxisTxtColor
+        limitLine.textColor = mBaseXAxisTxtColor
         limitLine.enableDashedLine(8f, 8f, 8f)
         limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
         mMasterView.axisRight.addLimitLine(limitLine)
