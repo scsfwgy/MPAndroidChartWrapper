@@ -55,9 +55,18 @@ class MasterView @JvmOverloads constructor(
         val p = it.price ?: throw IllegalArgumentException("price字段为null,不允许为null")
         //x轴采用下标索引
         val xValue = realIndex.toFloat()
-        val invalidData = FinancialAlgorithm.invalidData
         //渲染主图
         renderMainView(p, realIndex, false)
+        renderMainIndicators(masterViewType, it, masterViewDelegate, xValue)
+    }
+
+    private fun renderMainIndicators(
+        masterViewType: MasterViewType,
+        it: KViewData,
+        masterViewDelegate: MasterViewDelegate,
+        xValue: Float
+    ) {
+        val invalidData = FinancialAlgorithm.invalidData
         if (masterViewType == MasterViewType.CANDLE) {
             val masterData = it.masterData
             val ma = masterData?.ma

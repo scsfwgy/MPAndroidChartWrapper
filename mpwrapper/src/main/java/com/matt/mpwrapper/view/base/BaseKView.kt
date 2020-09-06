@@ -96,15 +96,15 @@ abstract class BaseKView @JvmOverloads constructor(
     }
 
     override fun reLoadData(kViewDataList: List<KViewData>) {
-        renderView(kViewDataList, reload = true, loadMore = false, pushData = false)
+        renderView(kViewDataList, reload = true, loadMore = false, appendData = false)
     }
 
     override fun loadMoreData(kViewDataList: List<KViewData>) {
-        renderView(kViewDataList, reload = false, loadMore = true, pushData = false)
+        renderView(kViewDataList, reload = false, loadMore = true, appendData = false)
     }
 
     override fun pushData(kViewDataList: List<KViewData>) {
-        renderView(kViewDataList, reload = false, loadMore = false, pushData = true)
+        renderView(kViewDataList, reload = false, loadMore = false, appendData = true)
     }
 
     /**
@@ -114,14 +114,14 @@ abstract class BaseKView @JvmOverloads constructor(
         kViewDataList: List<KViewData>,
         reload: Boolean,
         loadMore: Boolean,
-        pushData: Boolean
+        appendData: Boolean
     ) {
         kViewDataList.forEachIndexed { index, kViewData ->
-            renderTemplateItemView(index, index, kViewData, reload, loadMore, pushData)
+            renderTemplateItemView(index, index, kViewData, reload, loadMore, appendData)
         }
 
-        if (!pushData) {
-            renderTemplateFinal(kViewDataList, reload, loadMore, pushData)
+        if (!appendData) {
+            renderTemplateFinal(kViewDataList, reload, loadMore, appendData)
 
             //设置数据
             val combinedData = getChartViewDelegate().mCombinedData

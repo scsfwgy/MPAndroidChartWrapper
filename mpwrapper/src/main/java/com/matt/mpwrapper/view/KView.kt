@@ -127,7 +127,10 @@ class KView @JvmOverloads constructor(
         }
     }
 
-    override fun pushData(priceList: List<Price>, volList: List<Float>?) {
+    /**
+     * 追加数据
+     */
+    override fun appendData(priceList: List<Price>, volList: List<Float>?) {
         val processNewData =
             processNewData(priceList, volList, reload = false, loadMore = false)
         mChartArr.forEach {
