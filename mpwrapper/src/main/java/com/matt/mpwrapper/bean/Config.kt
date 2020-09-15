@@ -8,11 +8,13 @@ package com.matt.mpwrapper.bean
  * ============================================================
  */
 class Config {
+    var debug = true
     var greenUp = false
 
     companion object {
         fun def(): Config {
             val config = Config()
+            config.debug = true
             config.greenUp = false
             return config
         }

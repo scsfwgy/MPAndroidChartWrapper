@@ -18,8 +18,8 @@ import kotlin.math.sqrt
  */
 // TODO: 2017/12/18 这里的算法需要核实！包括异常情况的处理和边界的处理是否合适。
 object FinancialAlgorithm {
-    var isDebug: Boolean = true
     val TAG = FinancialAlgorithm::class.java.simpleName
+    var isDebug: Boolean = MpWrapperConfig.mConfig.debug
     val invalidData = Float.MIN_VALUE
 
 

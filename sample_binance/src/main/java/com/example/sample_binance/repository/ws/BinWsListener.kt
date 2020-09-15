@@ -22,9 +22,8 @@ class BinWsListener(val binWs: BinWs) : WebSocketListener() {
 
     companion object {
         const val COUNT_RETRY = 10
+        var retry = 0
     }
-
-    var retry = 0
 
     fun log(msg: String) {
         Log.d(TAG, msg)
@@ -111,7 +110,7 @@ class BinWsListener(val binWs: BinWs) : WebSocketListener() {
             return
         }
         retry++
-        log("断开连接，开始第${retry}次重试")
+        log("断开连接，开始第${retry}次重试" + this)
         binWs.conn()
     }
 
