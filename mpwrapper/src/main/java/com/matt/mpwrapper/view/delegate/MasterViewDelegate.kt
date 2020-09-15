@@ -51,6 +51,9 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
             getColor(R.color.mp_masterview_bolldn)
         )
     }
+    val mTimeLine by lazy {
+        getColor(R.color.mp_masterview_timeline)
+    }
 
     val mMaType by lazy {
         arrayOf(MaType.MA5, MaType.MA10, MaType.MA20)
@@ -70,7 +73,7 @@ class MasterViewDelegate(masterView: MasterView) : BaseKViewDelegate(masterView)
     val mLimitLine by lazy {
         val limitLine = LimitLine(0.0f, XFormatUtil.globalFormat(0.0, mBaseKView.mBaseInit.digit()))
         limitLine.lineWidth = 0.5f
-        limitLine.lineColor = mBaseXAxisTxtColor
+        limitLine.lineColor = mTimeLine
         limitLine.textColor = mBaseXAxisTxtColor
         limitLine.enableDashedLine(8f, 8f, 8f)
         limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP

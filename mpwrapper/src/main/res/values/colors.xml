@@ -45,6 +45,8 @@
     <color name="mp_masterview_ma">#f7462e</color>
     <color name="mp_masterview_boll">#1666fa</color>
 
+    <color name="mp_masterview_timeline">#f29b3d</color>
+
 
     <!--副图-->
     <!--macd-->

@@ -11,6 +11,7 @@ import com.matt.mpwrapper.bean.Vol
 import com.matt.mpwrapper.bean.VolData
 import com.matt.mpwrapper.utils.TimeUtils
 import com.matt.mpwrapper.view.VolView
+import com.matt.mpwrapper.view.type.VolIndicatorType
 import com.matt.mpwrapper.view.type.VolType
 
 /**
@@ -21,6 +22,8 @@ import com.matt.mpwrapper.view.type.VolType
  * ============================================================
  */
 class VolViewDelegate(val mVolView: VolView) : BaseKViewDelegate(mVolView) {
+
+    var mVolIndicatorType: VolIndicatorType = VolIndicatorType.VOL_MA
 
     val mVolBarColorArr by lazy {
         arrayOf(

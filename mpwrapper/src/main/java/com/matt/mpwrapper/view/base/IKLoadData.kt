@@ -4,6 +4,7 @@ import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.type.MasterIndicatorType
 import com.matt.mpwrapper.view.type.MasterViewType
 import com.matt.mpwrapper.view.type.MinorIndicatorType
+import com.matt.mpwrapper.view.type.VolIndicatorType
 
 /**
  * ============================================================
@@ -12,7 +13,7 @@ import com.matt.mpwrapper.view.type.MinorIndicatorType
  * 描 述 ：
  * ============================================================
  */
-interface ILoadData {
+interface IKLoadData : IBaseLoadData {
 
     /**
      * 一些基础配置信息，可以动态更新
@@ -21,33 +22,22 @@ interface ILoadData {
         yDataDigit: Int = 4,
         masterViewType: MasterViewType = MasterViewType.CANDLE,
         masterIndicatorType: MasterIndicatorType = MasterIndicatorType.MA,
-        minorIndicatorType: MinorIndicatorType = MinorIndicatorType.MACD
+        minorIndicatorType: MinorIndicatorType = MinorIndicatorType.MACD,
+        volIndicatorType: VolIndicatorType = VolIndicatorType.VOL_MA
     )
 
     /**
-     * 在加载前调用
+     * 数据加载
+     * @param priceList 价格
+     * @param volList 量
+     * @param reload
      */
-    fun onLoading(loadingMsg: String? = null)
-
-    /**
-     * 加载失败后调用
-     */
-    fun onLoadingFail(loadingFailMsg: String? = null)
-
-    /**
-     * 重新加载数据，也是第一次加载数据用
-     */
-    fun reLoadData(priceList: List<Price>, volList: List<Float>? = null)
-
-    /**
-     * 加载更多数据
-     */
-    fun loadMoreData(priceList: List<Price>, volList: List<Float>? = null)
-
-    /**
-     * 实时数据
-     */
-    fun pushData(priceList: List<Price>, volList: List<Float>? = null)
+    fun loadData(
+        priceList: List<Price>, volList: List<Float>? = null,
+        reload: Boolean = true,
+        append: Boolean = false,
+        loadMore: Boolean = false
+    )
 
     /**
      * 刷新最新数据，只会刷新不会追加

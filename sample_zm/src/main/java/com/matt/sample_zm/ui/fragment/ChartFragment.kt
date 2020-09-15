@@ -8,6 +8,8 @@ import com.matt.libwrapper.utils.RxUtils
 import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.type.KType
 import com.matt.mpwrapper.view.type.MasterViewType
+import com.matt.mpwrapper.view.type.MinorIndicatorType
+import com.matt.mpwrapper.view.type.VolIndicatorType
 import com.matt.sample_zm.R
 import com.matt.sample_zm.net.base.SimpleTObserver
 import com.matt.sample_zm.ui.activity.ChartActivity
@@ -64,10 +66,15 @@ class ChartFragment : LazyLoadBaseFragment() {
 
     private fun initView() {
         mRootView.run {
+            val masterViewType = if (kType == KType.K_TIMESHARE)
+                MasterViewType.TIMESHARING
+            else
+                MasterViewType.CANDLE
             fc_kv_kview.updateConfig(
                 4,
-                if (kType == KType.K_TIMESHARE) MasterViewType.TIMESHARING else
-                    MasterViewType.CANDLE
+                masterViewType,
+                minorIndicatorType = MinorIndicatorType.MACD,
+                volIndicatorType = VolIndicatorType.GONE
             )
         }
     }
@@ -85,7 +92,7 @@ class ChartFragment : LazyLoadBaseFragment() {
 
     private fun renderChart(it: List<Price>) {
         mRootView.run {
-            fc_kv_kview.reLoadData(it)
+            fc_kv_kview.loadData(it)
         }
     }
 }

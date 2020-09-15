@@ -11,11 +11,12 @@ import com.matt.mpwrapper.R
 import com.matt.mpwrapper.bean.KViewData
 import com.matt.mpwrapper.bean.Price
 import com.matt.mpwrapper.view.base.BaseInit
-import com.matt.mpwrapper.view.base.ILoadData
+import com.matt.mpwrapper.view.base.IKLoadData
 import com.matt.mpwrapper.view.listener.LinkChartListener
 import com.matt.mpwrapper.view.type.MasterIndicatorType
 import com.matt.mpwrapper.view.type.MasterViewType
 import com.matt.mpwrapper.view.type.MinorIndicatorType
+import com.matt.mpwrapper.view.type.VolIndicatorType
 import kotlinx.android.synthetic.main.mp_widget_kview.view.*
 
 /**
@@ -29,7 +30,7 @@ class KView @JvmOverloads constructor(
     private val mContext: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(mContext, attrs, defStyleAttr), ILoadData, BaseInit {
+) : LinearLayout(mContext, attrs, defStyleAttr), IKLoadData, BaseInit {
     val TAG = KView::class.simpleName
 
     init {
@@ -73,18 +74,26 @@ class KView @JvmOverloads constructor(
     }
 
     var mYDataDigit: Int = 0
+    lateinit var mVolIndicatorType: VolIndicatorType
+
 
     val mChartArr by lazy {
-        arrayOf(getMasterView(), getMinorView(), getVolView())
+        if (mVolIndicatorType == VolIndicatorType.GONE) {
+            arrayOf(getMasterView(), getMinorView())
+        } else {
+            arrayOf(getMasterView(), getMinorView(), getVolView())
+        }
     }
 
     override fun updateConfig(
         yDataDigit: Int,
         masterViewType: MasterViewType,
         masterIndicatorType: MasterIndicatorType,
-        minorIndicatorType: MinorIndicatorType
+        minorIndicatorType: MinorIndicatorType,
+        volIndicatorType: VolIndicatorType
     ) {
         mYDataDigit = yDataDigit
+        mVolIndicatorType = volIndicatorType
         //chart初始化和关联在一起
         mChartArr.forEach { baseKView ->
             if (baseKView is MasterView) {
@@ -98,7 +107,15 @@ class KView @JvmOverloads constructor(
                     mMinorIndicatorType = minorIndicatorType
                 }
             }
+            if (baseKView is VolView) {
+                baseKView.mVolViewDelegate.run {
+                    mVolIndicatorType = volIndicatorType
+                }
+            }
+        }
 
+        if (!volEnable()) {
+            getVolView().visibility = View.GONE
         }
 
     }
@@ -112,27 +129,24 @@ class KView @JvmOverloads constructor(
         mChartArr.forEach { it.onLoadingFail(loadingFailMsg) }
     }
 
-    override fun reLoadData(priceList: List<Price>, volList: List<Float>?) {
-        mKViewDataList.clear()
-        val processNewData = processNewData(priceList, volList, reload = true, loadMore = false)
+    override fun loadData(
+        priceList: List<Price>,
+        volList: List<Float>?,
+        reload: Boolean,
+        append: Boolean,
+        loadMore: Boolean
+    ) {
+        if (reload) {
+            mKViewDataList.clear()
+        }
+        val processNewData = processNewData(priceList, volList, reload, append, loadMore)
         mChartArr.forEach {
-            it.reLoadData(processNewData)
+            it.loadData(processNewData, reload, append, loadMore)
         }
     }
 
-    override fun loadMoreData(priceList: List<Price>, volList: List<Float>?) {
-        val processNewData = processNewData(priceList, volList, reload = false, loadMore = true)
-        mChartArr.forEach {
-            it.loadMoreData(processNewData)
-        }
-    }
-
-    override fun pushData(priceList: List<Price>, volList: List<Float>?) {
-        val processNewData =
-            processNewData(priceList, volList, reload = false, loadMore = false)
-        mChartArr.forEach {
-            it.pushData(processNewData)
-        }
+    fun volEnable(): Boolean {
+        return mVolIndicatorType != VolIndicatorType.GONE
     }
 
     /**
@@ -177,6 +191,7 @@ class KView @JvmOverloads constructor(
         priceList: List<Price>,
         volList: List<Float>?,
         reload: Boolean,
+        append: Boolean,
         loadMore: Boolean
     ): List<KViewData> {
         if (reload) {

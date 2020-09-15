@@ -114,7 +114,7 @@ class BinChartFragment : LazyLoadBaseFragment() {
         it: List<Price>,
         volList: ArrayList<Float>
     ) {
-        getKView().reLoadData(it, volList)
+        getKView().loadData(it, volList)
     }
 
     fun getKView(): KView {

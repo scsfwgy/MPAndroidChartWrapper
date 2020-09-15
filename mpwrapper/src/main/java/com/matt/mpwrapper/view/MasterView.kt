@@ -47,8 +47,8 @@ class MasterView @JvmOverloads constructor(
         newDataIndex: Int,
         it: KViewData,
         reload: Boolean,
-        loadMore: Boolean,
-        pushData: Boolean
+        append: Boolean,
+        loadMore: Boolean
     ) {
         val masterViewDelegate = mMasterViewDelegate
         val masterViewType = masterViewDelegate.mMasterViewType
@@ -88,6 +88,7 @@ class MasterView @JvmOverloads constructor(
             }
         }
     }
+
 
     fun renderMainView(p: Price?, index: Int, refresh: Boolean = false) {
         if (p == null) return

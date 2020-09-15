@@ -39,8 +39,8 @@ class MinorView @JvmOverloads constructor(
         newDataIndex: Int,
         it: KViewData,
         reload: Boolean,
-        loadMore: Boolean,
-        pushData: Boolean
+        append: Boolean,
+        loadMore: Boolean
     ) {
 
         val invalidData = FinancialAlgorithm.invalidData
