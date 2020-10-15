@@ -144,10 +144,17 @@ class BinChartFragment : LazyLoadBaseFragment() {
 
         )
 
-        getKView().refreshData(
-            wsSimpleTicker.E,
-            wsSimpleTicker.c.toFloat(),
-            wsSimpleTicker.v.toFloat()
+//        getKView().refreshData(
+//            wsSimpleTicker.E,
+//            wsSimpleTicker.c.toFloat(),
+//            wsSimpleTicker.v.toFloat()
+//        )
+        getKView().loadData(
+            priceList = listOf(price),
+            volList = listOf(wsSimpleTicker.v.toFloat()),
+            reload = false,
+            append = true,
+            loadMore = false
         )
     }
 }
