@@ -16,7 +16,7 @@ object SampleBinanceInit {
     //不需要翻墙
     const val BASE_URL = "https://api.binancezh.com/"
     const val BASE_URL_WS = "wss://stream.binance.com:9443/stream"
-    //const val BASE_URL_WS = "ws://echo.websocket.org"
+    //const val BASE_URL_WS = "wss://stream.binancezh.com:9443/stream"
 
     fun init(application: Application) {
         BinWsImpl.binWs.conn()
