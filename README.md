@@ -1,6 +1,10 @@
 ## MPAndroidChartWrapper
 [MPAndroidChartWrapper](https://github.com/scsfwgy/MPAndroidChartWrapper),高度封装[MPAndroidChart](https://github.com/PhilJay/MPAndroidChart),提供开箱即用的MPAndroidChart。两大原则：1.不修改MPAndroidChart源码，只继承封装原有功能实现扩展。2. 开箱即用。
 
+
+##DEMO
+1. 币安 注意：目前该Demo必须**科学上网**才能看
+
 ## 已完成
 1. 主图、副图整体功能
 2. 主图：分时图、蜡烛图、ma、boll
