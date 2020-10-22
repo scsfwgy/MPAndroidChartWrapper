@@ -29,20 +29,20 @@ public class WsLatestKLine {
      * "B": "123456"   // 忽略此参数
      * }
      */
-    public double c;
+    public float c;
     public int f;
-    public double h;
-    public double i;
+    public float h;
+    public String i;
     public int L;
-    public double l;
+    public float l;
     public int n;
-    public double o;
-    public double q;
-    public double Q;
+    public float o;
+    public float q;
+    public float Q;
     public String s;
     public long t;
     public long T;
-    public double v;
-    public double V;
+    public float v;
+    public float V;
     public boolean x;
 }

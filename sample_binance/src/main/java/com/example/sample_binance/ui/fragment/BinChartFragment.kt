@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.View
 import com.example.sample_binance.R
 import com.example.sample_binance.model.kview.BinKType
-import com.example.sample_binance.model.ws.WsSimpleTicker
+import com.example.sample_binance.model.ws.WsLatestKLinWrapper
 import com.example.sample_binance.repository.net.BinObserver
 import com.example.sample_binance.repository.net.BinanceServiceWrapper
 import com.example.sample_binance.ui.activity.BinChartActivity
@@ -17,6 +17,8 @@ import com.matt.mpwrapper.view.type.MasterIndicatorType
 import com.matt.mpwrapper.view.type.MasterViewType
 import com.matt.mpwrapper.view.type.MinorIndicatorType
 import kotlinx.android.synthetic.main.bin_fragment_chart.view.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * ============================================================
@@ -134,24 +136,17 @@ class BinChartFragment : LazyLoadBaseFragment() {
         getKView().getMinorView().mMinorViewDelegate.showIndicatorType(minorIndicatorType)
     }
 
-    fun onEvent(wsSimpleTicker: WsSimpleTicker) {
-        val price = Price(
-            wsSimpleTicker.E,
-            wsSimpleTicker.c.toFloat(),
-            wsSimpleTicker.h.toFloat(),
-            wsSimpleTicker.l.toFloat(),
-            wsSimpleTicker.c.toFloat()
+    override fun eventBusEnable(): Boolean {
+        return true
+    }
 
-        )
-
-//        getKView().refreshData(
-//            wsSimpleTicker.E,
-//            wsSimpleTicker.c.toFloat(),
-//            wsSimpleTicker.v.toFloat()
-//        )
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(wsLatestKLinWrapper: WsLatestKLinWrapper) {
+        val k = wsLatestKLinWrapper.k
+        val price = Price(k.T, k.o, k.h, k.l, k.c)
         getKView().loadData(
             priceList = listOf(price),
-            volList = listOf(wsSimpleTicker.v.toFloat()),
+            volList = listOf(k.v),
             reload = false,
             append = true,
             loadMore = false

@@ -14,7 +14,7 @@ object SampleBinanceInit {
     val TAG = SampleBinanceInit.javaClass.simpleName
 
     //不需要翻墙
-    const val BASE_URL = "https://api.binancezh.com/"
+    const val BASE_URL = "https://api.binance.com/"
     const val BASE_URL_WS = "wss://stream.binance.com:9443/stream"
     //const val BASE_URL_WS = "wss://stream.binancezh.com:9443/stream"
 

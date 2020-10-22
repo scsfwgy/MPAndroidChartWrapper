@@ -45,9 +45,13 @@ class BinChartActivity : TemplateBarActivity() {
     val mKViewTypePop by lazy {
         KViewTypePop(mContext, mCurrBinKType, object : KViewTypePop.KTypeListener {
             override fun onClick(binKType: BinKType) {
+                //先取消之前的订阅
+                BinWsApi.kline(arrayOf(mSymbol), mCurrBinKType.apiKey, false)
                 mCurrBinKType = binKType
                 babc_tv_kType.text = mCurrBinKType.label
                 chartFragment.updateBinKType(mCurrBinKType)
+                //订阅新的
+                BinWsApi.kline(arrayOf(mSymbol), mCurrBinKType.apiKey, true)
             }
         })
     }
@@ -161,6 +165,7 @@ class BinChartActivity : TemplateBarActivity() {
 
     fun sub(sub: Boolean) {
         val kline = BinWsApi.simpleTicker(arrayOf(mSymbol), sub)
+        BinWsApi.kline(arrayOf(mSymbol), mCurrBinKType.apiKey, sub)
         if (sub && !kline) {
             showToast("k线推送数据订阅失败，请重试")
             return
@@ -169,8 +174,6 @@ class BinChartActivity : TemplateBarActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(wsSimpleTicker: WsSimpleTicker) {
-        chartFragment.onEvent(wsSimpleTicker)
-
         val open = wsSimpleTicker.o
         val current = wsSimpleTicker.c
         val rate = (current - open) / open * 100
